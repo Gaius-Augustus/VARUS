@@ -1,0 +1,882 @@
+==3730== Memcheck, a memory error detector
+==3730== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==3730== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==3730== Command: ./VARUS
+==3730== 
+src/Simulator.cpp:52;Unable to open Runfile:default/Runlist.txt
+==3730== 
+==3730== HEAP SUMMARY:
+==3730==     in use at exit: 94,474 bytes in 162 blocks
+==3730==   total heap usage: 197 allocs, 35 frees, 112,314 bytes allocated
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 2 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410373: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x405E58: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 3 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40FA73: void ParameterHandler::add_parameter<double>(std::string, double, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406225: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 4 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4064A7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 5 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4065DF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 6 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x40671A: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 7 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406857: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 8 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410373: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406C47: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 9 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410373: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406D81: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 10 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410373: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406EB7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 11 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406FF0: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 12 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407128: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 13 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4074FB: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 14 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4077B3: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 15 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4078F5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 16 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407A3D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 17 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410373: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407B80: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 18 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407DF8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 19 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407F36: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 20 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x408075: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 26 bytes in 1 blocks are possibly lost in loss record 21 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410D3B: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4081B1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 27 bytes in 1 blocks are possibly lost in loss record 22 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40F608: void ParameterHandler::add_parameter<double>(std::string, double, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x40636D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 27 bytes in 1 blocks are possibly lost in loss record 23 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40FF00: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x40726A: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 27 bytes in 1 blocks are possibly lost in loss record 24 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x410801: void ParameterHandler::add_parameter<int>(std::string, int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x407CB8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 28 bytes in 1 blocks are possibly lost in loss record 25 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40FF00: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4060DD: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 29 bytes in 1 blocks are possibly lost in loss record 26 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40FF00: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x405F9B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 29 bytes in 1 blocks are possibly lost in loss record 27 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406A37: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 30 bytes in 1 blocks are possibly lost in loss record 28 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40F608: void ParameterHandler::add_parameter<double>(std::string, double, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x406B0E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 30 bytes in 1 blocks are possibly lost in loss record 29 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40F608: void ParameterHandler::add_parameter<double>(std::string, double, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4073B8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 31 bytes in 1 blocks are possibly lost in loss record 30 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406292: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 31 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4057D7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 32 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40ED06: void ParameterHandler::add_parameter<std::string>(std::string, std::string, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4058BB: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 33 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405936: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 34 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40ED06: void ParameterHandler::add_parameter<std::string>(std::string, std::string, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x405A28: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 35 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405AA7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 36 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40ED06: void ParameterHandler::add_parameter<std::string>(std::string, std::string, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x405B98: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 37 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405C17: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 32 bytes in 1 blocks are possibly lost in loss record 38 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40ED06: void ParameterHandler::add_parameter<std::string>(std::string, std::string, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x405D08: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 33 bytes in 1 blocks are possibly lost in loss record 39 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406781: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 33 bytes in 1 blocks are possibly lost in loss record 40 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407FA0: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 34 bytes in 1 blocks are possibly lost in loss record 41 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405AB7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 34 bytes in 1 blocks are possibly lost in loss record 42 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405EBF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 34 bytes in 1 blocks are possibly lost in loss record 43 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406002: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 34 bytes in 1 blocks are possibly lost in loss record 44 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406646: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 45 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40563E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 46 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4057EF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 47 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405946: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 48 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405D83: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 49 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4063D4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 50 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40650E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 51 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4068D5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 52 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406B75: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 53 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407AA7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 35 bytes in 1 blocks are possibly lost in loss record 54 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407BE7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 36 bytes in 1 blocks are possibly lost in loss record 55 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4054B5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 36 bytes in 1 blocks are possibly lost in loss record 56 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40614A: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 36 bytes in 1 blocks are possibly lost in loss record 57 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406CAE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 36 bytes in 1 blocks are possibly lost in loss record 58 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406F1E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 36 bytes in 1 blocks are possibly lost in loss record 59 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40795F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 38 bytes in 1 blocks are possibly lost in loss record 60 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407E62: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 38 bytes in 1 blocks are possibly lost in loss record 61 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4080DF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 39 bytes in 1 blocks are possibly lost in loss record 62 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405539: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 39 bytes in 1 blocks are possibly lost in loss record 63 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407057: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 40 bytes in 1 blocks are possibly lost in loss record 64 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4072DA: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 40 bytes in 1 blocks are possibly lost in loss record 65 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407D1F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 41 bytes in 1 blocks are possibly lost in loss record 66 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4056BE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 41 bytes in 1 blocks are possibly lost in loss record 67 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407192: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 41 bytes in 1 blocks are possibly lost in loss record 68 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40757D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 42 bytes in 1 blocks are possibly lost in loss record 69 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4055BE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 42 bytes in 1 blocks are possibly lost in loss record 70 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4057BE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 42 bytes in 1 blocks are possibly lost in loss record 71 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405C27: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 43 bytes in 1 blocks are possibly lost in loss record 72 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40573E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 44 bytes in 1 blocks are possibly lost in loss record 73 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406DE8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 47 bytes in 1 blocks are possibly lost in loss record 74 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407422: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 47 bytes in 1 blocks are possibly lost in loss record 75 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4076DD: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 49 bytes in 1 blocks are possibly lost in loss record 83 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40781D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 51 bytes in 1 blocks are possibly lost in loss record 84 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4062AC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 58 bytes in 1 blocks are possibly lost in loss record 85 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405AD1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 59 bytes in 1 blocks are possibly lost in loss record 86 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405960: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 64 bytes in 1 blocks are possibly lost in loss record 87 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406A51: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 68 bytes in 1 blocks are possibly lost in loss record 88 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC20A: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFC87D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4068C5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 68 bytes in 1 blocks are possibly lost in loss record 89 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40ED06: void ParameterHandler::add_parameter<std::string>(std::string, std::string, std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4069B6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 70 bytes in 1 blocks are possibly lost in loss record 90 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40601C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 74 bytes in 1 blocks are possibly lost in loss record 124 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406528: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 86 bytes in 1 blocks are possibly lost in loss record 125 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4068EF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 89 bytes in 1 blocks are possibly lost in loss record 130 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40679B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 90 bytes in 1 blocks are possibly lost in loss record 131 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405C41: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 93 bytes in 1 blocks are possibly lost in loss record 132 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405806: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 99 bytes in 1 blocks are possibly lost in loss record 133 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405D9D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 107 bytes in 1 blocks are possibly lost in loss record 134 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407AC1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 108 bytes in 1 blocks are possibly lost in loss record 135 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406164: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 114 bytes in 1 blocks are possibly lost in loss record 136 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407597: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 117 bytes in 1 blocks are possibly lost in loss record 137 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4063EE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 118 bytes in 1 blocks are possibly lost in loss record 138 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407071: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 128 bytes in 1 blocks are possibly lost in loss record 139 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4072F4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 129 bytes in 1 blocks are possibly lost in loss record 140 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4076F7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 135 bytes in 1 blocks are possibly lost in loss record 141 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4080F9: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 143 bytes in 1 blocks are possibly lost in loss record 142 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406B8F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 144 bytes in 1 blocks are possibly lost in loss record 143 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407C01: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 148 bytes in 1 blocks are possibly lost in loss record 144 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4071AC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 160 bytes in 1 blocks are possibly lost in loss record 145 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406E02: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 174 bytes in 1 blocks are possibly lost in loss record 146 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406F38: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 174 bytes in 1 blocks are possibly lost in loss record 147 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407837: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 181 bytes in 1 blocks are possibly lost in loss record 148 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406CC8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 202 bytes in 1 blocks are possibly lost in loss record 150 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407FBA: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 245 bytes in 1 blocks are possibly lost in loss record 152 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407979: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 253 bytes in 1 blocks are possibly lost in loss record 153 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x405ED9: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 264 bytes in 1 blocks are possibly lost in loss record 154 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407E7C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 279 bytes in 1 blocks are possibly lost in loss record 155 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x406660: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 294 bytes in 1 blocks are possibly lost in loss record 156 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x407D39: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 328 bytes in 1 blocks are possibly lost in loss record 158 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFD9B4: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFDDDB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x40743C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== 537 bytes in 1 blocks are possibly lost in loss record 159 of 162
+==3730==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3730==    by 0x4EFBF28: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFCD2A: std::string::_Rep::_M_clone(std::allocator<char> const&, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFCDD3: std::string::reserve(unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EF32FA: std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::overflow(int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EFA068: std::basic_streambuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x4EEE013: std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==3730==    by 0x42A58C: Simulator::readInputRuns() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x411DE0: Controller::initialize() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730==    by 0x403221: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==3730== 
+==3730== LEAK SUMMARY:
+==3730==    definitely lost: 0 bytes in 0 blocks
+==3730==    indirectly lost: 0 bytes in 0 blocks
+==3730==      possibly lost: 7,930 bytes in 111 blocks
+==3730==    still reachable: 86,544 bytes in 51 blocks
+==3730==         suppressed: 0 bytes in 0 blocks
+==3730== Reachable blocks (those to which a pointer was found) are not shown.
+==3730== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==3730== 
+==3730== For counts of detected and suppressed errors, rerun with: -v
+==3730== ERROR SUMMARY: 111 errors from 111 contexts (suppressed: 0 from 0)

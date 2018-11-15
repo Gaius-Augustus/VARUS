@@ -1,0 +1,15 @@
+Usage:
+Online-algorithm to automatically draw optimal samples from libraries of 
+RNA-seqdata. from the NCBI.
+In a stepwise procedure parts of these libraries are downloaded and alligne\n
+ to the genome of the species with STAR. At each step the run that is expected to yield the most increase in coverage, is chosen. 
+Input:
+    - Genome of the target species
+    - Runlist named "Runlist.txt".
+Format:
+@Run_acc	total_spots	total_bases	bool:paired	#tabulator separated
+ERR1328564	75912627	1
+5041721263	0
+ERR1328563	88959042	17616693616	0
+DRR030358	20853417	750723012	0
+

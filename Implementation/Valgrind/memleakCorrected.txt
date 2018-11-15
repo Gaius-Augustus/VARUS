@@ -1,0 +1,1328 @@
+==5557== Memcheck, a memory error detector
+==5557== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==5557== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==5557== Command: ./VARUS
+==5557== 
+src/Simulator.cpp:52;Unable to open Runfile:default/Runlist.txt
+==5557== 
+==5557== HEAP SUMMARY:
+==5557==     in use at exit: 94,644 bytes in 181 blocks
+==5557==   total heap usage: 216 allocs, 35 frees, 112,484 bytes allocated
+==5557== 
+==5557== 16 bytes in 1 blocks are still reachable in loss record 1 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x410EA9: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 2 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FFB3: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AA00: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 3 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F13B: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AC98: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 4 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AF68: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 5 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B0C8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 6 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B15B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 7 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B2B8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 8 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FFB3: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B728: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 9 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FFB3: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B888: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 10 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FFB3: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B91B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 11 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B9B1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 12 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BA43: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 13 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BDAE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 14 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BFE6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 15 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C07F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 16 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C1E6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 17 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FFB3: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C27F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 18 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C470: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 19 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C50E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 20 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C65F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 26 bytes in 1 blocks are possibly lost in loss record 21 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F873: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C6F8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 27 bytes in 1 blocks are possibly lost in loss record 22 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40EECE: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AE08: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 27 bytes in 1 blocks are possibly lost in loss record 23 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FD46: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BADB: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 27 bytes in 1 blocks are possibly lost in loss record 24 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40F606: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C312: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 28 bytes in 1 blocks are possibly lost in loss record 25 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FD46: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AB26: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 29 bytes in 1 blocks are possibly lost in loss record 26 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40FD46: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AA93: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 29 bytes in 1 blocks are possibly lost in loss record 27 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B597: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 30 bytes in 1 blocks are possibly lost in loss record 28 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40EECE: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B5C8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 30 bytes in 1 blocks are possibly lost in loss record 29 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40EECE: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BC4E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 31 bytes in 1 blocks are possibly lost in loss record 30 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40ADD7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 31 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A44F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 32 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x41048C: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A498: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 33 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A51B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 34 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x41048C: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A55C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 35 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A6A3: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 36 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x41048C: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A6F0: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 37 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A83B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 32 bytes in 1 blocks are possibly lost in loss record 38 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x41048C: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A888: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 33 bytes in 1 blocks are possibly lost in loss record 39 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B291: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 33 bytes in 1 blocks are possibly lost in loss record 40 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C635: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 34 bytes in 1 blocks are possibly lost in loss record 41 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A6B8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 34 bytes in 1 blocks are possibly lost in loss record 42 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AA6C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 34 bytes in 1 blocks are possibly lost in loss record 43 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AAFF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 34 bytes in 1 blocks are possibly lost in loss record 44 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B134: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 45 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A46C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 46 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A530: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 47 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A9D9: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 48 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AF41: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 49 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B0A1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 50 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B403: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 51 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B701: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 52 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C255: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 35 bytes in 1 blocks are possibly lost in loss record 53 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C2EB: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 36 bytes in 1 blocks are possibly lost in loss record 54 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AC67: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 36 bytes in 1 blocks are possibly lost in loss record 55 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B861: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 36 bytes in 1 blocks are possibly lost in loss record 56 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B98A: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 36 bytes in 1 blocks are possibly lost in loss record 57 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C1BC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 38 bytes in 1 blocks are possibly lost in loss record 58 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C4DF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 38 bytes in 1 blocks are possibly lost in loss record 59 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C6CE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 39 bytes in 1 blocks are possibly lost in loss record 60 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BA1C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 40 bytes in 1 blocks are possibly lost in loss record 61 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BC1A: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 40 bytes in 1 blocks are possibly lost in loss record 62 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C449: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 41 bytes in 1 blocks are possibly lost in loss record 63 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BAB1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 41 bytes in 1 blocks are possibly lost in loss record 64 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BE30: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 42 bytes in 1 blocks are possibly lost in loss record 65 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A850: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 44 bytes in 1 blocks are possibly lost in loss record 66 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B8F4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 47 bytes in 1 blocks are possibly lost in loss record 67 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BD84: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 47 bytes in 1 blocks are possibly lost in loss record 68 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BFBC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 69 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A498: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 70 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A4DA: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 71 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A55C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 72 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CA54: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 73 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A6F0: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 74 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C954: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 75 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40A888: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 76 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CB94: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 77 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AA00: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 78 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AA25: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 79 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AA93: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 80 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AAB8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 81 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AB26: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 82 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C9D4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 83 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F1D9: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AC98: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 84 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CA94: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 85 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F1D9: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AE08: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 86 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CBD4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 87 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40AF68: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 88 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C8D4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 89 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B0C8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 90 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B0ED: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 91 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B15B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 92 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CB54: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 93 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B2B8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 94 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CA14: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 95 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B43B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 96 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CB14: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 97 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F1D9: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B5C8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 98 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C914: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 99 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B728: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 100 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C994: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 101 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B888: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 102 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B8AD: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 103 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B91B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 104 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B943: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 105 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B9B1: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 106 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B9D5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 107 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BA43: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 108 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BA67: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 109 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BADB: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 110 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40CAD4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 111 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F1D9: void ParameterHandler::add_parameter<double>(std::string, double) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BC4E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 112 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C894: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 113 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BDAE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 114 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BDD3: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 115 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410799: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BE68: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 116 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C854: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 117 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40BFE6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 118 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C00B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 119 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C07F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 120 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C814: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 121 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C1E6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 122 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C20B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 123 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410059: void ParameterHandler::add_parameter<unsigned int>(std::string, unsigned int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C27F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 124 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C2A4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 125 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C312: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 126 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C7D4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 127 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C470: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 128 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C495: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 129 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C50E: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 130 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C797: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 131 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C65F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 132 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C684: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 133 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40F919: void ParameterHandler::add_parameter<int>(std::string, int) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C6F8: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 48 bytes in 1 blocks are still reachable in loss record 134 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x40E720: std::_Rb_tree_iterator<std::pair<std::string const, std::string> > std::_Rb_tree<std::string, std::pair<std::string const, std::string>, std::_Select1st<std::pair<std::string const, std::string> >, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::string const, std::string> >, std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40EC9C: std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >::operator[](std::string const&) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40C71D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 49 bytes in 1 blocks are possibly lost in loss record 135 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFD984: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFDDAB: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C055: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 51 bytes in 1 blocks are possibly lost in loss record 136 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AF0C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 58 bytes in 1 blocks are possibly lost in loss record 137 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A80C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 59 bytes in 1 blocks are possibly lost in loss record 138 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A674: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 64 bytes in 1 blocks are possibly lost in loss record 139 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B6CC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 68 bytes in 1 blocks are possibly lost in loss record 140 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B3EE: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 68 bytes in 1 blocks are possibly lost in loss record 141 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x41048C: void ParameterHandler::add_parameter<std::string>(std::string, std::string) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x40B43B: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 70 bytes in 1 blocks are possibly lost in loss record 142 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AC2C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 74 bytes in 1 blocks are possibly lost in loss record 143 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B0FF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 86 bytes in 1 blocks are possibly lost in loss record 144 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B55C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 88 bytes in 1 blocks are still reachable in loss record 145 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x410BAB: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 88 bytes in 1 blocks are still reachable in loss record 146 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x429A72: Simulator::Simulator(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410E54: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 88 bytes in 1 blocks are still reachable in loss record 147 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x429AE5: Simulator::Simulator(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410E54: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 88 bytes in 1 blocks are still reachable in loss record 148 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x429B6A: Simulator::Simulator(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410E54: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 89 bytes in 1 blocks are possibly lost in loss record 149 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B3BC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 90 bytes in 1 blocks are possibly lost in loss record 150 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A9A4: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 93 bytes in 1 blocks are possibly lost in loss record 151 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40A4EC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 99 bytes in 1 blocks are possibly lost in loss record 152 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AA37: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 107 bytes in 1 blocks are possibly lost in loss record 153 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C2B6: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 108 bytes in 1 blocks are possibly lost in loss record 154 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AD9C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 114 bytes in 1 blocks are possibly lost in loss record 155 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BF84: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 117 bytes in 1 blocks are possibly lost in loss record 156 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B06C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 118 bytes in 1 blocks are possibly lost in loss record 157 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BA79: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 128 bytes in 1 blocks are possibly lost in loss record 158 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BD4C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 129 bytes in 1 blocks are possibly lost in loss record 159 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C01D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 135 bytes in 1 blocks are possibly lost in loss record 160 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C72F: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 143 bytes in 1 blocks are possibly lost in loss record 161 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B82C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 144 bytes in 1 blocks are possibly lost in loss record 162 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C414: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 148 bytes in 1 blocks are possibly lost in loss record 163 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BBDC: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 160 bytes in 1 blocks are possibly lost in loss record 164 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B955: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 174 bytes in 1 blocks are possibly lost in loss record 165 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B9E7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 174 bytes in 1 blocks are possibly lost in loss record 166 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C184: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 181 bytes in 1 blocks are possibly lost in loss record 167 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B8BF: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 192 bytes in 1 blocks are still reachable in loss record 168 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x403207: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 202 bytes in 1 blocks are possibly lost in loss record 169 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C696: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 208 bytes in 1 blocks are still reachable in loss record 170 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x410E46: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 245 bytes in 1 blocks are possibly lost in loss record 171 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C21D: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 253 bytes in 1 blocks are possibly lost in loss record 172 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40AACA: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 264 bytes in 1 blocks are possibly lost in loss record 173 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C602: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 279 bytes in 1 blocks are possibly lost in loss record 174 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40B25C: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 294 bytes in 1 blocks are possibly lost in loss record 175 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40C4A7: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 320 bytes in 1 blocks are still reachable in loss record 176 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4031D2: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 328 bytes in 1 blocks are possibly lost in loss record 177 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC1DA: std::string::_M_mutate(unsigned long, unsigned long, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFC84D: std::string::_M_replace_safe(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40BDE5: ParameterHandler::ParameterHandler() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4031DD: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 537 bytes in 1 blocks are possibly lost in loss record 178 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4EFBEF8: std::string::_Rep::_S_create(unsigned long, unsigned long, std::allocator<char> const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFCCFA: std::string::_Rep::_M_clone(std::allocator<char> const&, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFCDA3: std::string::reserve(unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EF32CA: std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::overflow(int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EFA038: std::basic_streambuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x4EEDFE3: std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x429F6C: Simulator::readInputRuns() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x4117C0: Controller::initialize() (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403221: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 5,016 bytes in 1 blocks are still reachable in loss record 179 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x429BAF: Simulator::Simulator(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x410E54: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 5,016 bytes in 1 blocks are still reachable in loss record 180 of 181
+==5557==    at 0x4C2B0E0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x410CE7: Controller::Controller(ParameterHandler*) (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557==    by 0x403219: main (in /home/willy/BRAKER/VARUS/Implementation/VARUS)
+==5557== 
+==5557== 72,704 bytes in 1 blocks are still reachable in loss record 181 of 181
+==5557==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5557==    by 0x4E9DBA5: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.23)
+==5557==    by 0x40102D9: call_init.part.0 (dl-init.c:78)
+==5557==    by 0x40103C2: call_init (dl-init.c:36)
+==5557==    by 0x40103C2: _dl_init (dl-init.c:126)
+==5557==    by 0x4001299: ??? (in /lib/x86_64-linux-gnu/ld-2.19.so)
+==5557== 
+==5557== LEAK SUMMARY:
+==5557==    definitely lost: 0 bytes in 0 blocks
+==5557==    indirectly lost: 0 bytes in 0 blocks
+==5557==      possibly lost: 7,652 bytes in 104 blocks
+==5557==    still reachable: 86,992 bytes in 77 blocks
+==5557==         suppressed: 0 bytes in 0 blocks
+==5557== 
+==5557== For counts of detected and suppressed errors, rerun with: -v
+==5557== ERROR SUMMARY: 104 errors from 104 contexts (suppressed: 0 from 0)

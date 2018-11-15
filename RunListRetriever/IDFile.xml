@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE eSearchResult PUBLIC "-//NLM//DTD esearch 20060628//EN" "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20060628/esearch.dtd">
+<eSearchResult><Count>14035</Count><RetMax>20</RetMax><RetStart>0</RetStart><QueryKey>1</QueryKey><WebEnv>NCID_1_36870466_130.14.18.34_9001_1489503054_765506399_0MetA0_S_MegaStore_F_1</WebEnv><IdList>
+<Id>3809159</Id>
+<Id>3785422</Id>
+<Id>3785421</Id>
+<Id>3785420</Id>
+<Id>3775624</Id>
+<Id>3775623</Id>
+<Id>3775622</Id>
+<Id>3775621</Id>
+<Id>3775620</Id>
+<Id>3775619</Id>
+<Id>3763551</Id>
+<Id>3763550</Id>
+<Id>3763549</Id>
+<Id>3763548</Id>
+<Id>3763547</Id>
+<Id>3763546</Id>
+<Id>3763545</Id>
+<Id>3763544</Id>
+<Id>3763543</Id>
+<Id>3763542</Id>
+</IdList><TranslationSet><Translation>     <From>Drosophila melanogaster[orgn]</From>     <To>"Drosophila melanogaster"[Organism]</To>    </Translation></TranslationSet><TranslationStack>   <TermSet>    <Term>"Drosophila melanogaster"[Organism]</Term>    <Field>Organism</Field>    <Count>27718</Count>    <Explode>Y</Explode>   </TermSet>   <TermSet>    <Term>biomol_rna[Prop]</Term>    <Field>Prop</Field>    <Count>572044</Count>    <Explode>N</Explode>   </TermSet>   <OP>AND</OP>  </TranslationStack><QueryTranslation>"Drosophila melanogaster"[Organism] AND biomol_rna[Prop]</QueryTranslation></eSearchResult>

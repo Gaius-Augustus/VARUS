@@ -1,0 +1,10 @@
+cd /VARUS/Implementation
+make profile
+
+# change to your folder
+<pathToVARUS/Implementation>VARUSgprof
+
+# a file called gmon.out will be created
+gprof gmon.out > profile.txt
+
+# profile.txt contains the profile

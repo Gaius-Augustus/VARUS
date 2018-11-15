@@ -1,0 +1,2 @@
+/home/willy/Bachelorarbeit/STAR-2.5.1b/source/STAR --runThreadN 4 --genomeDir /home/willy/Bachelorarbeit/Manager/genome/ --readFilesIn /home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/Aligner/testSplit3/bla_3.fasta /home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/Aligner/testSplit3/bla_1.fasta /home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/Aligner/testSplit3/bla_2.fasta  --outFileNamePrefix /home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/Aligner/testSplit3/
+
