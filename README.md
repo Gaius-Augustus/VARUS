@@ -1,4 +1,5 @@
 # VARUS: Drawing diverse samples from RNA-Seq libraries
+**VARUS** was written by Willy Bruhn. This repository is a copy of https://github.com/WillyBruhn/VARUS made in November 2018.
 **VARUS** automates the selection and download of RNA-Seq runs available at the SRA, with regard to a **sufficiently** high coverage. This is done in a stepwise procedure. An iteration includes:
 
 - selecting a run to download, that is expected to complement previously downloaded reads the most
@@ -55,5 +56,5 @@ Pay attention to the following parameters:
 ![alternate text](docs/poster.png)
 
 # Bachelor Thesis
-Find the bachelor thesis corresponding to **VARUS** in /docs/Thesis.
+Find the bachelor thesis of Willy Bruhn corresponding to **VARUS** in /docs/Thesis.
 
