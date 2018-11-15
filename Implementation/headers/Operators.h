@@ -24,7 +24,7 @@
 #include <algorithm>    // std::random_shuffle
 #include <cstdlib>
 #include <ctime>        // std::time
-
+#include "math.h"
 
 /* ! \brief: This File holds a few operators and functions for things that are needed a lot.
  * e.g. passing a map to an ostream.

@@ -1,16 +1,16 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 
 #--------------------------------------------------------------------
 # date:   11/28/2017
 # author: Willy Bruhn
 # contact: willy.bruhn@gmx.de
 #
-# Starting point for VARUS. 
+# Starting point for VARUS.
 # 0.) For each species a separate folder is created where all output goes to.
-# 1.) RunListRetriever.pl is called and all the available Run-names at the 
-#     ncbi for your given species are downloaded. 
+# 1.) RunListRetriever.pl is called and all the available Run-names at the
+#     ncbi for your given species are downloaded.
 # 2.) An index of the genome of your species is created with STAR.
-# 3.) VARUS is started with the needed parameters and downloads in a 
+# 3.) VARUS is started with the needed parameters and downloads in a
 #     step-wise maner a certain amount of reads and alignments are
 #     done with STAR. The final alignment of all the downloaded runs
 #     is merged into a file called 'final.bam'.
@@ -23,9 +23,9 @@
 #        - a genome-file for each species
 #        - both together in one table
 #
-# OUTPUT:- a folder for each species containing an alignment-file called 
+# OUTPUT:- a folder for each species containing an alignment-file called
 #          final.bam and some statistics regarding the runs that were
-#          downloaded 
+#          downloaded
 #
 #
 #
@@ -39,13 +39,7 @@ use 5.010;
 use Getopt::Long;
 use Cwd;
 use FindBin qw($Bin);
-my $pathToVARUS = "$Bin/$ARGV[0]";
-my @cmds = split(/--/,$pathToVARUS);
-$pathToVARUS = $cmds[0];
-
-#print $pathToVARUS."\n";
-
-
+my $pathToVARUS = $Bin;
 
 my $pathToSpecies = getcwd;
 
@@ -72,20 +66,20 @@ my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
 my $onlyPaired = 1;
-my $pathToSTAR = "../../STAR/bin/Linux_x86_64/";
+my $pathToSTAR = "/usr/bin/";
 
 my $VARUScall = "./VARUS";
 
-my $usage = 
-	"Usage:
-    Parameter           default     Exlpanation
+my $usage =
+"Usage:
+    Parameter           default     Explanation
     --outFileDir:       /cwd/       Folder in which all ouput should be stored
 
     --varusParameters:  /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
 
-    --pathToSTAR: 		../../STAR/bin/Linux_x86_64/ 
-									
-									specifies the path to the STAR executable
+    --pathToSTAR:                   ../../STAR/bin/Linux_x86_64/
+
+                                    specifies the path to the STAR executable
 
     --createSTARindex:  1           creates the index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
@@ -93,9 +87,9 @@ my $usage =
     --createRunList:    1           creates the RunList, 0 if you don't want to create the RunList
                                     You need a RunList in order to run VARUS
 
-        --allRuns       1           put all available accession-ids in the Runlist.txt, if false only the first 100 are used
+    --allRuns       1               put all available accession-ids in the Runlist.txt, if false only the first 100 are used
 
-		--onlyPaired	1			use only paired-end reads
+    --onlyPaired	1	    use only paired-end reads
 
     --runVARUS          1           runs VARUS
 
@@ -111,8 +105,8 @@ my $usage =
     --latinSpecies:                 latin name of the species e.g melanogaster
 
     --speciesGenome:                path to the corresponding genome in fasta-format
-    
-    --VARUScall:					default ./VARUS
+
+    --VARUScall:                    default ./VARUS
 ";
 
 
@@ -120,23 +114,23 @@ my $help = 0;
 
 my $outfiles = 0; # if true, output the files with the list in addition to the stats
 GetOptions('pathToSpecies=s'=>\$pathToSpecies,
-		   'outFileDir=s'=>\$outFileDir,
+	   'outFileDir=s'=>\$outFileDir,
            'varusParameters=s'=>\$varusParameters,
            'createSTARindex!'=>\$createSTARindex,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
            'onlyPaired!'=>\$onlyPaired,
-		   'readFromTable!'=>\$readFromTable,
-		   'latinGenus=s'=>\$latinGenus,
+	   'readFromTable!'=>\$readFromTable,
+	   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
-		   'speciesGenome=s'=>\$speciesGenome,
+	   'speciesGenome=s'=>\$speciesGenome,
            'runVARUS!'=>\$runVARUS,
            'createStatistics!'=>\$createStatistics,
            'displayRunListOutput!'=>\$displayRunListOutput,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
-		   'pathToSTAR=s'=>\$pathToSTAR,
-		   'VARUScall=s'=>\$VARUScall,
-		   'help!'=>\$help)
+	   'pathToSTAR=s'=>\$pathToSTAR,
+	   'VARUScall=s'=>\$VARUScall,
+	   'help!'=>\$help)
 or die($usage);
 
 my $n = scalar @ARGV;
@@ -167,7 +161,6 @@ sub Log
         open(my $fh, '>>', $logFileName) or die "Could not open file '$logFileName' $!";
         print $fh $msg;
         close $fh;
-        
         print $msg;
     }
 }
@@ -180,24 +173,24 @@ sub getLoggingTime {
     return $nice_timestamp;
 }
 
-my $sep = "                    -----------------------------------------------------------------------------";
+my $sep = "-----------------------------------------------------------------------------";
 
 #--------------------------------------------------------------------
 # Read in the table containing the speciesnames and the genomefile names
 #--------------------------------------------------------------------
 Log(0, "Started runVarus.pl with the following parameters:\n
-                    pathToScecies: $pathToSpecies
-                    outFileDir: $outFileDir
-                    varusParameters: $varusParameters
-                    createSTARindex: $createSTARindex
-                    createRunList: $createRunList
-					onlyPaired: $onlyPaired
-                    logFileName: $logFileName
-                    verbosity: $verbosity
-                    displayRunListOutput: $displayRunListOutput
-                    displaySTARIndexerOutput: $displaySTARIndexerOutput
-                    readFromTable: $readFromTable
-$sep");
+  pathToScecies: $pathToSpecies
+  outFileDir: $outFileDir
+  varusParameters: $varusParameters
+  createSTARindex: $createSTARindex
+  createRunList: $createRunList
+  onlyPaired: $onlyPaired
+  logFileName: $logFileName
+  verbosity: $verbosity
+  displayRunListOutput: $displayRunListOutput
+  displaySTARIndexerOutput: $displaySTARIndexerOutput
+  readFromTable: $readFromTable
+  $sep");
 
 
 my %species;
