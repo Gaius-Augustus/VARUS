@@ -31,6 +31,13 @@ cd Implementation
 make
 ``` 
 
+### Disable NCBI Cache
+By default the NCBI tool `fastq-dump` creates temporary a file under ~/ncbi of the same size as the run file from which data is downloaded, even if only a small part thereof is downloaded. Disable this caching behavior with
+```
+mkdir -p ~/.ncbi
+echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
+```
+
 # Getting Started
 ## Downloading Runs
 Find a working setup under /GettingStarted/Pombe. Change to this folder and invoke the following command to start downloading runs:

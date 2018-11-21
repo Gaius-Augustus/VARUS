@@ -107,6 +107,7 @@ my $usage =
     --speciesGenome:                path to the corresponding genome in fasta-format
 
     --VARUScall:                    default ./VARUS
+    --verbosity         $verbosity           between 0 and 5 for less and more logging output
 ";
 
 
@@ -130,7 +131,8 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
 	   'pathToSTAR=s'=>\$pathToSTAR,
 	   'VARUScall=s'=>\$VARUScall,
-	   'help!'=>\$help)
+	   'help!'=>\$help,
+	   'verbosity=i'=>\$verbosity)
 or die($usage);
 
 my $n = scalar @ARGV;
@@ -144,7 +146,7 @@ if ($help) {
 #--------------------------------------------------------------------
 
 # Delete an old log-file in case there is one
-my $deleteCommand = "rm $logFileName";
+my $deleteCommand = "rm -f $logFileName";
 system($deleteCommand);
 
 sub Log
@@ -204,12 +206,12 @@ if($readFromTable == 1){
 		my $first = substr $_, 0, 1;
 		if($first ne '#'){
 		    @line = split(/;/,$_);
-
-		    my $str = $line[1];
-		    $str =~ s/^\s+|\s+$//g;
-		    $species{$line[0]} = $str;
-
-		    Log(5, "Found species $str");
+		    my $speciesname = $line[0];
+		    my $genomefname = $line[1];
+		    $genomefname =~ s/^\s+|\s+$//g;
+		    $species{$speciesname} = $genomefname;
+		    
+		    Log(5, "Found species $speciesname with genome $genomefname");
 		}
 		else {
 		    Log(5, "Reading comment from species.txt");
@@ -286,9 +288,13 @@ foreach my $latinName (keys %species){
         Log(0, "Creating STAR-index...");
         my $genomeCur = $outFileDir."/".$folder."/genome";
         mkdir($genomeCur, 0700) unless(-d $genomeCur );
-
-        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN 4 --runMode genomeGenerate --genomeDir ".$genomeCur." --genomeFastaFiles ".$outFileDir."/".$species{$latinName};
-
+	my $genomefname = $species{$latinName};
+	if (substr($genomefname, 0, 1) ne '/'){
+	    $genomefname = $outFileDir . "/" . $genomefname;
+	}
+        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN 4 --runMode genomeGenerate "
+	    . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
+	
         Log(0,"Invoking STAR-indexer call: ".$genomeGenerateCmd);
 
         if($displaySTARIndexerOutput == 0) {

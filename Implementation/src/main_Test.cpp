@@ -662,9 +662,8 @@ void test_ChromosomeInitializer_create_transcript_units(){
 	string str = ss.str();
 
 	ASSRT(totalObservations.size() == 13
-			&& "chr1:0:4;R:3:2;R:1:4;chr1:1:4;R:2:4;Y:0:3;chr1:2:4;X:0:4;"
-					"R:0:4;X:2:4;X:1:4;X:3:4;X:4:1;" == str);
-
+	      && "chr1:0:4;R:3:2;R:1:4;chr1:1:4;R:2:4;Y:0:3;chr1:2:4;X:0:4;"
+	      "R:0:4;X:2:4;X:1:4;X:3:4;X:4:1;" == str);
 }
 
 void test_ChromosomeInitializer_initializeSigma() {

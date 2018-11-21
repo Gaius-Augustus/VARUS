@@ -55,15 +55,6 @@ fi
 declare -i count
 
 bamFiles=""
-#for d in $(find $path -maxdepth 2 -mindepth 2 -type d)
-#do
-#    d="$d/"
-#
-   #for s in $(find $d -type f -name "*.bam")
-    #do
-        #bamFiles="$bamFiles $s"
-    #done
-#done
 
 for s in $(find $path -type f -name "*.bam")
 do
@@ -101,13 +92,6 @@ do
    arr=("${arr[@]/$del}") #Quotes when working with strings
 done
 
-#j=0
-#for el in ${arr[@]}
-#do
-#   echo "$j: $el"
-#   let "j+=1"
-#done
-
 i=0
 start=0
 until [  $start -ge $numOfElements ]; do
@@ -128,11 +112,25 @@ do
     bamFiles2="$bamFiles2 $s"
 done
 
-echo "Creating final alignment by merging all bam-files: $bamFiles2"
+bf2arr=($bamFiles2)
+numF2=${#bf2arr[@]}
+if [ "$numF2" -gt "1" ]; then 
+    echo "Creating final alignment by merging all bam-files: $bamFiles2"
     samtools merge -f -n "final.bam" $bamFiles2
+else # if there is only one temporary bam file, just move it
+    echo "mv ${bf2arr[0]} final.bam"
+    mv ${bf2arr[0]} final.bam
+fi
 
-echo "Creating final alignment by merging all bam-files: $bamFiles"
+bfarr=($bamFiles)
+numF=${#bfarr[@]}
+if [ "$numF" -gt "1" ]; then 
+    echo "Creating final alignment by merging all bam-files: $bamFiles"
     samtools merge -f -n "VARUS.bam" $bamFiles
+else
+    echo "${bfarr[0]} VARUS.bam"
+    mv ${bfarr[0]} VARUS.bam
+fi
 
 #--------------------------------------------------------------------
 # To clean up delete all subfolders.

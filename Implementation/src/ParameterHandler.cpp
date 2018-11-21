@@ -386,88 +386,88 @@ ParameterHandler::ParameterHandler() {
 
 	mergeThreshold = 2;
 	INITPARAM(mergeThreshold,
-			parameterCategories[BASICSETTINGS],
-			"Specifies after how many downloads a merge of all the "
-			"existing alignments should be done. Note that after "
-			"the alignments are merged all subfolders with smaller"
-			" alignments are deleted. At the end one final merge is done. "
-			"2 is the minimal value. "
-			"Note: If you set the parameter deleteLater = 0, then only"
-			" one merge at the end of execution is done.",false);
+		  parameterCategories[BASICSETTINGS],
+		  "Specifies after how many downloads a merge of all the "
+		  "existing alignments should be done. Note that after "
+		  "the alignments are merged all subfolders with smaller"
+		  " alignments are deleted. At the end one final merge is done. "
+		  "2 is the minimal value. "
+		  "Note: If you set the parameter deleteLater = 0, then only"
+		  " one merge at the end of execution is done.",false);
 
 	qualityThreshold = 5.0;
 	INITPARAM(qualityThreshold,
-			parameterCategories[BASICSETTINGS],
-			"Specifies how much of uniquely mapping reads you are allowing."
-			" STAR produces a file 'Log.final.out' with information of "
-			"how much percent of the reads did map. Really small values "
-			"like 0.1 can be an indicator of intrinsic dna.",false);
+		  parameterCategories[BASICSETTINGS],
+		  "Specifies how much of uniquely mapping reads you are allowing."
+		  " STAR produces a file 'Log.final.out' with information of "
+		  "how much percent of the reads did map. Really small values "
+		  "like 0.1 can be an indicator of intrinsic dna.",false);
 
 	fastqDumpCall = "fastq-dump";
 	INITPARAM(fastqDumpCall,
-			parameterCategories[MANDATORY],
-			"if fastq-dump is not in your $PATH, you can specify "
-			"the path as well like /path/to/fastqdump/./fastq-dump."
-			"Note that this string has to contain './fastq-dump' as well.",false);
+		  parameterCategories[MANDATORY],
+		  "if fastq-dump is not in your $PATH, you can specify "
+		  "the path as well like /path/to/fastqdump/./fastq-dump."
+		  "Note that this string has to contain './fastq-dump' as well.",false);
 
 	//"/home/willy/Bachelorarbeit/STAR-2.5.1b/source/"
-    pathToSTAR 			= "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
+	pathToSTAR    = "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
     	INITPARAM(pathToSTAR,
-    			parameterCategories[MANDATORY],
-    			"specifies the path to the executable of STAR, the software that"
-    			" aligns the reads to the transcriptome/genome.",false);
+		  parameterCategories[MANDATORY],
+		  "specifies the path to the executable of STAR, the software that"
+		  " aligns the reads to the transcriptome/genome.",false);
 
 	pathToVARUS = "/home/willy/BRAKER/VARUS/Implementation/";;
-		INITPARAM(pathToVARUS,
-				parameterCategories[MANDATORY],
-				"specifies the path to the executable of VARUS",false);
+	INITPARAM(pathToVARUS,
+		  parameterCategories[MANDATORY],
+		  "specifies the path to the executable of VARUS",false);
 
-//	"/home/willy/workspace/UnitTests/ParameterHandler/script/"
+	//	"/home/willy/workspace/UnitTests/ParameterHandler/script/"
 	pathToRuns 			= "../Tutorial/Drosophila/";
     	INITPARAM(pathToRuns,
-    			parameterCategories[MANDATORY],
-				"specifies the path to Runlist.txt."
-				"You can retrieve a Runlist with the perl-script 'RunListRetriever.pl'.",false);
+		  parameterCategories[MANDATORY],
+		  "specifies the path to Runlist.txt."
+		  "You can retrieve a Runlist with the perl-script 'RunListRetriever.pl'.",false);
 
-//	readFilesIn 		= "default";
-//    	INITPARAM(readFilesIn, "specifies the path to the folder in which the ");
+	//	readFilesIn 		= "default";
+	//    	INITPARAM(readFilesIn, "specifies the path to the folder in which the ");
 
-//    	"/home/willy/Bachelorarbeit/Manager/genome/"
+	//    	"/home/willy/Bachelorarbeit/Manager/genome/"
 	genomeDir 			= "/home/willy/Bachelorarbeit/Manager/genome/";
     	INITPARAM(genomeDir,
-    			parameterCategories[MANDATORY],
-				"specifies the path to the genome/transcriptome"
-    			" that you are investigating.",false);
+		  parameterCategories[MANDATORY],
+		  "specifies the path to the genome/transcriptome"
+		  " that you are investigating.",false);
 
-    outFileNamePrefix 	= "../Tutorial/Drosophila/";
+	outFileNamePrefix 	= "../Tutorial/Drosophila/";
     	INITPARAM(outFileNamePrefix,
-    			parameterCategories[MANDATORY],
-				"specifies the path in which all output of VARUS should be stored.",false);
+		  parameterCategories[MANDATORY],
+		  "specifies the path in which all output of VARUS should be stored.",false);
 
-    runThreadN = 4;
+	runThreadN = 4;
     	INITPARAM(runThreadN,
-    			parameterCategories[BASICSETTINGS],
-				"Number of threads to run STAR parallel with. Read STAR-manual for more information.\n",false);
+		  parameterCategories[BASICSETTINGS],
+		  "Number of threads to run STAR parallel with. Read STAR-manual for more information.\n",false);
 
-    blockSize = 5000;		// <---- 5000 default
+	blockSize = 5000;		// <---- 5000 default
     	INITPARAM(blockSize,
-    			parameterCategories[BASICSETTINGS],
-				"the number of bases one block will have. "
-    			"This is done in order to be able"
-    			" to compare the coverage of larger chromosomes with smaller ones, since "
-    			"larger chromosomes will naturally have more reads mapped to them than smaller ones.",false);
+		  parameterCategories[BASICSETTINGS],
+		  "the number of bases one block will have. "
+		  "This is done in order to be able"
+		  " to compare the coverage of larger chromosomes with smaller ones, since "
+		  "larger chromosomes will naturally have more reads mapped to them than smaller ones.",false);
 
-    batchSize = 100000;
+	batchSize = 100000;
     	INITPARAM(batchSize,
-    			parameterCategories[BASICSETTINGS],
-				"the number of reads to be downloaded in each step. "
-    			"Typically a library contains about 10e+6 to 10e+7 reads.",false);
+		  parameterCategories[BASICSETTINGS],
+		  "the number of reads to be downloaded in each step. "
+		  "Typically a library contains about 10e+6 to 10e+7 reads.",false);
 
 	pseudoCount = 1;
     	INITPARAM(pseudoCount,
-    			parameterCategories[SIMPLEANDADVANCED],
-				"adds a pseudocount to all possible observations. Only relevant for "
-    			"estimators 1, 2.",false);
+		  parameterCategories[SIMPLEANDADVANCED],
+		  "adds a pseudocount to all possible observations. Only relevant for "
+		  "estimators 1, 2.",false);
 
 //    coverage = 10;
 //    	PARAM(coverage);
@@ -659,47 +659,47 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 
     const char* const short_opts = "h";
     const option long_opts[] = {
-    		{"batchSize", 1, nullptr, 'b'},
-			{"blockSize", 1, nullptr, 'B'},
-			{"components", 1, nullptr, 'c'},
-			{"cost", 1, nullptr, 'C'},
-			{"createDice", 1, nullptr, 'D'},
-//			{"dieList", 1, nullptr, 'L'},
-			{"estimator", 1, nullptr, 'e'},
-			{"genomeDir", 1, nullptr, 'g'},
-			{"lambda", 1, nullptr, 'l'},
-			{"lessInfo", 1, nullptr, 'I'},
-			{"loadAllOnce", 1, nullptr, 'A'},
-			{"numOfBlocks", 1, nullptr, 'O'},
-			{"outFileNamePrefix", 1, nullptr, 'F'},
-			{"pathToDice", 1, nullptr, 'T'},
-			{"pathToRuns", 1, nullptr, 'R'},
-			{"pathToSTAR", 1, nullptr, 'S'},
-			{"fastqDumpCall", 1, nullptr, 'f'},
-            {"pseudoCount", 1, nullptr, 'p'},
-			{"runThreadN", 1, nullptr, 'N'},
-			{"simulation", 1, nullptr, 's'},
-			{"trainingsIterations", 1, nullptr, 't'},
-			{"verbosityDebug", 1, nullptr, 'v'},
-			{"newtonIterations", 1, nullptr, 'i'},
-			{"newtonPrecision", 1, nullptr, 'P'},
-			{"readParametersFromFile", 1, nullptr, 'q'},
-			{"pathToParameters", 1, nullptr, 'Q'},
-			{"exportParametersToFile", 1, nullptr, 'Z'},
-			{"exportObservationsToFile", 1, nullptr, 'z'},
-			{"deleteLater", 1, nullptr, 'd'},
-			{"maxBatches", 1, nullptr, 'm'},
-			{"randomSeed", 1, nullptr, 'a'},
-			{"profitCondition", 1, nullptr, 'E'},
-			{"ignoreReadNum", 1, nullptr, 'G'},
-			{"simpleDM", 1, nullptr, 'H'},
-//			{"kMeansIterations", 1, nullptr, 'J'},
-			{"exportNewtons", 1, nullptr, 'j'},
-            {"help", 0, nullptr, 'h'},
-			{"mergeThreshold", 1, nullptr, 'w'},
-			{"pathToVARUS", 1, nullptr, 'W'},
-			{"qualityThreshold", 1, nullptr, 'V'},
-            {nullptr, 0, nullptr, 0}
+	{"batchSize", 1, nullptr, 'b'},
+	{"blockSize", 1, nullptr, 'B'},
+	{"components", 1, nullptr, 'c'},
+	{"cost", 1, nullptr, 'C'},
+	{"createDice", 1, nullptr, 'D'},
+	//			{"dieList", 1, nullptr, 'L'},
+	{"estimator", 1, nullptr, 'e'},
+	{"genomeDir", 1, nullptr, 'g'},
+	{"lambda", 1, nullptr, 'l'},
+	{"lessInfo", 1, nullptr, 'I'},
+	{"loadAllOnce", 1, nullptr, 'A'},
+	{"numOfBlocks", 1, nullptr, 'O'},
+	{"outFileNamePrefix", 1, nullptr, 'F'},
+	{"pathToDice", 1, nullptr, 'T'},
+	{"pathToRuns", 1, nullptr, 'R'},
+	{"pathToSTAR", 1, nullptr, 'S'},
+	{"fastqDumpCall", 1, nullptr, 'f'},
+	{"pseudoCount", 1, nullptr, 'p'},
+	{"runThreadN", 1, nullptr, 'N'},
+	{"simulation", 1, nullptr, 's'},
+	{"trainingsIterations", 1, nullptr, 't'},
+	{"verbosityDebug", 1, nullptr, 'v'},
+	{"newtonIterations", 1, nullptr, 'i'},
+	{"newtonPrecision", 1, nullptr, 'P'},
+	{"readParametersFromFile", 1, nullptr, 'q'},
+	{"pathToParameters", 1, nullptr, 'Q'},
+	{"exportParametersToFile", 1, nullptr, 'Z'},
+	{"exportObservationsToFile", 1, nullptr, 'z'},
+	{"deleteLater", 1, nullptr, 'd'},
+	{"maxBatches", 1, nullptr, 'm'},
+	{"randomSeed", 1, nullptr, 'a'},
+	{"profitCondition", 1, nullptr, 'E'},
+	{"ignoreReadNum", 1, nullptr, 'G'},
+	{"simpleDM", 1, nullptr, 'H'},
+	//			{"kMeansIterations", 1, nullptr, 'J'},
+	{"exportNewtons", 1, nullptr, 'j'},
+	{"help", 0, nullptr, 'h'},
+	{"mergeThreshold", 1, nullptr, 'w'},
+	{"pathToVARUS", 1, nullptr, 'W'},
+	{"qualityThreshold", 1, nullptr, 'V'},
+	{nullptr, 0, nullptr, 0}
     };
 
 	optind = 0;
