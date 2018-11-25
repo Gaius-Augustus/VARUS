@@ -24,13 +24,13 @@ Controller::Controller(ParameterHandler *p) {
     if (param->simulation != 1){
 	chrom 	= new ChromosomeInitializer(p);
 	down 	= new Downloader(p);
-	allign 	= new Alligner(p);
+	align 	= new Aligner(p);
 	sim 	= nullptr;
     } else {
 	sim 	= new Simulator(p);
 	chrom 	= nullptr;
 	down 	= nullptr;
-	allign 	= nullptr;
+	align 	= nullptr;
     }
 
 
@@ -53,7 +53,7 @@ Controller::Controller(ParameterHandler *p) {
     maxProfit = 1;
     totalScore = 0;
     goodBatchCount = 0;
-    
+    avgUniq = 0.7; // this is the overall percentage of uniquely mapped reads of all aliged reads so far
     totalProfit = 0.0;
     
     DEBUG(1,"Done Creating Controller");
@@ -99,112 +99,106 @@ void Controller::initialize(){
 }
 
 void Controller::algorithm(){
-	/*! \brief The main part of the program.
-	 *
-	 * The program will stay in the while-loop until the expected score drops below 0.
-	 */
+    /*! \brief The main part of the program.
+     *
+     * The program will stay in the while-loop until the expected score drops below 0.
+     */
 
-	maxProfit = 1;
+    maxProfit = 1;
 
-	if (param->loadAllOnce == 1){
-	    DEBUG(1,"Loading all once");
-	    for(unsigned int k = 0; k < runs.size(); k++){
-		if(param->simulation != 1){
-		    down->getBatch(runs[k]);
-		    allign->update(runs[k],totalObservations,chrom);
-		} else{
-		    sim->simulateObservations(runs[k],totalObservations);
-		}
-	    }
-	    
-	    if(param->estimator != 0){
-		est->estimateP(runs, 0);
-	    }
-	    // calculates maxProfit
-	    calculateProfit(downloadableRuns);
-	    Run *tmp_run = chooseNextRun();
-	    DEBUG(1,"Done Loading all once");
-	}
-	
-	updateDownloadableRuns();
-
-	while(continuing()){
-	    batchCount++;
-
-	    // if maxbatches < batchCount stop downloading
-	    if(!continuing()) break;
-
-
-
-
-	    calculateProfit(downloadableRuns);
-
-	    DEBUG(1,"Choosing next Run ...");
-	    Run *tmp_run = chooseNextRun();
-	    DEBUG(1,"...done Choosing next Run");
-
-	    // maxProfit set in chooseNextRun()
-	    DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("<< runs.size() - badQualityRuns.size() << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
-
-	    // if profit < 0 stop downloading
-	    if(!continuing()) break;
-
+    if (param->loadAllOnce == 1){
+	DEBUG(1,"Loading all once");
+	for(unsigned int k = 0; k < runs.size(); k++){
 	    if(param->simulation != 1){
-		assert(tmp_run != nullptr);
-		DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
-		down->getBatch(tmp_run);
-		allign->update(tmp_run,totalObservations,chrom);
-		if(tmp_run->badQuality == false){
-		    goodBatchCount++;
-		}
+		down->getBatch(runs[k]);
+		align->update(runs[k],totalObservations,chrom);
 	    } else{
-		sim->simulateObservations(tmp_run,totalObservations);
-	    }
-
-	    totalScore = score(totalObservations);
-	    totalProfit = totalScore - param->cost*param->batchSize*batchCount;
-
-	    if(param->estimator != 0){
-		DEBUG(1,"Estimating...")
-		    // we pass all runs since the DM uses the information from all runs
-		    est->estimateP(runs, batchCount);
-		DEBUG(1,"... done Estimating")
-		    }
-
-	    calculateProfit(downloadableRuns);
-
-	    DEBUG(1,"Exporting...")
-		if(1 == param->lessInfo){
-		    exportTotalObservationCSVlessInfo(tmp_run->accesionId);
-		}else{
-		    exportTotalObservationCSV(tmp_run->accesionId);
-		}
-
-	    exportRunStatistics();
-
-	    DEBUG(1,"...done Exporting")
-
-		if(param->ignoreReadNum != 1){
-		    updateDownloadableRuns();
-		}
-
-	    if(downloadableRuns.size() == 0){
-		DEBUG(0,"No downloadable Runs left. Exiting...");
-		exportCoverage();
-		finalMerge();
-		param->exit_text();
-	    }
-
-	    if(param->deleteLater == 1 && batchCount%param->mergeThreshold == 0){
-		mergeAlignments(goodBatchCount);
+		sim->simulateObservations(runs[k],totalObservations);
 	    }
 	}
+	    
+	if(param->estimator != 0){
+	    est->estimateP(runs, 0);
+	}
+	// calculates maxProfit
+	calculateProfit(downloadableRuns);
+	Run *tmp_run = chooseNextRun();
+	DEBUG(1,"Done Loading all once");
+    }
+	
+    updateDownloadableRuns();
 
-//	if(batchCount%param->mergeThreshold != 0){
-	exportCoverage();
-	finalMerge();
+    while(continuing()){
+	batchCount++;
 
-//	}
+	// if maxbatches < batchCount stop downloading
+	if(!continuing()) break;
+
+	calculateProfit(downloadableRuns);
+
+	DEBUG(1,"Choosing next Run ...");
+	Run *tmp_run = chooseNextRun();
+	DEBUG(1,"...done Choosing next Run");
+
+	// maxProfit set in chooseNextRun()
+	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("<< runs.size() - badQualityRuns.size() << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
+
+	// if profit < 0 stop downloading
+	if(!continuing()) break;
+
+	if(param->simulation != 1){
+	    assert(tmp_run != nullptr);
+	    DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
+	    down->getBatch(tmp_run);
+	    align->update(tmp_run,totalObservations,chrom);
+	    if(tmp_run->badQuality == false){
+		goodBatchCount++;
+	    }
+	} else{
+	    sim->simulateObservations(tmp_run,totalObservations);
+	}
+
+	totalScore = score(totalObservations);
+	totalProfit = totalScore - param->cost*param->batchSize*batchCount;
+
+	if(param->estimator != 0){
+	    DEBUG(1,"Estimating...")
+		// we pass all runs since the DM uses the information from all runs
+		est->estimateP(runs, batchCount);
+	    DEBUG(1,"... done Estimating")
+		}
+
+	calculateProfit(downloadableRuns);
+
+	DEBUG(1,"Exporting...")
+	    if(1 == param->lessInfo){
+		exportTotalObservationCSVlessInfo(tmp_run->accesionId);
+	    }else{
+		exportTotalObservationCSV(tmp_run->accesionId);
+	    }
+
+	exportRunStatistics();
+
+	DEBUG(1,"...done Exporting")
+
+	    if(param->ignoreReadNum != 1){
+		updateDownloadableRuns();
+	    }
+
+	if(downloadableRuns.size() == 0){
+	    DEBUG(0,"No downloadable Runs left. Exiting...");
+	    exportCoverage();
+	    finalMerge();
+	    param->exit_text();
+	}
+
+	if (param->deleteLater == 1 && batchCount%param->mergeThreshold == 0){
+	    mergeAlignments(goodBatchCount);
+	}
+    }
+
+    exportCoverage();
+    finalMerge();
 }
 
 Run*  Controller::chooseNextRun(){
@@ -215,7 +209,6 @@ Run*  Controller::chooseNextRun(){
      * highest score.
      */
 
-
     assert(downloadableRuns.size() > 0);
     unsigned int index = 0;
     vector<Run*> candidates;
@@ -225,21 +218,21 @@ Run*  Controller::chooseNextRun(){
 	// chooses a run randomly
 	return ran->select_randomly(downloadableRuns);
     } else {
-	if(downloadableRuns.size() > 0){
+	if (downloadableRuns.size() > 0){
 	    maxProfit = downloadableRuns[0]->expectedProfit;
 	    candidates.push_back(downloadableRuns[0]);
 
-	    for(unsigned int i = 1; i < downloadableRuns.size(); i++){
+	    for (unsigned int i = 1; i < downloadableRuns.size(); i++){
+		Run *r = downloadableRuns[i];
 		// found a better score
-		if(maxProfit < downloadableRuns[i]->expectedProfit){
+		if (maxProfit < r->expectedProfit){
 		    candidates.clear();
-		    candidates.push_back(downloadableRuns[i]);
-		    maxProfit = downloadableRuns[i]->expectedProfit;
-		} else if(maxProfit == downloadableRuns[i]->expectedProfit){ // score is equal
-		    candidates.push_back(downloadableRuns[i]);
+		    candidates.push_back(r);
+		    maxProfit = r->expectedProfit;
+		} else if (maxProfit == r->expectedProfit){ // score is equal
+		    candidates.push_back(r);
 		}
 	    }
-
 	    return ran->select_randomly(candidates);
 	}
     }
@@ -247,22 +240,22 @@ Run*  Controller::chooseNextRun(){
 }
 
 bool Controller::continuing(){
-	/*! \brief This function implements a criteria for exiting the program.
-	 *
-	 * Returns true if the program should be continued, false otherwise.
-	 */
+    /*! \brief This function implements a criteria for exiting the program.
+     *
+     * Returns true if the program should be continued, false otherwise.
+     */
 
-	if(param->maxBatches > 0 && batchCount > param->maxBatches){
-		DEBUG(0,"maxBatches: " << param->maxBatches);
-		return false;
-	}
+    if(param->maxBatches > 0 && batchCount > param->maxBatches){
+	DEBUG(0,"maxBatches: " << param->maxBatches);
+	return false;
+    }
 
-	if(1 == param->profitCondition && maxProfit <= 0){
-		DEBUG(0,"maxProfit: " << maxProfit);
-		return false;
-	}
+    if(1 == param->profitCondition && maxProfit <= 0){
+	DEBUG(0,"maxProfit: " << maxProfit);
+	return false;
+    }
 
-	return true;
+    return true;
 }
 
 double Controller::score(const double v) {
@@ -285,28 +278,32 @@ double Controller::score(UUmap &obs){
 }
 
 void Controller::profit(Run *d) {
-	/*! \brief Calculates the expected profit that will be achieved by downloading from the run d*.
-	 */
+    /*! \brief Calculates the expected profit that will be achieved by downloading from the run *d.
+     */
 
-	long double pr = 0.0;
-	long double pv = 0.0;
+    long double pr = 0.0;
+    long double pv = 0.0;
 
-	DEBUG(4,"calculating profit" << d->p.size());
+    DEBUG(3,"calculating profit size=" << d->p.size());
 
-	UDmap::iterator it;
-	for (it=d->p.begin(); it != d->p.end(); ++it) {
-	    pr += score((double) it->second * (double) param->batchSize
-			+ (double) totalObservations[it->first])
-		- score((double) totalObservations[it->first]);
+    UDmap::iterator it;
+    double percentUniqueMatch = (d->timesDownloaded>0)? d->avgUmrPercent : avgUniq;
+    double batchsize = (double) param->batchSize;
+    for (it=d->p.begin(); it != d->p.end(); ++it) {
+	double prob = it->second; // probability of observing transcript unit
+	double x = totalObservations[it->first]; // observations for transcript unit
 	    
-	    DEBUG(4,"pr " << pr);
-	    pv += it->second;
-	}
+	pr += score(x + prob * percentUniqueMatch * batchsize);
+	pr -= score(x);
+	    
+	DEBUG(4,"pr " << pr);
+	pv += it->second;
+    }
 
-	pr -= param->cost * (double)param->batchSize;
+    pr -= param->cost * (double)param->batchSize;
 
-	// set the score of this Experiment
-	d->expectedProfit = pr;
+    // set the score of this Experiment
+    d->expectedProfit = pr;
 }
 
 void Controller::calculateProfit(vector<Run*> &runs){
@@ -315,18 +312,30 @@ void Controller::calculateProfit(vector<Run*> &runs){
 
     // calculate profit for runs with no reads only once
     double noReadsProfit = std::numeric_limits<int>::min();
-
+    double avgUMR = 100.0;  // prior overestimates the percentage of uniquely aliged reads so the policy is biased towards exploring more at first
+    unsigned numRuns = 3; // pseudocount on percentage of uniquely aligned reads
+    DEBUG(5, "Calculating profits of all runs ...");
     for(unsigned int i = 0; i < runs.size(); i++){
-	if(runs[i]->timesDownloaded == 0 &&
-	   noReadsProfit != std::numeric_limits<int>::min()){
-	    runs[i]->expectedProfit = noReadsProfit;
+	Run *r = runs[i];
+	if (r->timesDownloaded == 0 &&
+	    noReadsProfit != std::numeric_limits<int>::min()){
+	    r->expectedProfit = noReadsProfit;
 	} else {
-	    profit(runs[i]);
-	    if (runs[i]->timesDownloaded == 0){
-		noReadsProfit = runs[i]->expectedProfit;
+	    profit(r);
+	    if (r->timesDownloaded == 0){
+		noReadsProfit = r->expectedProfit;
 	    }
 	}
+	DEBUG(1, "run " << i << "\t" << r->accesionId 
+	      << "\tlen=" << r->avglen << "\tprofit= " << r->expectedProfit << "\t#downl.batches="
+	      << r->timesDownloaded << "\tuniq [%]=" << r->avgUmrPercent);
+	if (r->timesDownloaded>0){
+	    numRuns++;
+	    avgUMR += r->avgUmrPercent * r->timesDownloaded;
+	}	    
     }
+    avgUniq = avgUMR / numRuns;
+    DEBUG(0, "average overall percentage of uniquely mapped reads (all batches): " << avgUniq);
 }
 
 void Controller::exportTotalObservationCSV(string name) {
@@ -335,8 +344,6 @@ void Controller::exportTotalObservationCSV(string name) {
      * The passed string "name" is the accession-id of the run that was chosen to be downloaded from.
      * Also the observations and p-vectors of all runs are exported.
      */
-
-
 
     if(param->exportObservationsToFile != 0){
 	string fileName = param->outFileNamePrefix;
@@ -390,32 +397,31 @@ void Controller::exportTotalObservationCSVlessInfo(string name) {
      */
 
 
-    if(param->exportObservationsToFile != 0)
-	{
-	    string fileName = param->outFileNamePrefix;
-	    fileName += "Coverage" + std::to_string(batchCount);
-	    fileName += ".csv";
+    if (param->exportObservationsToFile != 0) {
+	string fileName = param->outFileNamePrefix;
+	fileName += "Coverage" + std::to_string(batchCount);
+	fileName += ".csv";
 
-	    fstream f;
-	    f.open(fileName, ios::out);
-	    if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+	fstream f;
+	f.open(fileName, ios::out);
+	if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
 
-	    // first line
-	    f << "blockName;totalObservations;totalScore;totalProfit;best" << "\n";
+	// first line
+	f << "blockName;totalObservations;totalScore;totalProfit;best" << "\n";
 
-	    if(param->simulation != 1){
-		for(unsigned int j=0; j < totalObservations.size(); j++) {
-		    f << chrom->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
+	if(param->simulation != 1){
+	    for(unsigned int j=0; j < totalObservations.size(); j++) {
+		f << chrom->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
 
-		}
-	    }else{
-		for(unsigned int j=0; j < totalObservations.size(); j++) {
-		    f << sim->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-
-		}
 	    }
-	    f.close();
-	}
+	} else {
+	    for(unsigned int j=0; j < totalObservations.size(); j++) {
+		f << sim->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
+		
+	    }
+	    }
+	f.close();
+    }
 }
 
 void Controller::exportCoverage(){
@@ -448,7 +454,7 @@ void Controller::printRun2File(Run *r) {
      *
      * This function is mainly used for creating the dice from real runs.
      * These dice can later be used for simulations. In order to do that
-     * all reads in the run are downloaded and then alligned. Based on
+     * all reads in the run are downloaded and then aligned. Based on
      * the observations it is possible to make probability distributions.
      */
 
@@ -468,7 +474,7 @@ void Controller::printRun2File(Run *r) {
 }
 
 void Controller::createDieFromRun(Run *r) {
-    /*! \brief Completely downloads the given run stepwise and alligns it.
+    /*! \brief Completely downloads the given run stepwise and aligns it.
      *
      * The resulting observations are then printed into a csv-file, which can later
      * be used for simulations.
@@ -479,7 +485,7 @@ void Controller::createDieFromRun(Run *r) {
 	DEBUG(0,"loading batch " << c << "/" << r->maxNumOfBatches);
 	c++;
 	down->getBatch(r);
-	allign->update(r,totalObservations,chrom);
+	align->update(r,totalObservations,chrom);
     }
 
     printRun2File(r);

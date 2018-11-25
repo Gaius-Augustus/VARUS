@@ -10,97 +10,91 @@
 #include "Run.h"
 #include "TypeConventions.h"
 #include "ChromosomeInitializer.h"
-#include "Alligner.h"
+#include "Aligner.h"
 #include "Downloader.h"
 #include "ParameterHandler.h"
 #include "debug.h"
 #include "Operators.h"
-#include <memory>
-
 #include "myRandomEngine.h"
-
 #include "Estimator.h"
 #include "SimpleEstimator.h"
 #include "AdvancedEstimator.h"
 #include "DirichletMixture.h"
-
 #include "Simulator.h"
-
 #include "ClusterEstimator.h"
+#include <memory>
 
 class Controller {
-	/*! \brief Controlls the other objects.
-	 *
-	 * The main-algorithm is implemented in algorithm().
-	 */
+    /*! \brief Controlls the other objects.
+     *
+     * The main-algorithm is implemented in algorithm().
+     */
 
-public:
-	ParameterHandler 		*param;
+ public:
+    ParameterHandler *param;
 
-	ChromosomeInitializer 	*chrom;
-	Alligner 				*allign;
-	Downloader 				*down;
+    ChromosomeInitializer *chrom;
+    Aligner *align;
+    Downloader *down;
+    Simulator *sim;
+    myRandomEngine *ran;
+    Estimator *est;
 
-	Simulator				*sim;
+    unsigned int batchCount;
+    unsigned int goodBatchCount;
+    unsigned int lastMerge;
 
-	myRandomEngine 			*ran;
-	Estimator 				*est;
+    double maxProfit;
 
-	unsigned int batchCount;
-	unsigned int goodBatchCount;
-	unsigned int lastMerge;
+    double totalProfit;		// Gewinn = Auszahlung - Kosten
 
+    std::vector<Run*> runs;				// all runs
+    std::vector<Run*> downloadableRuns;		// runs that still have reads left to be downloaded
+    std::vector<Run*> badQualityRuns;		// runs that at some point were found to have bad quality during
+    // execution of the program
 
-	double maxProfit;
+    UUmap totalObservations;
+    double totalScore;
+    double avgUniq;
+    
+    Controller(ParameterHandler *p);
+    virtual ~Controller();
 
-	double totalProfit;		// Gewinn = Auszahlung - Kosten
+    void initialize();
 
-	std::vector<Run*> runs;					// all runs
-	std::vector<Run*> downloadableRuns;		// runs that still have reads left to be downloaded
-	std::vector<Run*> badQualityRuns;		// runs that at some point were found to have bad quality during
-											// execution of the program
+    void algorithm();
 
-	UUmap totalObservations;
-	double totalScore;
+    Run* chooseNextRun();
 
-	Controller(ParameterHandler *p);
-	virtual ~Controller();
+    bool continuing();
 
-	void initialize();
+    double score(const double v);
 
-	void algorithm();
+    void profit(Run *d);
 
-	Run* chooseNextRun();
+    void calculateProfit(std::vector<Run*> &runs);
 
-	bool continuing();
+    double score(UUmap &obs);
 
-	double score(const double v);
+    void exportTotalObservationCSV(std::string name);
 
-	void profit(Run *d);
+    void exportTotalObservationCSVlessInfo(std::string name);
 
-	void calculateProfit(std::vector<Run*> &runs);
+    void exportCoverage();
 
-	double score(UUmap &obs);
+    void printRun2File(Run *r);
 
-	void exportTotalObservationCSV(std::string name);
+    void createDieFromRun(Run *r);
 
-	void exportTotalObservationCSVlessInfo(std::string name);
+    void createDiceFromRuns();
 
-	void exportCoverage();
+    void updateDownloadableRuns();
 
-	void printRun2File(Run *r);
+    void mergeAlignments(const int count);
 
-	void createDieFromRun(Run *r);
+    void finalMerge();
 
-	void createDiceFromRuns();
-
-	void updateDownloadableRuns();
-
-	void mergeAlignments(const int count);
-
-	void finalMerge();
-
-	void exportRunStatistics();
+    void exportRunStatistics();
 };
 
 #endif /* CONTROLLER_H_ */

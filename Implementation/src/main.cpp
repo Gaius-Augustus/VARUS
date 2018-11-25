@@ -11,7 +11,7 @@
 #include "../headers/Run.h"
 #include "../headers/TypeConventions.h"
 #include "../headers/ChromosomeInitializer.h"
-#include "../headers/Alligner.h"
+#include "../headers/Aligner.h"
 #include "../headers/Downloader.h"
 #include "../headers/ParameterHandler.h"
 #include "../headers/debug.h"
@@ -23,19 +23,18 @@ using namespace std;
 ParameterHandler *param;
 
 int main(int argc, char *argv[]) {
+    param = new ParameterHandler();
+    param->readArguments(argc,argv);
+    param->export_parameters();
 
-	param = new ParameterHandler();
-		param->readArguments(argc,argv);
-		param->export_parameters();
+    Controller *c = new Controller(param);
+    c->initialize();
 
-	Controller *c = new Controller(param);
-		c->initialize();
+    if(1 == param->createDice){
+	c->createDiceFromRuns();
+    } else {
+	c->algorithm();
+    }
 
-		if(1 == param->createDice){
-			c->createDiceFromRuns();
-		} else {
-			c->algorithm();
-		}
-
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

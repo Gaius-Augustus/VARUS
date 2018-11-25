@@ -41,13 +41,12 @@ std::string Downloader::shellCommand(Run *r){
 void Downloader::nextBatchIndices(Run *r) {
 	/*! \brief	Calculates the batch-indices N and X.
 	 */
-
 //	assert(sigmaIndex < sigma.size());
-	r->N = r->sigma[r->sigmaIndex]*r->batchSize;
+	r->N = r->sigma[r->sigmaIndex] * r->batchSize;
 	r->X = r->N + r->batchSize - 1;
 
 	if(r->X > r->numOfSpots) {
-		r->X = r->numOfSpots;
+	    r->X = r->numOfSpots;
 	}
 
 	r->sigmaIndex++;
@@ -63,23 +62,22 @@ bool Downloader::getBatch(Run *r, bool all)
 	 *	download failed.
 	 */
 
-	if(all == false) nextBatchIndices(r);	// chooses the correct N and X
-	else
-	{
-		r->N = 0;
-		r->X = r->numOfSpots;
+	if (all == false)
+	    nextBatchIndices(r);	// chooses the correct N and X
+	else {
+	    r->N = 0;
+	    r->X = r->numOfSpots;
 	}
 
     std::string s = shellCommand(r);
 
-//    DEBUG(0,"getBatch(" << r->accesionId << "): " << s);
-    DEBUG(0,"getBatch(" << r->accesionId << "): ");
+    DEBUG(0,"getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s);
 
     int status = system(s.c_str());
 
-    if(0 != status)
-    {
-        DEBUG(0,"Failed to save batch :"  << r->accesionId << " -N  " << r->N << " -X " << r->X);
+    r->timesDownloaded++;
+    if(0 != status) {
+        DEBUG(0,"Failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X);
 //        DEBUG(0,"Calling from " << system("pwd > cur.txt"))
 //        writeBadRunSection(outFileNamePrefix);
 
@@ -87,6 +85,5 @@ bool Downloader::getBatch(Run *r, bool all)
         return false;
     }
 
-    r->timesDownloaded++;
     return true;
 }

@@ -52,9 +52,8 @@ void ChromosomeInitializer::readInputRuns(){
 		wrds.push_back(tmp);
 	    }
 	    // above content is ignored here, why is it read at all now?
-	    // if (wrds.size() < 6 || wrds[5] == "0")
-	    // use only nucleotide space runs
-	    inputRuns.push_back(wrds[0]);
+	     if (wrds.size() < 6 || wrds[5] == "0") // use only nucleotide space runs
+		 inputRuns.push_back(wrds[0]);
 	}
     }
     myfile.close();

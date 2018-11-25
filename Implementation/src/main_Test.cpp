@@ -20,7 +20,7 @@
 
 #include "../headers/Run.h"
 #include "../headers/Downloader.h"
-#include "../headers/Alligner.h"
+#include "../headers/Aligner.h"
 #include "../headers/RNAread.h"
 
 #include "../headers/Controller.h"
@@ -826,11 +826,11 @@ void test_RNAread(){
 	test_RNAread_UMR();
 }
 
-// Alligner
+// Aligner
 
-void test_Alligner_shellCommand(){
+void test_Aligner_shellCommand(){
 	ParameterHandler *p = new ParameterHandler();
-	Alligner *a = new Alligner(p);
+	Aligner *a = new Aligner(p);
 
 	Run *r = new Run();
 	string s = a->shellCommand(r);
@@ -841,9 +841,9 @@ void test_Alligner_shellCommand(){
 			"--readFilesIn defaultnoId/N0X0/noId.fasta --outFileNamePrefix defaultnoId/N0X0/");
 }
 
-void test_Alligner_mapReads(){
+void test_Aligner_mapReads(){
 	ParameterHandler *p = new ParameterHandler();
-	Alligner *a = new Alligner(p);
+	Aligner *a = new Aligner(p);
 
 //	N315100X315199
 	Run *r = new Run();
@@ -851,7 +851,7 @@ void test_Alligner_mapReads(){
 	r->X = 315199;
 	r->accesionId = "DRR016435";
 
-	p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Alligner/getAllignedReads/";
+	p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Aligner/getAlignedReads/";
 	p->genomeDir = "/home/willy/Bachelorarbeit/Manager/genome/";
 	p->pathToSTAR = "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
 	p->deleteLater = 0;
@@ -859,9 +859,9 @@ void test_Alligner_mapReads(){
 	a->mapReads(r);
 }
 
-void test_Alligner_getAllignedReads(){
+void test_Aligner_getAlignedReads(){
 	ParameterHandler *p = new ParameterHandler();
-	Alligner *a = new Alligner(p);
+	Aligner *a = new Aligner(p);
 
 	Run *r = new Run();
 
@@ -869,13 +869,13 @@ void test_Alligner_getAllignedReads(){
 	r->X = 315199;
 	r->accesionId = "DRR016435";
 
-	p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Alligner/getAllignedReads/";
+	p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Aligner/getAlignedReads/";
 	p->genomeDir = "/home/willy/Bachelorarbeit/Manager/genome/";
 	p->pathToSTAR = "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
 	p->deleteLater = 0;
 
 	unordered_map<string,RNAread> reads;
-	a->getAllignedReads(reads,r);
+	a->getAlignedReads(reads,r);
 
 	stringstream s;
 	unordered_map<string,RNAread>::iterator i;
@@ -892,10 +892,10 @@ void test_Alligner_getAllignedReads(){
 
 }
 
-void test_Alligner_updateObservations(){
+void test_Aligner_updateObservations(){
 	ParameterHandler *p = new ParameterHandler();
 	ChromosomeInitializer *c = new ChromosomeInitializer(p);
-	Alligner *a = new Alligner(p);
+	Aligner *a = new Aligner(p);
 
 	unique_ptr<Run> r(new Run());
 
@@ -907,32 +907,32 @@ void test_Alligner_updateObservations(){
 
 }
 
-void test_Alligner_update(){
+void test_Aligner_update(){
 
 }
 
-void test_Alligner_checkQuality(){
+void test_Aligner_checkQuality(){
 
 	ParameterHandler *p = new ParameterHandler();
 	ChromosomeInitializer *c = new ChromosomeInitializer(p);
-	Alligner *a = new Alligner(p);
+	Aligner *a = new Aligner(p);
 
 	a->checkQuality("/home/willy/BRAKER/VARUS/Implementation/unitTests/Aligner/Log.final.out");
 }
 
-void test_Alligner(){
-	cerr << "testing Alligner" << endl;
+void test_Aligner(){
+	cerr << "testing Aligner" << endl;
 
 
 	if(false){
-		test_Alligner_shellCommand();
-	//	test_Alligner_mapReads();
-		test_Alligner_getAllignedReads();
-		test_Alligner_updateObservations();	// TODO
-		test_Alligner_update();				// TODO
+		test_Aligner_shellCommand();
+	//	test_Aligner_mapReads();
+		test_Aligner_getAlignedReads();
+		test_Aligner_updateObservations();	// TODO
+		test_Aligner_update();				// TODO
 	}
 
-	test_Alligner_checkQuality();
+	test_Aligner_checkQuality();
 }
 
 // Controller
@@ -2334,7 +2334,7 @@ int main(int argc, char *argv[]) {
 //
 //	test_RNAread();
 //
-	test_Alligner();
+	test_Aligner();
 //
 //	test_myRandomEngine();
 //

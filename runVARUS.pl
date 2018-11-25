@@ -73,21 +73,21 @@ my $VARUScall = "./VARUS";
 my $usage =
 "Usage:
     Parameter           default     Explanation
-    --outFileDir:       /cwd/       Folder in which all ouput should be stored
+    --outFileDir        /cwd/       Folder in which all ouput should be stored
 
-    --varusParameters:  /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
+    --varusParameters   /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
 
-    --pathToSTAR:                   ../../STAR/bin/Linux_x86_64/
+    --pathToSTAR                    ../../STAR/bin/Linux_x86_64/
 
                                     specifies the path to the STAR executable
 
-    --createSTARindex:  1           creates the index, 0 if you don't want to create the index
+    --createSTARindex   1           creates the index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
 
-    --createRunList:    1           creates the RunList, 0 if you don't want to create the RunList
+    --createRunList     1           creates the RunList, 0 if you don't want to create the RunList
                                     You need a RunList in order to run VARUS
 
-    --allRuns       1               put all available accession-ids in the Runlist.txt, if false only the first 100 are used
+    --allRuns           1           put all available accession-ids in the Runlist.txt, if false only the first 100 are used
 
     --onlyPaired	1	    use only paired-end reads
 
@@ -95,18 +95,18 @@ my $usage =
 
     --createStatistics  1           creates a plot of the coverage achieved with all downloads
 
-    --readFromTable:    1           searches for a file 'species.txt' with two columns ;-separated
+    --readFromTable     1           searches for a file 'species.txt' with two columns ;-separated
                                     first column=species name in latin
                                     second column=path to the corresponding genome in fasta-format
 
-    --pathToSpecies:    /cwd/       path to the file 'species.txt'
+    --pathToSpecies     /cwd/       path to the file 'species.txt'
 
-    --latinGenus:                   latin name of the genus e.g Drosophila
-    --latinSpecies:                 latin name of the species e.g melanogaster
+    --latinGenus                    latin name of the genus e.g Drosophila
+    --latinSpecies                 latin name of the species e.g melanogaster
 
-    --speciesGenome:                path to the corresponding genome in fasta-format
+    --speciesGenome                 path to the corresponding genome in fasta-format
 
-    --VARUScall:                    default ./VARUS
+    --VARUScall                     default ./VARUS
     --verbosity         $verbosity           between 0 and 5 for less and more logging output
 ";
 
@@ -117,7 +117,7 @@ my $outfiles = 0; # if true, output the files with the list in addition to the s
 GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'outFileDir=s'=>\$outFileDir,
            'varusParameters=s'=>\$varusParameters,
-           'createSTARindex!'=>\$createSTARindex,
+           'createSTARindex=i'=>\$createSTARindex,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
            'onlyPaired!'=>\$onlyPaired,
