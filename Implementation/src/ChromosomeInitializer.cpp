@@ -141,9 +141,7 @@ void ChromosomeInitializer::create_transcript_units(UUmap &totalObservations) {
     }
 
     if (param->numOfBlocks != sum){
-	DEBUG(0,"Correcting numOfBlocks: \n"
-	      "Specified: " << param->numOfBlocks <<
-	      "\n Corrected to: " << sum);
+	DEBUG(0,"Correcting numOfBlocks: Specified: " << param->numOfBlocks << "\t Corrected to: " << sum);
 	param->numOfBlocks = sum;
     }
 }

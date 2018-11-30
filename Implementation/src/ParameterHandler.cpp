@@ -494,10 +494,10 @@ ParameterHandler::ParameterHandler() {
 
 	estimator = 2;	// 1 == simple, 2 == advanced, 3 == DM, else naive
     	INITPARAM(estimator,
-    			parameterCategories[BASICSETTINGS],
-				"1 == simple, 2 == advanced, 3 == dirichlet mixture, 4 == cluster estimator, else downloads will "
-    			"be done choosing the runs randomly. Note that if you choose to download randomly, you "
-    			"should specify maxBatches in order to let the program end at some point.",false);
+		  parameterCategories[BASICSETTINGS],
+		  "1 == simple, 2 == advanced, 3 == Dirichlet mixture, 4 == cluster estimator, otherwise downloads will "
+		  "be done choosing the runs randomly. Note that if you choose to download randomly, you "
+		  "should specify maxBatches in order to let the program end at some point.",false);
 
 //	dieList = 1;	// 1== uses "Dielist.txt", 0 == uses "Runlist.txt
 //    	INITPARAM(dieList, "1== uses \"Dielist.txt\", 0 == uses \"Runlist.txt\"");

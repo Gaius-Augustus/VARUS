@@ -79,7 +79,7 @@ if (! defined $species_name_GENUS || ! defined $species_name_SPECIES){
 sub retrieveID{
     my ($IDFile) = @_;
     
-    my $URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=
+    my $URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=
 	$species_name_GENUS+$species_name_SPECIES%5borgn%5d+AND+biomol_rna%5bProp%5d&usehistory=y";
     
     my $stat = system "wget --waitretry=30 -O $outFileDir$IDFile \"$URL\"";
@@ -121,7 +121,7 @@ sub getRuns {
     my ($WEBENV, $retmax, $retstart) = @_;
     my $listFile = "list$retstart-$retmax.xml";
 
-    my $URL2 = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+    my $URL2 = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
 	."?db=sra&WebEnv=$WEBENV&query_key=1&retmax=$retmax&retstart=$retstart";
 
     system "wget -O $outFileDir$listFile \"$URL2\"";
@@ -147,15 +147,8 @@ sub getRuns {
 	    $Run_acc = $1;
 	    $total_spots = $2;
 	    $total_bases = $3;
-
-	    if("" eq $total_spots) {
-		$total_spots = "N/A";
-	    }
-	    if("" eq $total_bases) {
-		$total_bases = "N/A";
-	    }
 	    
-	    if(($onlyPaired == 1 && $paired == 1) || $onlyPaired == 0) {
+	    if((($onlyPaired == 1 && $paired == 1) || $onlyPaired == 0) && $total_bases ne "" && $total_spots ne "") {
 		# print "$Run_acc\t$total_spots\t$total_bases\n";
 		my $avglen = int(100*$total_bases / $total_spots)/100;
 		my @runParameters = ();

@@ -42,6 +42,7 @@ class Run {
     double expectedProfit;
     bool badQuality;
     double avgUmrPercent;
+    double avgSpliced;
     double avglen;
     // only for clusterEstimator
     UDmap q;

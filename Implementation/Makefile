@@ -15,7 +15,7 @@ TestSources = ./Tests/Tests/unitTests/src/
 
 all: VARUS
 
-debug: COMP += -DDEBUG -g
+debug: COMP += -g # -DDEBUG
 debug: VARUS
 
 profile: COMP += -pg

@@ -56,6 +56,7 @@ class Controller {
     UUmap totalObservations;
     double totalScore;
     double avgUniq;
+    double avgSpliced;
     
     Controller(ParameterHandler *p);
     virtual ~Controller();

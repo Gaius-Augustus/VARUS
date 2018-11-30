@@ -53,7 +53,7 @@ Controller::Controller(ParameterHandler *p) {
     maxProfit = 1;
     totalScore = 0;
     goodBatchCount = 0;
-    avgUniq = 0.7; // this is the overall percentage of uniquely mapped reads of all aliged reads so far
+    avgUniq = 1.0; // this is the overall percentage of uniquely mapped reads of all aliged reads so far
     totalProfit = 0.0;
     
     DEBUG(1,"Done Creating Controller");
@@ -117,7 +117,7 @@ void Controller::algorithm(){
 	    }
 	}
 	    
-	if(param->estimator != 0){
+	if (param->estimator != 0){
 	    est->estimateP(runs, 0);
 	}
 	// calculates maxProfit
@@ -127,14 +127,13 @@ void Controller::algorithm(){
     }
 	
     updateDownloadableRuns();
-
+    calculateProfit(downloadableRuns);
+    
     while(continuing()){
 	batchCount++;
 
 	// if maxbatches < batchCount stop downloading
 	if(!continuing()) break;
-
-	calculateProfit(downloadableRuns);
 
 	DEBUG(1,"Choosing next Run ...");
 	Run *tmp_run = chooseNextRun();
@@ -150,7 +149,7 @@ void Controller::algorithm(){
 	    assert(tmp_run != nullptr);
 	    DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
 	    down->getBatch(tmp_run);
-	    align->update(tmp_run,totalObservations,chrom);
+	    align->update(tmp_run,totalObservations, chrom);
 	    if(tmp_run->badQuality == false){
 		goodBatchCount++;
 	    }
@@ -170,20 +169,20 @@ void Controller::algorithm(){
 
 	calculateProfit(downloadableRuns);
 
-	DEBUG(1,"Exporting...")
-	    if(1 == param->lessInfo){
-		exportTotalObservationCSVlessInfo(tmp_run->accesionId);
-	    }else{
-		exportTotalObservationCSV(tmp_run->accesionId);
-	    }
+	DEBUG(1,"Exporting...");
+	if(1 == param->lessInfo){
+	    exportTotalObservationCSVlessInfo(tmp_run->accesionId);
+	} else {
+	    exportTotalObservationCSV(tmp_run->accesionId);
+	}
 
 	exportRunStatistics();
 
-	DEBUG(1,"...done Exporting")
-
-	    if(param->ignoreReadNum != 1){
-		updateDownloadableRuns();
-	    }
+	DEBUG(1,"...done Exporting");
+	  
+	if(param->ignoreReadNum != 1){
+	    updateDownloadableRuns();
+	}
 
 	if(downloadableRuns.size() == 0){
 	    DEBUG(0,"No downloadable Runs left. Exiting...");
@@ -288,12 +287,13 @@ void Controller::profit(Run *d) {
 
     UDmap::iterator it;
     double percentUniqueMatch = (d->timesDownloaded>0)? d->avgUmrPercent : avgUniq;
+    double percentSpliced = (d->timesDownloaded>0)? d->avgSpliced : avgSpliced; // use overall average in case the run has no data yet
     double batchsize = (double) param->batchSize;
     for (it=d->p.begin(); it != d->p.end(); ++it) {
 	double prob = it->second; // probability of observing transcript unit
 	double x = totalObservations[it->first]; // observations for transcript unit
 	    
-	pr += score(x + prob * percentUniqueMatch * batchsize);
+	pr += score(x + prob * (percentUniqueMatch + percentSpliced) * batchsize);
 	pr -= score(x);
 	    
 	DEBUG(4,"pr " << pr);
@@ -312,8 +312,10 @@ void Controller::calculateProfit(vector<Run*> &runs){
 
     // calculate profit for runs with no reads only once
     double noReadsProfit = std::numeric_limits<int>::min();
-    double avgUMR = 100.0;  // prior overestimates the percentage of uniquely aliged reads so the policy is biased towards exploring more at first
-    unsigned numRuns = 3; // pseudocount on percentage of uniquely aligned reads
+    unsigned numRuns = 5; // pseudocount on percentage of uniquely aligned reads
+    double avgUMR = 100.0 * numRuns; // prior overestimates the percentage of uniquely aliged reads
+                                     // so the policy is biased towards exploring more at first
+    double sumSpliced = 50 * numRuns;
     DEBUG(5, "Calculating profits of all runs ...");
     for(unsigned int i = 0; i < runs.size(); i++){
 	Run *r = runs[i];
@@ -326,16 +328,20 @@ void Controller::calculateProfit(vector<Run*> &runs){
 		noReadsProfit = r->expectedProfit;
 	    }
 	}
-	DEBUG(1, "run " << i << "\t" << r->accesionId 
-	      << "\tlen=" << r->avglen << "\tprofit= " << r->expectedProfit << "\t#downl.batches="
-	      << r->timesDownloaded << "\tuniq [%]=" << r->avgUmrPercent);
-	if (r->timesDownloaded>0){
-	    numRuns++;
+	if (r->timesDownloaded > 0 || i < 10)
+	  DEBUG(1, "run " << i << "\t" << r->accesionId 
+		<< "\tlen=" << r->avglen << "\tprofit= " << r->expectedProfit << "\t#downl.batches="
+		<< r->timesDownloaded << "\tuniq [%]=" << r->avgUmrPercent << "\tsplices [%]=" << r->avgSpliced);
+	if (r->timesDownloaded > 0){
 	    avgUMR += r->avgUmrPercent * r->timesDownloaded;
-	}	    
+	    sumSpliced += r->avgSpliced * r->timesDownloaded;
+	    numRuns += r->timesDownloaded;
+	}
     }
     avgUniq = avgUMR / numRuns;
-    DEBUG(0, "average overall percentage of uniquely mapped reads (all batches): " << avgUniq);
+    avgSpliced = sumSpliced / numRuns;
+    DEBUG(0, "average overall percentage of uniquely mapped reads (all " << numRuns << " batches): " << avgUniq);
+    DEBUG(0, "average overall percentage of spliced reads (all " << numRuns << " batches): " << avgSpliced);
 }
 
 void Controller::exportTotalObservationCSV(string name) {

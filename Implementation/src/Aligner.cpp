@@ -260,26 +260,24 @@ void Aligner::checkQuality(const std::string &st, Run *r){
 	r->badQuality = true;
 	// return;
     }
-
+    
     while (getline(myfile, line)) {
-	if (line.find("Uniquely mapped reads % |") != std::string::npos) {
+	if (line.find("Uniquely mapped reads number |") != std::string::npos) {
 	    string tmp;
 	    stringstream ssin(line);
 	    vector<string> wrds;
 	    while (ssin >> tmp) {
 		wrds.push_back(tmp);
 	    }
+	    
+	    std::string numberstr = wrds[wrds.size()-1];
+	    double quality = 100 * std::stof(numberstr) / r->batchSize;
 
-	    std::string numWithPercent = wrds[wrds.size()-1];
-	    std::string nWoP = numWithPercent.substr(0,numWithPercent.size()-1);
-	    double quality = std::stof(nWoP);
-
-	    DEBUG(0,"Uniquely mapped reads % |	" << nWoP << "%");
-
-	    if("-nan" == nWoP){
+	    DEBUG(0,"Uniquely mapped reads % |	" << quality << "%");
+	    
+	    if("-nan" == numberstr){
 		DEBUG(0,"Detected run with no matches.");
 		r->badQuality = true;
-
 	    } else if(param->qualityThreshold > quality){
 		DEBUG(0,"Detected run with poor alignability.");
 		r->badQuality = true;
@@ -289,7 +287,26 @@ void Aligner::checkQuality(const std::string &st, Run *r){
 		r->avgUmrPercent = (r->avgUmrPercent*(r->timesDownloaded-1)+quality)/r->timesDownloaded;
 	    else
 		r->avgUmrPercent = 0.0;
-	    DEBUG(0, "Computing avgUmrPercent: " <<  r->avgUmrPercent << "\t" << quality << "\t" << r->timesDownloaded);
+	    DEBUG(0, "Computing avgUmrPercent: " <<  r->avgUmrPercent);
+	}
+	if (line.find("Number of splices: Total |") != std::string::npos) {
+	    string tmp;
+	    stringstream ssin(line);
+	    vector<string> wrds;
+	    while (ssin >> tmp) {
+		wrds.push_back(tmp);
+	    }
+	    
+	    std::string numberstr = wrds[wrds.size()-1];
+	    double percentSpliced = 100.0 * std::stof(numberstr) / r->batchSize;
+
+	    DEBUG(0,"Percent spliced reads   |	" << percentSpliced << "%");
+	    
+	    if (r->timesDownloaded>0)
+		r->avgSpliced = (r->avgSpliced*(r->timesDownloaded-1) + percentSpliced)/r->timesDownloaded;
+	    else
+		r->avgSpliced = 0.0;
+	    DEBUG(0, "avgSpliced: " <<  r->avgSpliced);
 	}
     }
     myfile.close();

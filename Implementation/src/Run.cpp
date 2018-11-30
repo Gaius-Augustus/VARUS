@@ -35,31 +35,32 @@ Run::Run() {
 	accesionId = "noId";
 	badQuality = false;
 	avgUmrPercent = 0.0;
+	avgSpliced = 0.0;
 }
 
 Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsigned int numOfSpots,
-		const unsigned int batchSize) {
-	this->accesionId = accesionId;
-	paired = false;
-	N = 0;
-	X = 0;
-	this->numOfSpots = numOfSpots;
-//	assert(batchSize != 0);
-	DEBUG(2,"Creating run with numOfSpots: " << numOfSpots << ", batchSize: " << batchSize);
-	maxNumOfBatches = ceil((double)numOfSpots/(double)batchSize);
-	sigmaIndex = 0;
-	this->batchSize = batchSize;
-	timesDownloaded = 0;
-	this->transcriptBlocks = transcriptBlocks;
-	observationSum = 0;
-	pNoObs = 0.0;
-	expectedProfit = 0.0;
-	badQuality = false;
+	 const unsigned int batchSize) {
+    this->accesionId = accesionId;
+    paired = false;
+    N = 0;
+    X = 0;
+    this->numOfSpots = numOfSpots;
+    //	assert(batchSize != 0);
+    DEBUG(2,"Creating run with numOfSpots: " << numOfSpots << ", batchSize: " << batchSize);
+    maxNumOfBatches = ceil((double)numOfSpots/(double)batchSize);
+    sigmaIndex = 0;
+    this->batchSize = batchSize;
+    timesDownloaded = 0;
+    this->transcriptBlocks = transcriptBlocks;
+    observationSum = 0;
+    pNoObs = 0.0;
+    expectedProfit = 0.0;
+    badQuality = false;
 
-	avgUmrPercent = 0.0;
-	//DEBUG(2,"Done creating Run");
+    avgUmrPercent = 0.0;
+    avgSpliced = 0.0;
 }
 
 Run::~Run() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }

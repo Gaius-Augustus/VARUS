@@ -35,16 +35,14 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 
 //	DEBUG(3,"runs.size() " << runs.size());
 
-	UUmap obs_total;	// c_j
-	unsigned int observationSum = 0;							// c^*
-	// calculate observations_total and sum(observations)
-	for(unsigned int k = 0; k < runs.size(); k++) {
-
-		observationSum 	+= runs[k]->observationSum;
-		obs_total 		+= runs[k]->observations;
-
-//		DEBUG(3,"runs[k]->observationSum " << runs[k]->observationSum );
-//		DEBUG(3,"runs[k]->observations " << runs[k]->observations );
+    UUmap obs_total;	// c_j
+    unsigned int observationSum = 0;							// c^*
+    // calculate observations_total and sum(observations)
+    for(unsigned int k = 0; k < runs.size(); k++) {
+	observationSum 	+= runs[k]->observationSum;
+	obs_total 		+= runs[k]->observations;
+	//		DEBUG(3,"runs[k]->observationSum " << runs[k]->observationSum );
+	//		DEBUG(3,"runs[k]->observations " << runs[k]->observations );
 	}
 
 //	DEBUG(3,"observationSum: " << observationSum);
@@ -68,50 +66,50 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 	UDmap pnoObs;
 	// Make estimation for runs with 0 reads only once
 	{
-		double normalizingConst = 	+ (double)param->pseudoCount*param->numOfBlocks
-									+ param->lambda*param->numOfBlocks;
-
-		UDmap::iterator j;
-		// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
-		// runs[k]->getObservationsSize may be smaller
-		for(j=p_total.begin(); j!=p_total.end(); j++) {
-			// p_j = c_j + a/(c*+1) + lambda*p_total
-			pnoObs[j->first] =
-					((double)param->pseudoCount
-					+ param->lambda*p_total[j->first]*param->numOfBlocks)
-					/normalizingConst;
-		}
+	    double normalizingConst = 	+ (double)param->pseudoCount*param->numOfBlocks
+		+ param->lambda*param->numOfBlocks;
+	    
+	    UDmap::iterator j;
+	    // runs[k]->p.size() will be equal to totalObs.size() afterwards even though
+	    // runs[k]->getObservationsSize may be smaller
+	    for(j=p_total.begin(); j!=p_total.end(); j++) {
+		// p_j = c_j + a/(c*+1) + lambda*p_total
+		pnoObs[j->first] =
+		    ((double)param->pseudoCount
+		     + param->lambda*p_total[j->first]*param->numOfBlocks)
+		    /normalizingConst;
+	    }
 	}
 
 	double psum = 0.0;
 	bool faultyCount = 0;
 	for(unsigned int k = 0; k < runs.size(); k++) {
-		// c^k_{n_k}* + a/(c*+1)T + lambda
-//		double normalizingConst = runs[k]->observationSum
-//								+ (double)param->pseudoCount*param->numOfBlocks
-//								+ param->lambda*param->numOfBlocks;								// pre 7.12.17
+	    // c^k_{n_k}* + a/(c*+1)T + lambda
+	    //		double normalizingConst = runs[k]->observationSum
+	    //								+ (double)param->pseudoCount*param->numOfBlocks
+	    //								+ param->lambda*param->numOfBlocks;								// pre 7.12.17
+	    
+	    if (runs[k]->timesDownloaded == 0){
+		runs[k]->p = pnoObs;
+	    } else {
 
-		if(runs[k]->timesDownloaded == 0){
-			runs[k]->p = pnoObs;
-		} else {
-
-			double normalizingConst = runs[k]->timesDownloaded*param->batchSize
-									+ (double)param->pseudoCount*param->numOfBlocks
-									+ param->lambda*param->numOfBlocks;								// after 7.12.17
+		double normalizingConst = runs[k]->timesDownloaded*param->batchSize
+		    + (double)param->pseudoCount*param->numOfBlocks
+		    + param->lambda*param->numOfBlocks;								// after 7.12.17
 
 	//		DEBUG(1,normalizingConst);
-			UDmap::iterator j;
-			// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
-			// runs[k]->getObservationsSize may be smaller
-			for(j=p_total.begin(); j!=p_total.end(); j++) {
-				// p_j = c_j + a/(c*+1) + lambda*p_total
-				runs[k]->p[j->first] =
-						(runs[k]->observations[j->first]
-						+ (double)param->pseudoCount
-						+ param->lambda*p_total[j->first]*param->numOfBlocks)
-						/normalizingConst;
-				psum += runs[k]->p[j->first];
-			}
+		UDmap::iterator j;
+		// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
+		// runs[k]->getObservationsSize may be smaller
+		for(j=p_total.begin(); j!=p_total.end(); j++) {
+		    // p_j = c_j + a/(c*+1) + lambda*p_total
+		    runs[k]->p[j->first] =
+			(runs[k]->observations[j->first]
+			 + (double)param->pseudoCount
+			 + param->lambda*p_total[j->first]*param->numOfBlocks)
+			/normalizingConst;
+		    psum += runs[k]->p[j->first];
+		}
 
 			// pNoObs = a/ c^k* + Ta + lambda
 	//		runs[k]->setPNoObs(basePseudoCount/
@@ -128,12 +126,12 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 	////			DEBUG((fabs(1.0 - psum) << " > " << precision);
 	//			faultyCount++;
 	//		}
-			psum = 0.0;
-		}
-
-		DEBUG(2,"p_total sums to " << sum(p_total));
+		psum = 0.0;
+	    }
+	    
+	    DEBUG(2,"p_total sums to " << sum(p_total));
 	}
-
+	
 //	if(faultyCount != 0) {
 //		DEBUG(0,"WARNING: " << faultyCount << " runs probably have wrong estimations! P does not sum to 1!");
 //	}

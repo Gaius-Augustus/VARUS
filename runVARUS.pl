@@ -44,12 +44,13 @@ my $pathToVARUS = $Bin;
 my $pathToSpecies = getcwd;
 
 my $outFileDir = getcwd;
-my $varusParameters = getcwd;
+my $varusParameters = getcwd . "/VARUSparameters.txt";
 
 my $createSTARindex = 1;
 my $createRunList = 1;
 my $runVARUS = 1;
 my $createStatistics = 1;
+my $runThreadN = 4;
 
 # Logging
 my $logFileName = "runVarus.log";
@@ -58,8 +59,6 @@ my $timeStamp = 1;
 my $displayRunListOutput = 1;
 my $displaySTARIndexerOutput = 1;
 my $readFromTable = 1;
-
-
 
 my $latinSpecies ="";
 my $latinGenus ="";
@@ -75,7 +74,7 @@ my $usage =
     Parameter           default     Explanation
     --outFileDir        /cwd/       Folder in which all ouput should be stored
 
-    --varusParameters   /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
+    --varusParameters               path to a parameters file, defaults to /current/working/directory/VARUSparameters.txt 
 
     --pathToSTAR                    ../../STAR/bin/Linux_x86_64/
 
@@ -83,7 +82,7 @@ my $usage =
 
     --createSTARindex   1           creates the index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
-
+    --runThreadN        $runThreadN           Number of threads used for STAR index creation
     --createRunList     1           creates the RunList, 0 if you don't want to create the RunList
                                     You need a RunList in order to run VARUS
 
@@ -102,11 +101,12 @@ my $usage =
     --pathToSpecies     /cwd/       path to the file 'species.txt'
 
     --latinGenus                    latin name of the genus e.g Drosophila
-    --latinSpecies                 latin name of the species e.g melanogaster
+    --latinSpecies                  latin name of the species e.g melanogaster
 
     --speciesGenome                 path to the corresponding genome in fasta-format
 
     --VARUScall                     default ./VARUS
+    --logfile                       default $logFileName
     --verbosity         $verbosity           between 0 and 5 for less and more logging output
 ";
 
@@ -118,6 +118,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'outFileDir=s'=>\$outFileDir,
            'varusParameters=s'=>\$varusParameters,
            'createSTARindex=i'=>\$createSTARindex,
+	   'runThreadN=i'=>\$runThreadN,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
            'onlyPaired!'=>\$onlyPaired,
@@ -132,6 +133,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'pathToSTAR=s'=>\$pathToSTAR,
 	   'VARUScall=s'=>\$VARUScall,
 	   'help!'=>\$help,
+	   'logfile=s'=>\$logFileName,
 	   'verbosity=i'=>\$verbosity)
 or die($usage);
 
@@ -292,7 +294,7 @@ foreach my $latinName (keys %species){
 	if (substr($genomefname, 0, 1) ne '/'){
 	    $genomefname = $outFileDir . "/" . $genomefname;
 	}
-        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN 4 --runMode genomeGenerate "
+        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
 	    . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
 	
         Log(0,"Invoking STAR-indexer call: ".$genomeGenerateCmd);
@@ -324,7 +326,7 @@ foreach my $latinName (keys %species){
     #--------------------------------------------------------------------
 
     if($runVARUS){
-        my $copyCommand = "cp ".$pathToSpecies."/VARUSparameters.txt ".$outFileDir."/".$folder."/VARUSparametersCopy.txt";
+        my $copyCommand = "cp $varusParameters $outFileDir/$folder/VARUSparametersCopy.txt";
         system($copyCommand);
 
         Log(0, "Adjusting parameters for VARUS ...");
@@ -368,7 +370,8 @@ foreach my $latinName (keys %species){
         my $VARUSCall = "$pathToVARUS/Implementation/$VARUScall | tee -a $outFileDir/$logFileName";
 
 
-        Log(0, "Running VARUS for $latinName ...");
+        Log(0, "Running VARUS for $latinName: in $outFileDir/$folder running $VARUSCall");
+
 
         chdir("$outFileDir/$folder") or die "cannot change: $!\n";
         system($VARUSCall);
