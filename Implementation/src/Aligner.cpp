@@ -105,11 +105,6 @@ void Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r) {
 	x << r->X;
 	std::string st = param->outFileNamePrefix + r->accesionId + "/" + "N" + n.str()
 			+ "X" + x.str() + "/Aligned.out.sam";
-//    cerr << __FILE__ <<':'<<__LINE__<<':'<< "path;" << s << endl;
-//    string s = input->outFileNamePrefix + "Aligned.out.sam";
-
-//	string deleteLater = outFileNamePrefix + r->getAccesionId() + "/" + "N"
-//			+ n.str() + "X" + x.str();
 
 	// First check in Log.final.out if the qualityThreshold is guaranteed
 	std::string st2 = param->outFileNamePrefix + r->accesionId + "/" + "N" + n.str()
@@ -119,59 +114,54 @@ void Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r) {
 
 	std::string deleteLater = param->outFileNamePrefix + r->accesionId;
 
-	const char * c = st.c_str();
+	const char *c = st.c_str();
 	std::string line;
 	std::ifstream myfile(c);
 
 	if (!myfile.is_open()) {
-		DEBUG(0,"Unable to open alignment " << st);
-		// return;
+	    DEBUG(0,"Unable to open alignment " << st);
+	    // return;
 	}
 
 	while (getline(myfile, line)) {
-		if (!line.empty()) {
-			if (line[0] != '@') {
-				string tmp;
-				stringstream ssin(line);
-				vector<string> wrds;
-				while (ssin >> tmp) {
-					wrds.push_back(tmp);
-				}
+	    if (!line.empty()) {
+		if (line[0] != '@') {
+		    string tmp;
+		    stringstream ssin(line);
+		    vector<string> wrds;
+		    while (ssin >> tmp) {
+			wrds.push_back(tmp);
+		    }
 
-				// SRR034413.5	0	FBgn0086917	22037	0	2S89M	*	0	0
-				if (wrds.size() > 3) {
-					string readName = wrds[0];
-					string chromosomeName = wrds[2];
-					string mappedAtChromosomPos = wrds[3];
+		    // SRR034413.5	0	FBgn0086917	22037	0	2S89M	*	0	0
+		    if (wrds.size() > 3) {
+			string readName = wrds[0];
+			string chromosomeName = wrds[2];
+			string mappedAtChromosomPos = wrds[3];
 
-					// determine which block the read mapped to of chromosom "chromosomeName"
-					// mapping-pos/blockSize rounded down
-					std::ostringstream oss;
-					oss
-							<< floor(
-									atoll(mappedAtChromosomPos.c_str())
-											/ param->blockSize);
-					string chromosomBlock = chromosomeName + ":" + oss.str();
+			// determine which block the read mapped to of chromosom "chromosomeName"
+			// mapping-pos/blockSize rounded down
+			std::ostringstream oss;
+			oss << floor(atoll(mappedAtChromosomPos.c_str()) / param->blockSize);
+			string chromosomBlock = chromosomeName + ":" + oss.str();
 
-					// ToDo: cigar-string
-					if (reads.find(readName) != reads.end()) {
-						// add the transcript_unit-name to the transcript_unit-list of the read
-						if (reads[readName].transcriptUnits.find(chromosomBlock)
-								!= reads[readName].transcriptUnits.end()) {
-							reads[readName].transcriptUnits[chromosomBlock] =
-									reads[readName].transcriptUnits[chromosomBlock]
-											+ 1;
-						} else {
-							reads[readName].transcriptUnits[chromosomBlock] = 1;
-						}
-					} else {
-						RNAread mp;
-						mp.transcriptUnits[chromosomBlock] = 1;
-						reads[readName] = mp;
-					}
-				}
+			// ToDo: cigar-string
+			if (reads.find(readName) != reads.end()) {
+			    // add the transcript_unit-name to the transcript_unit-list of the read
+			    if (reads[readName].transcriptUnits.find(chromosomBlock)
+				!= reads[readName].transcriptUnits.end()) {
+				reads[readName].transcriptUnits[chromosomBlock] += + 1;
+			    } else {
+				reads[readName].transcriptUnits[chromosomBlock] = 1;
+			    }
+			} else {
+			    RNAread mp;
+			    mp.transcriptUnits[chromosomBlock] = 1;
+			    reads[readName] = mp;
 			}
+		    }
 		}
+	    }
 	}
 	myfile.close();
 

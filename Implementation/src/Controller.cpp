@@ -610,10 +610,10 @@ void Controller::mergeAlignments(const int count){
 
 	string s = param->pathToVARUS + "/scripts/mergeAlignments.sh merged" + std::to_string(levelOfCurrentFile)+ "." + std::to_string(lastMerge + 1) + "_" + std::to_string(batchCount) + ".bam " + std::to_string(param->mergeThreshold);
 
-	if(param->deleteLater){
+	if (param->deleteLater){
 		s = s + " delete";
 	}
-	s = s + " >nul 2>&1";
+	s = s + " > /dev/null 2>&1";
 
 	DEBUG(0, "Running '" << s <<"'");
 	const char * c = s.c_str();

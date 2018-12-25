@@ -122,7 +122,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
            'onlyPaired!'=>\$onlyPaired,
-	   'readFromTable!'=>\$readFromTable,
+	   'readFromTable=i'=>\$readFromTable,
 	   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
 	   'speciesGenome=s'=>\$speciesGenome,
@@ -198,7 +198,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
 
 
 my %species;
-if($readFromTable == 1){
+if($readFromTable != 0){
 	Log(0, "Reading in species from $pathToSpecies/species.txt...");
 
 	open(DAT,"$pathToSpecies/species.txt") || die Log(0, "Could not open file $pathToSpecies/species.txt \n");
