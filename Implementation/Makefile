@@ -19,29 +19,8 @@ debug: COMP += -g # -DDEBUG
 debug: VARUS
 
 profile: COMP += -pg
-profile: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o
-	$(LINK) -pg $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o -o VARUSgprof
-
-# this will compile the program and the tests and run the tests
-#test: VARUS VARUSTest
-#	./VARUSTest
-
-test:CatchTest
-	$(Test)./CatchTest
-
-VARUSTest: $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Aligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
-	$(LINK) $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Aligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUSTest
-
-
-CatchTest: $(Test)catch.o $(BUILD)systemFunctions.o $(BUILD)ParameterHandler.o $(BUILD)Aligner.o $(BUILD)Run.o $(BUILD)RNAread.o
-	$(LINK) $(Test)catch.o $(BUILD)systemFunctions.o $(BUILD)ParameterHandler.o $(BUILD)Aligner.o $(BUILD)Run.o $(BUILD)RNAread.o -o $(Test)CatchTest
-
-#CatchTest: $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
-#	$(LINK) $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o $(Test)CatchTest
-
-
-$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp $(TestSources)test_systemFunctions.cpp $(TestSrc)commandline.cpp $(TestSources)test_Aligner.cpp
-		$(COMP) $(Test)catch.cpp -o $(Test)catch.o;
+profile: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)STAR_Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o
+	$(LINK) -pg $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)STAR_Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o -o VARUSgprof
 
 
 clean:
@@ -49,8 +28,8 @@ clean:
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-VARUS: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o
-	$(LINK) $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o -o VARUS
+VARUS: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)STAR_Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o
+	$(LINK) $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Aligner.o $(BUILD)STAR_Aligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o -o VARUS
 
 $(BUILD)main.o: $(SRC)main.cpp headers/debug.h headers/TypeConventions.h headers/ParameterHandler.h headers/Warning.h headers/Aligner.h headers/Downloader.h headers/Run.h headers/Controller.h headers/ChromosomeInitializer.h headers/RNAread.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h headers/DirichletDistribution.h headers/Functions.h 
 	$(COMP) $(SRC)main.cpp -o $(BUILD)main.o;
@@ -78,6 +57,9 @@ $(BUILD)systemFunctions.o: $(SRC)systemFunctions.cpp
 
 $(BUILD)Aligner.o: $(SRC)Aligner.cpp headers/Aligner.h headers/Run.h headers/ParameterHandler.h headers/RNAread.h headers/systemFunctions.h
 	$(COMP) $(SRC)Aligner.cpp -o $(BUILD)Aligner.o;
+
+$(BUILD)STAR_Aligner.o: $(SRC)STAR_Aligner.cpp headers/STAR_Aligner.h headers/Aligner.h headers/Run.h headers/ParameterHandler.h headers/RNAread.h headers/systemFunctions.h
+	$(COMP) $(SRC)STAR_Aligner.cpp -o $(BUILD)STAR_Aligner.o;
 
 $(BUILD)RNAread.o: $(SRC)RNAread.cpp headers/RNAread.h
 	$(COMP) $(SRC)RNAread.cpp -o $(BUILD)RNAread.o;

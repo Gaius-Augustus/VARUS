@@ -11,6 +11,7 @@
 #include "TypeConventions.h"
 #include "ChromosomeInitializer.h"
 #include "Aligner.h"
+#include "STAR_Aligner.h"
 #include "Downloader.h"
 #include "ParameterHandler.h"
 #include "debug.h"
@@ -79,7 +80,7 @@ class Controller {
 
     void exportTotalObservationCSV(std::string name);
 
-    void exportTotalObservationCSVlessInfo(std::string name);
+    void exportTotalObservationCSVlessInfo(Run *r); //std::string name);
 
     void exportCoverage();
 

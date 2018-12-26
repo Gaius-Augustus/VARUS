@@ -24,7 +24,7 @@ Controller::Controller(ParameterHandler *p) {
     if (param->simulation != 1){
 	chrom 	= new ChromosomeInitializer(p);
 	down 	= new Downloader(p);
-	align 	= new Aligner(p);
+	align 	= new STAR_Aligner(p);
 	sim 	= nullptr;
     } else {
 	sim 	= new Simulator(p);
@@ -133,7 +133,7 @@ void Controller::algorithm(){
 	}
 	// calculates maxProfit
 	calculateProfit(downloadableRuns);
-	Run *tmp_run = chooseNextRun();
+	chooseNextRun();
 	DEBUG(1,"Done Loading all once");
     }
 	
@@ -147,47 +147,48 @@ void Controller::algorithm(){
 	if(!continuing()) break;
 
 	DEBUG(1,"Choosing next Run ...");
-	Run *tmp_run = chooseNextRun();
-	DEBUG(1,"...done Choosing next Run");
+	Run *next_run = chooseNextRun();
+	DEBUG(1,"...done choosing next run.");
 
 	// maxProfit set in chooseNextRun()
-	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) (" << runs.size() - badQualityRuns.size()
-	      << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
+	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("
+	      << runs.size() - badQualityRuns.size() << " good runs of " << runs.size()
+	      << ") | maxProfit: " << maxProfit);
 
 	// if profit < 0 stop downloading
 	if (!continuing()) break;
 
 	if (param->simulation != 1){
-	    assert(tmp_run != nullptr);
-	    DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
-	    down->getBatch(tmp_run);
-	    align->update(tmp_run, totalObservations, chrom);
-	    if (tmp_run->badQuality == false){
+	    assert(next_run != nullptr);
+	    DEBUG(1,"Getting batch number " << next_run->timesDownloaded + 1
+		  << " for " << next_run->accesionId);
+	    down->getBatch(next_run);
+	    align->update(next_run, totalObservations, chrom);
+	    if (next_run->badQuality == false){
 		goodBatchCount++;
 	    }
-	} else{
-	    sim->simulateObservations(tmp_run,totalObservations);
+	} else {
+	    sim->simulateObservations(next_run,totalObservations);
 	}
 
 	totalScore = score(totalObservations);
 	totalProfit = totalScore - param->cost*param->batchSize*batchCount;
 
 	if (param->estimator != 0){
-	    DEBUG(1,"Estimating...")
-		// we pass all runs since the DM uses the information from all runs
-		est->estimateP(runs, batchCount);
+	    DEBUG(1,"Estimating...");
+	    // we pass all runs since the DM uses the information from all runs
+	    est->estimateP(runs, batchCount);
 	    DEBUG(1,"... done Estimating");
 	}
-
+	
 	calculateProfit(downloadableRuns);
 
 	DEBUG(1,"Exporting...");
-	if (1 == param->lessInfo){
-	    exportTotalObservationCSVlessInfo(tmp_run->accesionId);
-	} else {
-	    exportTotalObservationCSV(tmp_run->accesionId);
-	}
-
+	if (1 == param->lessInfo)
+	    exportTotalObservationCSVlessInfo(next_run); // ->accesionId
+	else
+	    exportTotalObservationCSV(next_run->accesionId);
+	
 	exportRunStatistics();
 
 	DEBUG(1,"...done Exporting");
@@ -335,7 +336,7 @@ void Controller::calculateProfit(vector<Run*> &runs){
                                      // so the policy is biased towards exploring more at first
     double sumSpliced = 100 * numRuns;
     DEBUG(5, "Calculating profits of all runs ...");
-    for(unsigned int i = 0; i < runs.size(); i++){
+    for (unsigned int i = 0; i < runs.size(); i++){
 	Run *r = runs[i];
 	if (r->timesDownloaded == 0 &&
 	    noReadsProfit != std::numeric_limits<int>::min()){
@@ -377,20 +378,25 @@ void Controller::exportTotalObservationCSV(string name) {
 	
 	fstream f;
 	f.open(fileName, ios::out);
-	if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+	if (!f) {
+	    DEBUG(0,"Cant open file " << fileName << "!");
+	    exit(1);
+	}
 
 	// first line
 	f << "blockName;totalObservations;totalScore;totalProfit;best";
-	for(unsigned int k = 0; k < runs.size(); k++) {
+	for (unsigned int k = 0; k < runs.size(); k++)
 	    f << ";" << runs[k]->accesionId << ".obs;"
 	      << runs[k]->accesionId<< ".p;" << runs[k]->accesionId<< ".score";
-	}
+	
 	f << endl;
 
 	for (unsigned int j=0; j < totalObservations.size(); j++) {
 	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
 	      << ";" << totalObservations[j]
-	      << ";" << totalScore << ";" << totalProfit << ";" << name;
+	      << ";" << totalScore
+	      << ";" << totalProfit
+	      << ";" << name;
 
 	    for (unsigned int k = 0; k < runs.size(); k++) {
 		f << ";" << runs[k]->observations[j] << ";"
@@ -399,38 +405,42 @@ void Controller::exportTotalObservationCSV(string name) {
 	    }
 	    f << endl;
 	}
+
 	f.close();
     }
 }
 
-void Controller::exportTotalObservationCSVlessInfo(string name) {
+void Controller::exportTotalObservationCSVlessInfo(Run *r) { //
     /*! \brief Exports the observations in csv-format with less information.
      *
      * Only the total observations and the best score and accession-id of the best run is exported.
      * In exportTotalObservationsCSV() also the observations and p-vectors of all runs are exported.
      */
+    string name = r->accesionId;
 
     if (param->exportObservationsToFile != 0) {
 	string fileName = param->outFileNamePrefix;
-	fileName += "Coverage" + std::to_string(batchCount);
-	fileName += ".csv";
-	
+	fileName += "Coverage" + std::to_string(batchCount) + ".tsv";
+
 	fstream f;
 	f.open(fileName, ios::out);
-	if (!f) { DEBUG(0,"Cant open file " << fileName << "!");}
-	
-	// first line
-	f << "blockName;totalObservations;totalScore;totalProfit;best" << "\n";
-
-	if(param->simulation != 1){
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << chrom->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-	    }
-	} else {
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << sim->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-	    }
+	if (!f){
+	    DEBUG(0,"Cant open file " << fileName << " for writing.");
+	    exit(1);
 	}
+
+	// header
+	f << "# batch run chosen from run " << name << endl;
+	f << "# totalScore " << totalScore << endl;
+	f << "# totalProfit " << totalProfit << endl;
+	f << "#blockName\ttotalObservations\trunObservations" << endl;
+
+	for (unsigned int j=0; j < totalObservations.size(); j++)
+	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
+	      << "\t" << totalObservations[j]
+	      << "\t" << r->observations[j]
+	      << endl;
+
 	f.close();
     }
 }
@@ -606,7 +616,7 @@ void Controller::mergeAlignments(const int count){
 
 	string s = param->pathToVARUS + "/scripts/mergeAlignments.sh merged" + std::to_string(levelOfCurrentFile)+ "." + std::to_string(lastMerge + 1) + "_" + std::to_string(batchCount) + ".bam " + std::to_string(param->mergeThreshold);
 
-	if(param->deleteLater){
+	if (param->deleteLater){
 		s = s + " delete";
 	}
 	s = s + " >merge.out 2>&1";

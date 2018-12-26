@@ -58,7 +58,7 @@ my $verbosity = 4;
 my $timeStamp = 1;
 my $displayRunListOutput = 1;
 my $displaySTARIndexerOutput = 1;
-my $readFromTable = 0;
+my $readFromTable = 1;
 
 my $latinSpecies ="";
 my $latinGenus ="";
@@ -118,7 +118,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'runThreadN=i'=>\$runThreadN,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
-	   'readFromTable!'=>\$readFromTable,
+	   'readFromTable=i'=>\$readFromTable,
 	   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
 	   'speciesGenome=s'=>\$speciesGenome,
@@ -193,7 +193,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
 
 
 my %species;
-if($readFromTable == 1){
+if($readFromTable != 0){
 	Log(0, "Reading in species from $pathToSpecies/species.txt...");
 
 	open(DAT,"$pathToSpecies/species.txt") || die Log(0, "Could not open file $pathToSpecies/species.txt \n");

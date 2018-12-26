@@ -1,11 +1,9 @@
 #include "../headers/RNAread.h"
 
 RNAread::RNAread(){
-
 }
 
 RNAread::~RNAread(){
-
 }
 
 bool RNAread::UMR(){
