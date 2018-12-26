@@ -36,6 +36,8 @@ class Aligner {
 
     void update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c);
 
+    std::string batchDir(Run *r);
+
 };
 
 #endif /* ALIGNER_H_ */

@@ -108,8 +108,8 @@ void Controller::algorithm(){
 
     if (param->loadAllOnce == 1){
 	DEBUG(1,"Loading all once");
-	for(unsigned int k = 0; k < runs.size(); k++){
-	    if(param->simulation != 1){
+	for (unsigned int k = 0; k < runs.size(); k++){
+	    if (param->simulation != 1){
 		down->getBatch(runs[k]);
 		align->update(runs[k],totalObservations,chrom);
 	    } else{
@@ -122,7 +122,7 @@ void Controller::algorithm(){
 	}
 	// calculates maxProfit
 	calculateProfit(downloadableRuns);
-	Run *tmp_run = chooseNextRun();
+	chooseNextRun();
 	DEBUG(1,"Done Loading all once");
     }
 	
@@ -136,25 +136,28 @@ void Controller::algorithm(){
 	if(!continuing()) break;
 
 	DEBUG(1,"Choosing next Run ...");
-	Run *tmp_run = chooseNextRun();
+	Run *next_run = chooseNextRun();
 	DEBUG(1,"...done Choosing next Run");
 
 	// maxProfit set in chooseNextRun()
-	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("<< runs.size() - badQualityRuns.size() << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
+	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("
+	      << runs.size() - badQualityRuns.size() << " good runs of " << runs.size()
+	      << ") | maxProfit: " << maxProfit);
 
 	// if profit < 0 stop downloading
 	if(!continuing()) break;
 
 	if(param->simulation != 1){
-	    assert(tmp_run != nullptr);
-	    DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
-	    down->getBatch(tmp_run);
-	    align->update(tmp_run,totalObservations, chrom);
-	    if(tmp_run->badQuality == false){
+	    assert(next_run != nullptr);
+	    DEBUG(1,"Getting batch number " << next_run->timesDownloaded + 1
+		  << " for " << next_run->accesionId);
+	    down->getBatch(next_run);
+	    align->update(next_run, totalObservations, chrom);
+	    if (next_run->badQuality == false){
 		goodBatchCount++;
 	    }
 	} else{
-	    sim->simulateObservations(tmp_run,totalObservations);
+	    sim->simulateObservations(next_run,totalObservations);
 	}
 
 	totalScore = score(totalObservations);
@@ -170,12 +173,11 @@ void Controller::algorithm(){
 	calculateProfit(downloadableRuns);
 
 	DEBUG(1,"Exporting...");
-	if(1 == param->lessInfo){
-	    exportTotalObservationCSVlessInfo(tmp_run->accesionId);
-	} else {
-	    exportTotalObservationCSV(tmp_run->accesionId);
-	}
-
+	if (1 == param->lessInfo)
+	    exportTotalObservationCSVlessInfo(next_run); // ->accesionId
+	else
+	    exportTotalObservationCSV(next_run->accesionId);
+	
 	exportRunStatistics();
 
 	DEBUG(1,"...done Exporting");
@@ -351,81 +353,74 @@ void Controller::exportTotalObservationCSV(string name) {
      * Also the observations and p-vectors of all runs are exported.
      */
 
-    if(param->exportObservationsToFile != 0){
+    if (param->exportObservationsToFile != 0){
 	string fileName = param->outFileNamePrefix;
 	fileName += "/Toy" + std::to_string(batchCount);
 	fileName += ".csv";
 	
 	fstream f;
 	f.open(fileName, ios::out);
-	if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+	if (!f) {
+	    DEBUG(0,"Cant open file " << fileName << "!");
+	    exit(1);
+	}
 
 	// first line
 	f << "blockName;totalObservations;totalScore;totalProfit;best";
-	for(unsigned int k = 0; k < runs.size(); k++) {
+	for (unsigned int k = 0; k < runs.size(); k++)
 	    f << ";" << runs[k]->accesionId << ".obs;"
 	      << runs[k]->accesionId<< ".p;" << runs[k]->accesionId<< ".score";
-	}
+	
 	f << endl;
 
-	if(param->simulation != 1){
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << chrom->translate2str[j]<< ";" << totalObservations[j]
-		  << ";" << totalScore << ";" << totalProfit << ";" << name;
+	for (unsigned int j=0; j < totalObservations.size(); j++) {
+	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
+	      << ";" << totalObservations[j]
+	      << ";" << totalScore
+	      << ";" << totalProfit
+	      << ";" << name;
 
-		for(unsigned int k = 0; k < runs.size(); k++) {
-		    f << ";" << runs[k]->observations[j] << ";"
-		      << runs[k]->p[j] << ";" << runs[k]->expectedProfit;
-		}
-		f << endl;
+	    for (unsigned int k = 0; k < runs.size(); k++) {
+		f << ";" << runs[k]->observations[j] << ";"
+		  << runs[k]->p[j] << ";" << runs[k]->expectedProfit;
 	    }
-	} else {
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << sim->translate2str[j]<< ";" << totalObservations[j]
-		  << ";" << totalScore << ";" << totalProfit << ";" << name;
-
-		for(unsigned int k = 0; k < runs.size(); k++) {
-		    f << ";" << runs[k]->observations[j] << ";"
-		      << runs[k]->p[j] << ";" << runs[k]->expectedProfit;
-		}
-		f << endl;
-	    }
+	    f << endl;
 	}
+
 	f.close();
     }
 }
 
-void Controller::exportTotalObservationCSVlessInfo(string name) {
+void Controller::exportTotalObservationCSVlessInfo(Run *r) { //
     /*! \brief Exports the observations in csv-format with less information.
      *
      * Only the total observations and the best score and accession-id of the best run is exported.
      * In exportTotalObservationsCSV() also the observations and p-vectors of all runs are exported.
      */
-
+    string name = r->accesionId;
 
     if (param->exportObservationsToFile != 0) {
 	string fileName = param->outFileNamePrefix;
-	fileName += "Coverage" + std::to_string(batchCount);
-	fileName += ".csv";
+	fileName += "Coverage" + std::to_string(batchCount) + ".tsv";
 
 	fstream f;
 	f.open(fileName, ios::out);
-	if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+	if (!f){
+	    DEBUG(0,"Cant open file " << fileName << " for writing.");
+	    exit(1);
+	}
 
-	// first line
-	f << "blockName;totalObservations;totalScore;totalProfit;best" << "\n";
+	// header
+	f << "# batch run chosen from run " << name << endl;
+	f << "#blockName\ttotalObservations\trunObservations\ttotalScore\ttotalProfit" << endl;
 
-	if(param->simulation != 1){
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << chrom->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
+	for (unsigned int j=0; j < totalObservations.size(); j++)
+	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
+	      << "\t" << totalObservations[j] 
+	      << "\t" << r->observations[j]
+	      << "\t" << log(totalScore)
+	      << "\t" << totalProfit << endl;
 
-	    }
-	} else {
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << sim->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-		
-	    }
-	    }
 	f.close();
     }
 }

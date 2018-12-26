@@ -80,7 +80,7 @@ class Controller {
 
     void exportTotalObservationCSV(std::string name);
 
-    void exportTotalObservationCSVlessInfo(std::string name);
+    void exportTotalObservationCSVlessInfo(Run *r); //std::string name);
 
     void exportCoverage();
 

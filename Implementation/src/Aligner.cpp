@@ -98,3 +98,14 @@ void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c)
     getAlignedReads(reads,r);
     updateObservations(r,totalObservations,reads,c);
 }
+
+
+
+std::string Aligner::batchDir(Run *r) {
+     /* !\brief The directory of the next batch of the run, e.g. SRR7192719/N6300000X6349999/
+     */
+    return  param->outFileNamePrefix + r->accesionId + "/"
+	+ "N" + to_string(r->N)
+	+ "X" + to_string(r->X) + "/";
+}
+

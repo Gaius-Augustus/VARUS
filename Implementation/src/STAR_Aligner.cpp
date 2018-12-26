@@ -19,56 +19,43 @@ std::string STAR_Aligner::shellCommand(Run *r) {
      *
      */
 
-    std::ostringstream n,x,thread;
-    n << r->N;
-    x << r->X;
-    thread << param->runThreadN;
-
-    std::string s;
-    if(r->paired == false) {
-	std::string t = r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
-	s =      param->pathToSTAR + "STAR "
-	    + "--runThreadN " + thread.str() + " "
-	    + "--genomeDir " + param->genomeDir + " "
-	    + "--readFilesIn " + param->outFileNamePrefix + t + r->accesionId + ".fasta "
-	    + "--outFileNamePrefix " + param->outFileNamePrefix + t
-	    //							+ " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
-	    //	                        + " --outSAMtype BAM";
-	    ;
-    } else { // unpaired reads
-	std::string t = param->outFileNamePrefix + "/" + r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
-
-	vector<string> files = filesWithExtInFolder(t,".fasta");
+    string cmd;
+    string batchDir_ = batchDir(r);
+    
+    if (r->paired == false) { // unpaired reads
+	cmd = param->pathToSTAR + "STAR"
+	    + " --runThreadN " + to_string(param->runThreadN)
+	    + " --genomeDir " + param->genomeDir
+	    + " --readFilesIn " + batchDir_ + r->accesionId + ".fasta"
+	    + " --outFileNamePrefix " + batchDir_;
+	    // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
+	    // + " --outSAMtype BAM";
+    } else { // paired reads
+	vector<string> files = filesWithExtInFolder(batchDir_, ".fasta");
 
 	string f = "";
-	//	        	for(unsigned int i = 0; i < files.size(); i++){
-	//	        		 f += files[i] + " ";
-	//	        	}
-
-	// we use only the first and the last file, because STAR can apparently only
+	// we use only the first and the last file, because STAR can only
 	// handle two files. For Pombe run SRR097898 the middle part is a technical barcode.
 	// So our best guess is to just take reads 1 and 3.
-	if(!files.empty()){
+	if (!files.empty()){
 	    DEBUG(0,"Found " << files.size() << " Fasta-files!");
 	    f = files[0];
-	    if(files.size() > 1){
+	    if (files.size() > 1){
 		f += " " + files[files.size()-1];
 	    }
 	} else {
 	    DEBUG(0,"No fasta-files found!");
 	}
 
-	s = param->pathToSTAR + "STAR "
-	    + "--runThreadN " + thread.str() + " "
-	    + "--genomeDir " + param->genomeDir + " "
-	    + "--readFilesIn "
-	    + f
-	    + " --outFileNamePrefix " + t
+	cmd = param->pathToSTAR + "STAR"
+	    + " --runThreadN " + to_string(param->runThreadN)
+	    + " --genomeDir " + param->genomeDir
+	    + " --readFilesIn " + f
+	    + batchDir_;
 	    // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
 	    // + " --outSAMtype BAM";
-	    ;
     }
-    return s;
+    return cmd;
 }
  
 void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r) {
@@ -162,7 +149,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     /*
      * evaluate STAR log file
      */
-
+    string batchDir_ = batchDir(r);
     string line;
     std::ifstream logfile(logfilename.c_str());
     
@@ -216,7 +203,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     // sort and convert to BAM
     size_t lastindex = samfilename.find_last_of("."); 
     string stem = samfilename.substr(0, lastindex);
-    string bamfilename = stem + ".bam";
+    string bamfilename = batchDir_ + stem + ".bam";
     string sortcmd = "samtools sort samfilename -O SAM -o " + bamfilename;
     int status = system(sortcmd.c_str());
     if (status != 0) {
@@ -225,7 +212,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     }
     
     // make introns with bam2hints
-    string hintsfilename = "introns.gff";
+    string hintsfilename = batchDir_ + "introns.gff";
     string hintscmd = "bam2hints --in=" + bamfilename
 	+ " --out=" + hintsfilename + " --intronsonly";
     status = system(hintscmd.c_str());
@@ -257,16 +244,21 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     DEBUG(0, "avgSpliced: " <<  r->avgSpliced);
     
     // accumulate introns
-    string cumintronsFname = "cumintrons.gff";
+    string cumintronsFname = "cumintrons.gff" ,
+	cumintronsTempFname = "cumintrons.temp.gff";
     string intronDBFname = "intronDB.gff";
     string joincmd = "cat " + hintsfilename + " " + cumintronsFname +
-	" | join_mult_hints.pl >" + cumintronsFname;
+	" | join_mult_hints.pl >" + cumintronsTempFname;
     status = system(joincmd.c_str());
     if (status != 0) {
 	DEBUG(0, string("Failed to run join_mult_hints.pl properly:") + joincmd);
 	exit(1);
     }
-
+    if (rename(cumintronsTempFname.c_str(), cumintronsFname.c_str()) != 0){
+	DEBUG(0, string("Failed to move ") + cumintronsTempFname);
+	exit(1);
+    }
+    
     // filter significantly frequent introns and make intron 'database' for STAR
     std::ifstream cumIntronFile(cumintronsFname.c_str());
     if (!cumIntronFile.is_open()) {
