@@ -36,7 +36,7 @@ Controller::Controller(ParameterHandler *p) {
 
     ran	= new myRandomEngine(p);
     
-    if(p->estimator == 1){
+    if (p->estimator == 1){
 	est = new SimpleEstimator(p);
     } else if(p->estimator == 2){
 	est = new AdvancedEstimator(p);
@@ -60,6 +60,17 @@ Controller::Controller(ParameterHandler *p) {
 }
 
 Controller::~Controller() {
+    if (chrom)
+	delete chrom;
+    if (down)
+	delete down;
+    if (align)
+	delete align;
+    if (est)
+	delete est;
+    delete ran;
+    for (unsigned i=0; i<runs.size(); i++)
+	delete runs[i];
 }
 
 void Controller::initialize(){
@@ -108,8 +119,8 @@ void Controller::algorithm(){
 
     if (param->loadAllOnce == 1){
 	DEBUG(1,"Loading all once");
-	for(unsigned int k = 0; k < runs.size(); k++){
-	    if(param->simulation != 1){
+	for (unsigned int k = 0; k < runs.size(); k++){
+	    if (param->simulation != 1){
 		down->getBatch(runs[k]);
 		align->update(runs[k],totalObservations,chrom);
 	    } else{
@@ -129,7 +140,7 @@ void Controller::algorithm(){
     updateDownloadableRuns();
     calculateProfit(downloadableRuns);
     
-    while(continuing()){
+    while (continuing()){
 	batchCount++;
 
 	// if maxbatches < batchCount stop downloading
@@ -140,17 +151,18 @@ void Controller::algorithm(){
 	DEBUG(1,"...done Choosing next Run");
 
 	// maxProfit set in chooseNextRun()
-	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("<< runs.size() - badQualityRuns.size() << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
+	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) (" << runs.size() - badQualityRuns.size()
+	      << " good runs of " << runs.size() << ") | maxProfit: " << maxProfit);
 
 	// if profit < 0 stop downloading
-	if(!continuing()) break;
+	if (!continuing()) break;
 
-	if(param->simulation != 1){
+	if (param->simulation != 1){
 	    assert(tmp_run != nullptr);
 	    DEBUG(1,"Getting batch number " << tmp_run->timesDownloaded + 1 << " for " << tmp_run->accesionId);
 	    down->getBatch(tmp_run);
-	    align->update(tmp_run,totalObservations, chrom);
-	    if(tmp_run->badQuality == false){
+	    align->update(tmp_run, totalObservations, chrom);
+	    if (tmp_run->badQuality == false){
 		goodBatchCount++;
 	    }
 	} else{
@@ -160,17 +172,17 @@ void Controller::algorithm(){
 	totalScore = score(totalObservations);
 	totalProfit = totalScore - param->cost*param->batchSize*batchCount;
 
-	if(param->estimator != 0){
+	if (param->estimator != 0){
 	    DEBUG(1,"Estimating...")
 		// we pass all runs since the DM uses the information from all runs
 		est->estimateP(runs, batchCount);
-	    DEBUG(1,"... done Estimating")
-		}
+	    DEBUG(1,"... done Estimating");
+	}
 
 	calculateProfit(downloadableRuns);
 
 	DEBUG(1,"Exporting...");
-	if(1 == param->lessInfo){
+	if (1 == param->lessInfo){
 	    exportTotalObservationCSVlessInfo(tmp_run->accesionId);
 	} else {
 	    exportTotalObservationCSV(tmp_run->accesionId);
@@ -211,28 +223,35 @@ Run*  Controller::chooseNextRun(){
     assert(downloadableRuns.size() > 0);
     unsigned int index = 0;
     vector<Run*> candidates;
+    vector<double> scores;
 
     // in this case the next run is choosen randomly
-    if(param->estimator == 0){
+    if (param->estimator == 0){
 	// chooses a run randomly
 	return ran->select_randomly(downloadableRuns);
     } else {
 	if (downloadableRuns.size() > 0){
 	    maxProfit = downloadableRuns[0]->expectedProfit;
 	    candidates.push_back(downloadableRuns[0]);
-
+	    scores.push_back(downloadableRuns[0]->avglen);
 	    for (unsigned int i = 1; i < downloadableRuns.size(); i++){
 		Run *r = downloadableRuns[i];
 		// found a better score
 		if (maxProfit < r->expectedProfit){
 		    candidates.clear();
+		    scores.clear();
 		    candidates.push_back(r);
+		    scores.push_back(r->avglen);
 		    maxProfit = r->expectedProfit;
 		} else if (maxProfit == r->expectedProfit){ // score is equal
 		    candidates.push_back(r);
+		    scores.push_back(r->avglen);
 		}
 	    }
-	    return ran->select_randomly(candidates);
+	    unsigned choice = ran->biasSelect(scores);
+	    DEBUG(3, "Bias chosen len=" << scores[choice]);
+	    return candidates[choice];
+	    // return ran->select_randomly(candidates);
 	}
     }
     return downloadableRuns[index];
@@ -270,7 +289,7 @@ double Controller::score(UUmap &obs){
     
     double sc = 0.0;
     UUmap::iterator i;
-    for(i = obs.begin(); i != obs.end(); i++){
+    for (i = obs.begin(); i != obs.end(); i++){
 	sc += score(i->second);
     }
     return sc;
@@ -283,17 +302,16 @@ void Controller::profit(Run *d) {
     long double pr = 0.0;
     long double pv = 0.0;
 
-    DEBUG(3,"calculating profit size=" << d->p.size());
-
-    UDmap::iterator it;
     double percentUniqueMatch = (d->timesDownloaded>0)? d->avgUmrPercent : avgUniq;
     double percentSpliced = (d->timesDownloaded>0)? d->avgSpliced : avgSpliced; // use overall average in case the run has no data yet
-    double batchsize = (double) param->batchSize;
-    for (it=d->p.begin(); it != d->p.end(); ++it) {
+    double batchsize = param->batchSize;
+
+    UDmap &pdist = (d->pRep)? d->pRep->p : d->p; // use either representatives p or own, if there is no representative run
+    DEBUG(3,"calculating profit size=" << pdist.size());
+    for (UDmap::iterator it = pdist.begin(); it != pdist.end(); ++it) {
 	double prob = it->second; // probability of observing transcript unit
 	double x = totalObservations[it->first]; // observations for transcript unit
-	    
-	pr += score(x + prob * (percentUniqueMatch + percentSpliced) * batchsize);
+	pr += score(x + prob * (percentUniqueMatch + percentSpliced) / 100 * batchsize);
 	pr -= score(x);
 	    
 	DEBUG(4,"pr " << pr);
@@ -312,10 +330,10 @@ void Controller::calculateProfit(vector<Run*> &runs){
 
     // calculate profit for runs with no reads only once
     double noReadsProfit = std::numeric_limits<int>::min();
-    unsigned numRuns = 5; // pseudocount on percentage of uniquely aligned reads
+    unsigned numRuns = 4; // pseudocount on percentage of uniquely aligned reads
     double avgUMR = 100.0 * numRuns; // prior overestimates the percentage of uniquely aliged reads
                                      // so the policy is biased towards exploring more at first
-    double sumSpliced = 50 * numRuns;
+    double sumSpliced = 100 * numRuns;
     DEBUG(5, "Calculating profits of all runs ...");
     for(unsigned int i = 0; i < runs.size(); i++){
 	Run *r = runs[i];
@@ -333,15 +351,16 @@ void Controller::calculateProfit(vector<Run*> &runs){
 		<< "\tlen=" << r->avglen << "\tprofit= " << r->expectedProfit << "\t#downl.batches="
 		<< r->timesDownloaded << "\tuniq [%]=" << r->avgUmrPercent << "\tsplices [%]=" << r->avgSpliced);
 	if (r->timesDownloaded > 0){
-	    avgUMR += r->avgUmrPercent * r->timesDownloaded;
-	    sumSpliced += r->avgSpliced * r->timesDownloaded;
-	    numRuns += r->timesDownloaded;
+	    int weight = 1; // instead of r->timesDownloaded
+	    avgUMR += r->avgUmrPercent * weight;
+	    sumSpliced += r->avgSpliced * weight;
+	    numRuns += weight;
 	}
     }
     avgUniq = avgUMR / numRuns;
     avgSpliced = sumSpliced / numRuns;
-    DEBUG(0, "average overall percentage of uniquely mapped reads (all " << numRuns << " batches): " << avgUniq);
-    DEBUG(0, "average overall percentage of spliced reads (all " << numRuns << " batches): " << avgSpliced);
+    DEBUG(0, "Estimated percentage of uniquely mapped reads from a random new run: " << avgUniq);
+    DEBUG(0, "Estimted percentage of spliced reads from a random new run: " << avgSpliced);
 }
 
 void Controller::exportTotalObservationCSV(string name) {
@@ -351,7 +370,7 @@ void Controller::exportTotalObservationCSV(string name) {
      * Also the observations and p-vectors of all runs are exported.
      */
 
-    if(param->exportObservationsToFile != 0){
+    if (param->exportObservationsToFile != 0){
 	string fileName = param->outFileNamePrefix;
 	fileName += "/Toy" + std::to_string(batchCount);
 	fileName += ".csv";
@@ -368,28 +387,17 @@ void Controller::exportTotalObservationCSV(string name) {
 	}
 	f << endl;
 
-	if(param->simulation != 1){
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << chrom->translate2str[j]<< ";" << totalObservations[j]
-		  << ";" << totalScore << ";" << totalProfit << ";" << name;
+	for (unsigned int j=0; j < totalObservations.size(); j++) {
+	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
+	      << ";" << totalObservations[j]
+	      << ";" << totalScore << ";" << totalProfit << ";" << name;
 
-		for(unsigned int k = 0; k < runs.size(); k++) {
-		    f << ";" << runs[k]->observations[j] << ";"
-		      << runs[k]->p[j] << ";" << runs[k]->expectedProfit;
-		}
-		f << endl;
+	    for (unsigned int k = 0; k < runs.size(); k++) {
+		f << ";" << runs[k]->observations[j] << ";"
+		  << ((runs[k]->pRep)? runs[k]->pRep->p[j] : runs[k]->p[j])
+		  << ";" << runs[k]->expectedProfit;
 	    }
-	} else {
-	    for(unsigned int j=0; j < totalObservations.size(); j++) {
-		f << sim->translate2str[j]<< ";" << totalObservations[j]
-		  << ";" << totalScore << ";" << totalProfit << ";" << name;
-
-		for(unsigned int k = 0; k < runs.size(); k++) {
-		    f << ";" << runs[k]->observations[j] << ";"
-		      << runs[k]->p[j] << ";" << runs[k]->expectedProfit;
-		}
-		f << endl;
-	    }
+	    f << endl;
 	}
 	f.close();
     }
@@ -402,30 +410,27 @@ void Controller::exportTotalObservationCSVlessInfo(string name) {
      * In exportTotalObservationsCSV() also the observations and p-vectors of all runs are exported.
      */
 
-
     if (param->exportObservationsToFile != 0) {
 	string fileName = param->outFileNamePrefix;
 	fileName += "Coverage" + std::to_string(batchCount);
 	fileName += ".csv";
-
+	
 	fstream f;
 	f.open(fileName, ios::out);
-	if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
-
+	if (!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+	
 	// first line
 	f << "blockName;totalObservations;totalScore;totalProfit;best" << "\n";
 
 	if(param->simulation != 1){
 	    for(unsigned int j=0; j < totalObservations.size(); j++) {
 		f << chrom->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-
 	    }
 	} else {
 	    for(unsigned int j=0; j < totalObservations.size(); j++) {
 		f << sim->translate2str[j]<< ";" << totalObservations[j] << ";" << log(totalScore) << ";" << totalProfit << ";" << name << "\n";
-		
 	    }
-	    }
+	}
 	f.close();
     }
 }
@@ -437,21 +442,15 @@ void Controller::exportCoverage(){
 
     fstream f;
     f.open(fileName, ios::out);
-    if(!f) { DEBUG(0,"Cant open file " << fileName << "!");}
+    if (!f) { DEBUG(0,"Cant open file " << fileName << "!");}
 
     // first line
     f << "blockName;totalObservations" << "\n";
 
-    if(param->simulation != 1){
-	for(unsigned int j=0; j < totalObservations.size(); j++) {
-	    f << chrom->translate2str[j]<< ";" << totalObservations[j] << "\n";
-
-	}
-    }else{
-	for(unsigned int j=0; j < totalObservations.size(); j++) {
-	    f << sim->translate2str[j]<< ";" << totalObservations[j] << "\n";
-	}
-    }
+    for (unsigned int j=0; j < totalObservations.size(); j++)
+	f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
+	  << ";" << totalObservations[j] << "\n";
+	
     f.close();
 }
 
@@ -487,11 +486,11 @@ void Controller::createDieFromRun(Run *r) {
      */
 
     int c = 1;
-    while(r->maxNumOfBatches >= c) {
+    while (r->maxNumOfBatches >= c) {
 	DEBUG(0,"loading batch " << c << "/" << r->maxNumOfBatches);
 	c++;
 	down->getBatch(r);
-	align->update(r,totalObservations,chrom);
+	align->update(r, totalObservations, chrom);
     }
 
     printRun2File(r);
@@ -537,7 +536,6 @@ void Controller::createDiceFromRuns() {
     // iterating over the runlist, deleting runs that are downloaded already
     for(unsigned int i = 0; i < runs.size(); i++){
 	if (completedRuns.find(runs[i]->accesionId) == completedRuns.end()) {
-
 	    createDieFromRun(runs[i]);
 	    completedRuns[runs[i]->accesionId] = 1;
 
@@ -560,17 +558,15 @@ void Controller::createDiceFromRuns() {
 void Controller::updateDownloadableRuns(){
     vector< Run* >::iterator it = downloadableRuns.begin();
     
-    while(it != downloadableRuns.end()) {
-	if((*it)->badQuality == true){
+    while (it != downloadableRuns.end()) {
+	if ((*it)->badQuality == true){
 	    DEBUG(0,"Deleting run " << (*it)->accesionId << " because of bad quality.");
 	    badQualityRuns.push_back(*it);
 	    it = downloadableRuns.erase(it);
-	}
-	else if((*it)->timesDownloaded*param->batchSize >= (*it)->numOfSpots){
+	} else if((*it)->timesDownloaded*param->batchSize >= (*it)->numOfSpots){
 	    DEBUG(0,"Deleting run " << (*it)->accesionId << " because no reads are left to download.");
 	    it = downloadableRuns.erase(it);
 	}
-
 	else ++it;
     }
 }
@@ -613,7 +609,7 @@ void Controller::mergeAlignments(const int count){
 	if(param->deleteLater){
 		s = s + " delete";
 	}
-	s = s + " >nul 2>&1";
+	s = s + " >merge.out 2>&1";
 
 	DEBUG(0, "Running '" << s <<"'");
 	const char * c = s.c_str();
@@ -646,19 +642,18 @@ void Controller::finalMerge(){
 	unsigned int requiredLevels = ceil(log(batchCount) / log(param->mergeThreshold));
 	string s = param->pathToVARUS + "/scripts/finalMerge.sh";
 
-	if(param->deleteLater){
+	if (param->deleteLater){
 		s = s + " delete";
 	}
-	s = s + " >nul 2>&1";
+	s = s + " >finalMerge.out 2>&1";
 
 	string sCall = "Running '" + s + "'";
 	DEBUG(0, sCall);
 	const char * c = s.c_str();
 	int status = system(c);
-	if(0 != status)
-	{
-		DEBUG(0,"Failed to run 'finalMerge.sh' properly!");
-		param->exit_text();
+	if (0 != status){
+	    DEBUG(0,"Failed to run 'finalMerge.sh' properly!");
+	    param->exit_text();
 	}
 }
 

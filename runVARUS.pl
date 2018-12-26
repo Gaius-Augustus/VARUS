@@ -58,13 +58,12 @@ my $verbosity = 4;
 my $timeStamp = 1;
 my $displayRunListOutput = 1;
 my $displaySTARIndexerOutput = 1;
-my $readFromTable = 1;
+my $readFromTable = 0;
 
 my $latinSpecies ="";
 my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
-my $onlyPaired = 1;
 my $pathToSTAR = "/usr/bin/";
 
 my $VARUScall = "./VARUS";
@@ -87,8 +86,6 @@ my $usage =
                                     You need a RunList in order to run VARUS
 
     --allRuns           1           put all available accession-ids in the Runlist.txt, if false only the first 100 are used
-
-    --onlyPaired	1	    use only paired-end reads
 
     --runVARUS          1           runs VARUS
 
@@ -121,7 +118,6 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'runThreadN=i'=>\$runThreadN,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
-           'onlyPaired!'=>\$onlyPaired,
 	   'readFromTable!'=>\$readFromTable,
 	   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
@@ -188,7 +184,6 @@ Log(0, "Started runVarus.pl with the following parameters:\n
   varusParameters: $varusParameters
   createSTARindex: $createSTARindex
   createRunList: $createRunList
-  onlyPaired: $onlyPaired
   logFileName: $logFileName
   verbosity: $verbosity
   displayRunListOutput: $displayRunListOutput
@@ -286,7 +281,7 @@ foreach my $latinName (keys %species){
     # Create an Index for the genome using STAR
     #--------------------------------------------------------------------
 
-    if($createSTARindex){
+    if ($createSTARindex){
         Log(0, "Creating STAR-index...");
         my $genomeCur = $outFileDir."/".$folder."/genome";
         mkdir($genomeCur, 0700) unless(-d $genomeCur );
@@ -294,7 +289,9 @@ foreach my $latinName (keys %species){
 	if (substr($genomefname, 0, 1) ne '/'){
 	    $genomefname = $outFileDir . "/" . $genomefname;
 	}
+	my $tmpdirname = "STARtmp" . int(rand(10000000));
         my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
+	    . "--outTmpDir $tmpdirname "
 	    . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
 	
         Log(0,"Invoking STAR-indexer call: ".$genomeGenerateCmd);

@@ -24,7 +24,7 @@ class ChromosomeInitializer {
 
  public:
     ParameterHandler *param;
-    myRandomEngine * ran;
+    myRandomEngine *ran;
 
     SUmap chromosomLengths;		// holds the lengths of the chromosomes
 
@@ -39,7 +39,6 @@ class ChromosomeInitializer {
     std::vector<U32> order;
 
     std::vector<std::string> inputRuns; // names of the given runs
-
 
     ChromosomeInitializer(ParameterHandler *p);
     ~ChromosomeInitializer();

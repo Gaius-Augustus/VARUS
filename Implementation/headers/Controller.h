@@ -46,9 +46,9 @@ class Controller {
 
     double maxProfit;
 
-    double totalProfit;		// Gewinn = Auszahlung - Kosten
+    double totalProfit;		// profit = gain - costs
 
-    std::vector<Run*> runs;				// all runs
+    std::vector<Run*> runs;			// all runs
     std::vector<Run*> downloadableRuns;		// runs that still have reads left to be downloaded
     std::vector<Run*> badQualityRuns;		// runs that at some point were found to have bad quality during
     // execution of the program
