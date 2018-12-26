@@ -15,24 +15,21 @@
 using namespace std;
 
 std::string STAR_Aligner::shellCommand(Run *r) {
-    /*! \brief Constructs the shell command that calls STAR.
-     *
+    /*! \brief
+     * Constructs the shell command that calls STAR.
      */
 
     string cmd;
     string batchDir_ = batchDir(r);
-    
+
+    cmd = param->pathToSTAR + "STAR"
+	+ " --runThreadN " + to_string(param->runThreadN)
+	+ " --genomeDir " + param->genomeDir;
+
     if (r->paired == false) { // unpaired reads
-	cmd = param->pathToSTAR + "STAR"
-	    + " --runThreadN " + to_string(param->runThreadN)
-	    + " --genomeDir " + param->genomeDir
-	    + " --readFilesIn " + batchDir_ + r->accesionId + ".fasta"
-	    + " --outFileNamePrefix " + batchDir_;
-	    // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
-	    // + " --outSAMtype BAM";
+	cmd += " --readFilesIn " + batchDir_ + r->accesionId + ".fasta";
     } else { // paired reads
 	vector<string> files = filesWithExtInFolder(batchDir_, ".fasta");
-
 	string f = "";
 	// we use only the first and the last file, because STAR can only
 	// handle two files. For Pombe run SRR097898 the middle part is a technical barcode.
@@ -46,15 +43,16 @@ std::string STAR_Aligner::shellCommand(Run *r) {
 	} else {
 	    DEBUG(0,"No fasta-files found!");
 	}
-
-	cmd = param->pathToSTAR + "STAR"
-	    + " --runThreadN " + to_string(param->runThreadN)
-	    + " --genomeDir " + param->genomeDir
-	    + " --readFilesIn " + f
-	    + batchDir_;
-	    // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
-	    // + " --outSAMtype BAM";
+	cmd += " --readFilesIn " + f;
     }
+    cmd += " --outFileNamePrefix " + batchDir_;
+    
+    // sjdbFileChrStartEnd
+    // string(s): path to the files with genomic coordinates (chr <tab> start <tab> end <tab> strand) for the splice junction introns. Multiple files can be supplied wand will be concatenated.
+
+    // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
+    // + " --outSAMtype BAM";
+
     return cmd;
 }
  
@@ -63,29 +61,22 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
      *
      */
 
-    std::ostringstream n, x;
-    n << r->N;
-    x << r->X;
-    string samFname = param->outFileNamePrefix + r->accesionId + "/" + "N" + n.str()
-	+ "X" + x.str() + "/Aligned.out.sam";
-
+    string samFname = batchDir(r) + "Aligned.out.sam";
+    string logFname = batchDir(r) + "Log.final.out";
     // First check in Log.final.out if the qualityThreshold is guaranteed
-    string logFname = param->outFileNamePrefix + r->accesionId + "/" + "N" + n.str()
-	+ "X" + x.str() + "/Log.final.out";
     checkQuality(samFname, logFname, r);
 
-
-    string deleteLater = param->outFileNamePrefix + r->accesionId;
+    // string deleteLater = param->outFileNamePrefix + r->accesionId;
 
     string line;
-    std::ifstream myfile(samFname.c_str());
+    std::ifstream samFile(samFname.c_str());
 
-    if (!myfile.is_open()) {
+    if (!samFile.is_open()) {
 	DEBUG(0,"Unable to open alignment " << samFname);
 	// return;
     }
 
-    while (getline(myfile, line)) {
+    while (getline(samFile, line)) {
 	if (!line.empty()) {
 	    if (line[0] != '@') {
 		string tmp;
@@ -101,8 +92,8 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
 		    string chromosomeName = wrds[2];
 		    string mappedAtChromosomPos = wrds[3];
 
-		    // determine which block the read mapped to of chromosom "chromosomeName"
-		    // mapping-pos/blockSize rounded down
+		    // determine which block the read mapped to of chromosome "chromosomeName"
+		    // mapping-pos / blockSize rounded down
 		    std::ostringstream oss;
 		    oss << floor(atoll(mappedAtChromosomPos.c_str()) / param->blockSize);
 		    string chromosomBlock = chromosomeName + ":" + oss.str();
@@ -112,7 +103,7 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
 			// add the transcript_unit-name to the transcript_unit-list of the read
 			if (reads[readName].transcriptUnits.find(chromosomBlock)
 			    != reads[readName].transcriptUnits.end()) {
-			    reads[readName].transcriptUnits[chromosomBlock] += + 1;
+			    reads[readName].transcriptUnits[chromosomBlock] += 1;
 			} else {
 			    reads[readName].transcriptUnits[chromosomBlock] = 1;
 			}
@@ -125,7 +116,7 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
 	    }
 	}
     }
-    myfile.close();
+    samFile.close();
 
     //	if(param->deleteLater == 1){
     //		string remove = "rm -rf " + deleteLater;
@@ -203,8 +194,8 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     // sort and convert to BAM
     size_t lastindex = samfilename.find_last_of("."); 
     string stem = samfilename.substr(0, lastindex);
-    string bamfilename = batchDir_ + stem + ".bam";
-    string sortcmd = "samtools sort samfilename -O SAM -o " + bamfilename;
+    string bamfilename = stem + ".bam";
+    string sortcmd = "samtools sort " + samfilename + " -O BAM -o " + bamfilename;
     int status = system(sortcmd.c_str());
     if (status != 0) {
 	DEBUG(0, string("Failed to run samtools sort properly:") + sortcmd);
@@ -247,8 +238,12 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     string cumintronsFname = "cumintrons.gff" ,
 	cumintronsTempFname = "cumintrons.temp.gff";
     string intronDBFname = "intronDB.gff";
-    string joincmd = "cat " + hintsfilename + " " + cumintronsFname +
-	" | join_mult_hints.pl >" + cumintronsTempFname;
+    string joincmd = "cat " + hintsfilename;
+    ifstream f(cumintronsFname.c_str());
+    if (f.good()) // test for existence, otherwise cat gives an error for the very first batch
+	joincmd += " " + cumintronsFname;
+    f.close();
+    joincmd += " | join_mult_hints.pl >" + cumintronsTempFname;
     status = system(joincmd.c_str());
     if (status != 0) {
 	DEBUG(0, string("Failed to run join_mult_hints.pl properly:") + joincmd);
@@ -280,14 +275,15 @@ void STAR_Aligner::checkQuality(const string &samfilename,
 	    int mult;
 	    size_t mpos = line.find("mult=");
 	    if (mpos != string::npos) {
-		mult = std::stoi(line.substr(mpos));
+		mpos += strlen("mult=");
+		mult = stoi(line.substr(mpos));
 		if (mult >= mincovthresh)
 		    signif = true;
 	    }
 	}
 	if (signif){
 	    numsignif++;
-	    intronDBFile << line; // TODO: STAR format
+	    intronDBFile << line << endl; // TODO: STAR format
 	}
     }
     cumIntronFile.close();

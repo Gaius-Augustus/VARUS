@@ -137,7 +137,7 @@ void Controller::algorithm(){
 
 	DEBUG(1,"Choosing next Run ...");
 	Run *next_run = chooseNextRun();
-	DEBUG(1,"...done Choosing next Run");
+	DEBUG(1,"...done choosing next run.");
 
 	// maxProfit set in chooseNextRun()
 	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("
@@ -145,9 +145,9 @@ void Controller::algorithm(){
 	      << ") | maxProfit: " << maxProfit);
 
 	// if profit < 0 stop downloading
-	if(!continuing()) break;
+	if (!continuing()) break;
 
-	if(param->simulation != 1){
+	if (param->simulation != 1){
 	    assert(next_run != nullptr);
 	    DEBUG(1,"Getting batch number " << next_run->timesDownloaded + 1
 		  << " for " << next_run->accesionId);
@@ -156,20 +156,20 @@ void Controller::algorithm(){
 	    if (next_run->badQuality == false){
 		goodBatchCount++;
 	    }
-	} else{
+	} else {
 	    sim->simulateObservations(next_run,totalObservations);
 	}
 
 	totalScore = score(totalObservations);
 	totalProfit = totalScore - param->cost*param->batchSize*batchCount;
 
-	if(param->estimator != 0){
-	    DEBUG(1,"Estimating...")
-		// we pass all runs since the DM uses the information from all runs
-		est->estimateP(runs, batchCount);
-	    DEBUG(1,"... done Estimating")
-		}
-
+	if (param->estimator != 0){
+	    DEBUG(1,"Estimating...");
+	    // we pass all runs since the DM uses the information from all runs
+	    est->estimateP(runs, batchCount);
+	    DEBUG(1,"... done Estimating");
+	}
+	
 	calculateProfit(downloadableRuns);
 
 	DEBUG(1,"Exporting...");
@@ -319,7 +319,7 @@ void Controller::calculateProfit(vector<Run*> &runs){
                                      // so the policy is biased towards exploring more at first
     double sumSpliced = 50 * numRuns;
     DEBUG(5, "Calculating profits of all runs ...");
-    for(unsigned int i = 0; i < runs.size(); i++){
+    for (unsigned int i = 0; i < runs.size(); i++){
 	Run *r = runs[i];
 	if (r->timesDownloaded == 0 &&
 	    noReadsProfit != std::numeric_limits<int>::min()){
@@ -412,14 +412,15 @@ void Controller::exportTotalObservationCSVlessInfo(Run *r) { //
 
 	// header
 	f << "# batch run chosen from run " << name << endl;
-	f << "#blockName\ttotalObservations\trunObservations\ttotalScore\ttotalProfit" << endl;
+	f << "# totalScore " << totalScore << endl;
+	f << "# totalProfit " << totalProfit << endl;
+	f << "#blockName\ttotalObservations\trunObservations" << endl;
 
 	for (unsigned int j=0; j < totalObservations.size(); j++)
 	    f << ((param->simulation != 1)? chrom->translate2str[j] : sim->translate2str[j])
-	      << "\t" << totalObservations[j] 
+	      << "\t" << totalObservations[j]
 	      << "\t" << r->observations[j]
-	      << "\t" << log(totalScore)
-	      << "\t" << totalProfit << endl;
+	      << endl;
 
 	f.close();
     }

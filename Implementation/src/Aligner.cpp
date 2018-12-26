@@ -28,12 +28,11 @@ void Aligner::mapReads(Run *r) {
      */
 
     // build the command
-    std::string s = shellCommand(r);
+    string alignCmd = shellCommand(r);
 
-    const char * c = s.c_str();
-    int status = system(c);
+    int status = system(alignCmd.c_str());
     if (0 != status) {
-	DEBUG(0, "Failed to run aligner properly!");
+	DEBUG(0, "Failed to run aligner properly: " << alignCmd);
     }
 }
 
@@ -51,41 +50,32 @@ void Aligner::updateObservations(Run *r, UUmap &totalObservations,
     unordered_map<string, RNAread>::iterator it;
     for (it = reads.begin(); it != reads.end(); ++it) {
 	// evaluates if the read is an UMR to a block not UMR to a Chromosome
-
-	if (it->second.UMR()) {
+	RNAread &read = it->second;
+	if (read.UMR()) {
 	    UMRcount++;
-	    chromosom_block = it->second.transcriptUnits.begin()->first;
-
+	    chromosom_block = read.transcriptUnits.begin()->first;
+	    
 	    DEBUG(4, chromosom_block << " is UMR");
-	    //			r->observationSum++;
 
 	    U32 key = c->translate2int[chromosom_block];
 
-	    // tmp_run
-
-	    //			r->addObservation(key);
-	    if(r->observations.find(key) != r->observations.end())
-		{
-		    r->observations[key] += 1;
-		}
+	    if (r->observations.find(key) != r->observations.end())
+		r->observations[key] += 1;
 	    else
-		{
-		    r->observations[key] = 1;
-		}
+		r->observations[key] = 1;
 
 	    ++r->observationSum;
 
 	    // totalObservations
-	    if (totalObservations.find(key) != totalObservations.end()) {
+	    if (totalObservations.find(key) != totalObservations.end())
 		totalObservations[key] += 1;
-	    } else {
+	    else
 		totalObservations[key] = 1;
-	    }
 	} else {
 	    DEBUG(4, chromosom_block << " is not UMR");
 	}
     }
-//	NULLreads = index - UMRcount;
+    DEBUG(0, "r->observationSum = " << r->observationSum << " UMRcount = " << UMRcount);
 }
 
 void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c){
