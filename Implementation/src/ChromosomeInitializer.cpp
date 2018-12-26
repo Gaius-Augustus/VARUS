@@ -22,6 +22,7 @@ ChromosomeInitializer::ChromosomeInitializer(ParameterHandler *p) {
 }
 
 ChromosomeInitializer::~ChromosomeInitializer() {
+    delete ran;
 }
 
 void ChromosomeInitializer::readInputRuns(){
@@ -215,20 +216,21 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 }
 
 void ChromosomeInitializer::initializeSigma(Run *r) {
-	/*! \brief The sigma-vector contains the order in which the batches should be downloaded.
-	 *  The order is randomized so that potential biases in the order of the reads
-	 *  in the run are minimalized. The second argument is the seed used for the shuffler.
-	 *  If set to a positive value, the seed is set, else the seed is derived randomly
-	 *  according to the current time.
-	 */
+    /*! \brief The sigma-vector contains the order in which the batches should be downloaded.
+     *  The order is randomized so that potential biases in the order of the reads
+     *  in the run are minimalized. The second argument is the seed used for the shuffler.
+     *  If set to a positive value, the seed is set, else the seed is derived randomly
+     *  according to the current time.
+     */
 
-	// if the vector is already initialized we need to first delete it
-	if(r->sigma.size() > 0) r->sigma.clear();
+    // if the vector is already initialized we need to first delete it
+    if(r->sigma.size() > 0) r->sigma.clear();
 
-	DEBUG(3,"Max number of batches for run " << r->accesionId
-	      << " " << r->maxNumOfBatches);
-	// set all values
-	for (int i=0; i<r->maxNumOfBatches; i++) r->sigma.push_back(i);
+    DEBUG(3,"Max number of batches for run " << r->accesionId
+	  << " " << r->maxNumOfBatches);
+    // set all values
+    for (int i=0; i<r->maxNumOfBatches; i++)
+	r->sigma.push_back(i);
 
-	ran->shuffleExceptLast(r->sigma);
+    ran->shuffleExceptLast(r->sigma);
 }

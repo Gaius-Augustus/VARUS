@@ -20,22 +20,23 @@ extern ParameterHandler *param;
 //const int verbosity_out_level =3;
 
 Run::Run() {
-	paired = false;
-	N = 0;
-	X = 0;
-	numOfSpots = 0;
-	maxNumOfBatches = 0;
-	sigmaIndex = 0;
-	batchSize = 0;
-	timesDownloaded = 0;
-	transcriptBlocks = 0;
-	observationSum = 0;
-	pNoObs = 0.0;
-	expectedProfit = 0.0;
-	accesionId = "noId";
-	badQuality = false;
-	avgUmrPercent = 0.0;
-	avgSpliced = 0.0;
+    paired = false;
+    N = 0;
+    X = 0;
+    numOfSpots = 0;
+    maxNumOfBatches = 0;
+    sigmaIndex = 0;
+    batchSize = 0;
+    timesDownloaded = 0;
+    transcriptBlocks = 0;
+    observationSum = 0;
+    pNoObs = 0.0;
+    expectedProfit = 0.0;
+    accesionId = "noId";
+    badQuality = false;
+    avgUmrPercent = 0.0;
+    avgSpliced = 0.0;
+    pRep = nullptr;
 }
 
 Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsigned int numOfSpots,
@@ -56,9 +57,9 @@ Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsi
     pNoObs = 0.0;
     expectedProfit = 0.0;
     badQuality = false;
-
     avgUmrPercent = 0.0;
     avgSpliced = 0.0;
+    pRep = nullptr;
 }
 
 Run::~Run() {

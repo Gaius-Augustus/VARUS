@@ -473,11 +473,11 @@ ParameterHandler::ParameterHandler() {
 //    	PARAM(coverage);
 //    zValue = 20;
 //    	PARAM(zValue);
-    lambda = 10.0;
-    	INITPARAM(lambda,
-    			parameterCategories[SIMPLEANDADVANCED],
-				"parameter for estimator 2. The weight with which the sum of all observations"
-				" in all runs is added as additional pseudocounts for the estimation.",false);
+    lambda = 2.0;
+    INITPARAM(lambda,
+	      parameterCategories[SIMPLEANDADVANCED],
+	      "parameter for estimator 2. The weight with which the sum of all observations"
+	      " in all runs is added as additional pseudocounts for the estimation.",false);
 
 //    logScore = 1;	// 1 == logScore, 0 == minScore
 //    	PARAM(logScore);
@@ -950,53 +950,47 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
      *  So we need to set a flag in order to not get stuck in a loop.
      */
 
-    if(readParametersFromFile != 0)
-    {
-		if(readAllready == false)
-		{
-			argc_saved = argc;
-			argv_saved = new char*[argc_saved];
-
-			for(unsigned int i = 0; i < argc; i++) {
-				argv_saved[i] = argv[i];
-			}
-
-
-			readAllready = true;
-			read_parameters_from_file(pathToParameters);
+    if(readParametersFromFile != 0) {
+	if(readAllready == false)
+	    {
+		argc_saved = argc;
+		argv_saved = new char*[argc_saved];
+		
+		for(unsigned int i = 0; i < argc; i++) {
+		    argv_saved[i] = argv[i];
 		}
+		
+		
+		readAllready = true;
+		read_parameters_from_file(pathToParameters);
+	    }
     }
-
 }
 
 std::ostream & ParameterHandler::printParameters(std::ostream& os) {
-	/*! \brief The parameters are appended to the std::ostream os.
-	 *
-	 * The format is in such a way, that a call of read_parameters_from_file()
-	 *  with an output-file created with this method can be read in again.
-	 * For example: Let lambda=1.2
-	 *
-	 * outFile:
-	 * .
-	 * .
-	 * .
-	 * --lambda 1.2
-	 * .
-	 * .
-	 * .
-	 */
+    /*! \brief The parameters are appended to the std::ostream os.
+     *
+     * The format is in such a way, that a call of read_parameters_from_file()
+     *  with an output-file created with this method can be read in again.
+     * For example: Let lambda=1.2
+     *
+     * outFile:
+     * ...
+     * --lambda 1.2
+     * ...
+     */
 
-//	map<string,string>::iterator it;
-	map<string,Parameter>::iterator it;
-	for(it = parameters.begin(); it != parameters.end(); it++) {
-//		os << "--" << it->first << " " << it->second << "\n";
-//		os << "--" << it->first << " " << it->second.description << "\n";
+    //	map<string,string>::iterator it;
+    map<string,Parameter>::iterator it;
+    for(it = parameters.begin(); it != parameters.end(); it++) {
+	//		os << "--" << it->first << " " << it->second << "\n";
+	//		os << "--" << it->first << " " << it->second.description << "\n";
 
-		if(it->second.deprecated == false){
-			os << "--" << it->first << " " << it->second.value << "\n";
-		}
+	if(it->second.deprecated == false){
+	    os << "--" << it->first << " " << it->second.value << "\n";
 	}
-	return os;
+    }
+    return os;
 }
 
 void ParameterHandler::export_parameters() {
@@ -1097,13 +1091,12 @@ void ParameterHandler::read_parameters_from_file(string path) {
 	int argc_test = wrds.size();
 //	cerr << __FUNCTION__ << argc_test << endl;
 
-
 	char **argv_test = new char*[argc_test];
-	for(unsigned int i = 0; i < wrds.size(); i++) {
-		char *p = new char[wrds[i].size() + 1];
-		strncpy(p, wrds[i].c_str(), wrds[i].size());
-		p[wrds[i].size()] = '\0';
-		argv_test[i] = p;
+	for (unsigned int i = 0; i < wrds.size(); i++) {
+	    char *p = new char[wrds[i].size() + 1];
+	    strncpy(p, wrds[i].c_str(), wrds[i].size());
+	    p[wrds[i].size()] = '\0';
+	    argv_test[i] = p;
 	}
 
 	/**

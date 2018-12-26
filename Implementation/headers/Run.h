@@ -23,6 +23,10 @@ class Run {
 
     UUmap observations;
     UDmap p;   // estimator for all entries with an observation
+    Run *pRep; /* Another run representing this run with its probability distribution p.
+		  This can be used to save time and memory, in particular when all runs not yet downloaded
+		  have the same probability distribution. pRep = nullptr if not used.
+		*/
     double pNoObs; // the estimator for all entries with no observations
 
     unsigned int N; // min-Index for fastq-dump

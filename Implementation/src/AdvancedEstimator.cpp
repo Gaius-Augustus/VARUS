@@ -22,7 +22,7 @@ AdvancedEstimator::~AdvancedEstimator() {
 }
 
 void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iterationNumber) {
-/* 		p_i = (c_i + a + lambda*p_total)normalizingConst
+/* 		p_i = (c_i + a + lambda*p_total_{i})*normalizingConst
  *
  * p_i: 	Estimator for the i-th Run
  * c_i: 	Observations in the i-th Run
@@ -33,117 +33,70 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
  */
 
 
-//	DEBUG(3,"runs.size() " << runs.size());
+    DEBUG(2, "runs.size() " << runs.size());
 
     UUmap obs_total;	// c_j
-    unsigned int observationSum = 0;							// c^*
     // calculate observations_total and sum(observations)
-    for(unsigned int k = 0; k < runs.size(); k++) {
-	observationSum 	+= runs[k]->observationSum;
-	obs_total 		+= runs[k]->observations;
-	//		DEBUG(3,"runs[k]->observationSum " << runs[k]->observationSum );
-	//		DEBUG(3,"runs[k]->observations " << runs[k]->observations );
-	}
+    for (unsigned int k = 0; k < runs.size(); k++) {
+	obs_total += runs[k]->observations; // insert into map
+    }
+    // DEBUG(2,"obs_total: " << obs_total);
 
-//	DEBUG(3,"observationSum: " << observationSum);
-//	DEBUG(3,"obs_total: " << obs_total);
+    UDmap p_total;
+    double pC = 0.0;
+    
+    unsigned int totalAliCount = 0;
+    for (UUmap::iterator j = obs_total.begin(); j != obs_total.end(); j++)
+	totalAliCount += obs_total[j->first];
+    
+    double normalizer = 1.0 / (totalAliCount + pC * obs_total.size());
+    for (UUmap::iterator j = obs_total.begin(); j != obs_total.end(); j++) 
+	p_total[j->first] = normalizer * (pC + obs_total[j->first]);
+    
+    
+    DEBUG(1, "total alignment count=" << totalAliCount);
 
-	UDmap p_total;
-	UUmap::iterator j;
+    // Make only once the estimation for runs with 0 reads
+    UDmap pnoObs;
+    double normalizingConst = (param->pseudoCount + param->lambda) * param->numOfBlocks;	    
 
-	double pC = 1.0;
+    DEBUG(2, "Making estimation for runs not downloaded yet...");
+    normalizer = 0.0;
+    for (UDmap::iterator i = p_total.begin(); i != p_total.end(); i++)
+	normalizer += param->pseudoCount  + param->lambda * p_total[i->first] * param->numOfBlocks;
+    normalizer = 1.0 / normalizer;
+    for (UDmap::iterator i = p_total.begin(); i != p_total.end(); i++){
+	pnoObs[i->first] = normalizer * (param->pseudoCount  + param->lambda * p_total[i->first] * param->numOfBlocks);
+	DEBUG(2, "pseudoCount=" << param->pseudoCount << "\tlambda* p_total[i->first] * param->numOfBlocks= " << param->lambda
+	      << " * " <<  p_total[i->first] << " * " << param->numOfBlocks << " = " << param->lambda * p_total[i->first] * param->numOfBlocks
+	      << "\tpnoObs=" << pnoObs[i->first]);
+    }
+    DEBUG(2, "p_total sums to " << sum(p_total));
 
-	unsigned int totalReadsDownloaded = iterationNumber*param->batchSize;
-
-	for(j=obs_total.begin(); j!=obs_total.end(); j++) {
-			// p_j = c_j/c*
-//			p_total[j->first] = ((double)obs_total[j->first] + pC)/((double)observationSum + pC*obs_total.size());	// pre 7.12.17
-			p_total[j->first] = ((double)obs_total[j->first] + pC)/((double)totalReadsDownloaded + pC*obs_total.size()); // after 7.12.17
-
-//			DEBUG(3,"p_total[j->first] " << p_total[j->first]);
-	}
-
-	UDmap pnoObs;
-	// Make estimation for runs with 0 reads only once
-	{
-	    double normalizingConst = 	+ (double)param->pseudoCount*param->numOfBlocks
-		+ param->lambda*param->numOfBlocks;
-	    
-	    UDmap::iterator j;
-	    // runs[k]->p.size() will be equal to totalObs.size() afterwards even though
-	    // runs[k]->getObservationsSize may be smaller
-	    for(j=p_total.begin(); j!=p_total.end(); j++) {
-		// p_j = c_j + a/(c*+1) + lambda*p_total
-		pnoObs[j->first] =
-		    ((double)param->pseudoCount
-		     + param->lambda*p_total[j->first]*param->numOfBlocks)
-		    /normalizingConst;
-	    }
-	}
-
-	double psum = 0.0;
-	bool faultyCount = 0;
-	for(unsigned int k = 0; k < runs.size(); k++) {
-	    // c^k_{n_k}* + a/(c*+1)T + lambda
-	    //		double normalizingConst = runs[k]->observationSum
-	    //								+ (double)param->pseudoCount*param->numOfBlocks
-	    //								+ param->lambda*param->numOfBlocks;								// pre 7.12.17
-	    
-	    if (runs[k]->timesDownloaded == 0){
-		runs[k]->p = pnoObs;
+    Run *firstRunWoObs = nullptr; // this run's will represent all runs p, that have not been downloaded yet
+    for (unsigned int k = 0; k < runs.size(); k++) {
+	runs[k]->pRep = nullptr; // unless warranted otherwise no run has another representative
+	if (runs[k]->timesDownloaded == 0){
+	    if (firstRunWoObs == nullptr){ 
+		runs[k]->p = pnoObs; // first run encountered that has not been downloaded
+		firstRunWoObs = runs[k];
 	    } else {
-
-		double normalizingConst = runs[k]->timesDownloaded*param->batchSize
-		    + (double)param->pseudoCount*param->numOfBlocks
-		    + param->lambda*param->numOfBlocks;								// after 7.12.17
-
-	//		DEBUG(1,normalizingConst);
-		UDmap::iterator j;
-		// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
-		// runs[k]->getObservationsSize may be smaller
-		for(j=p_total.begin(); j!=p_total.end(); j++) {
-		    // p_j = c_j + a/(c*+1) + lambda*p_total
-		    runs[k]->p[j->first] =
-			(runs[k]->observations[j->first]
-			 + (double)param->pseudoCount
-			 + param->lambda*p_total[j->first]*param->numOfBlocks)
-			/normalizingConst;
-		    psum += runs[k]->p[j->first];
-		}
-
-			// pNoObs = a/ c^k* + Ta + lambda
-	//		runs[k]->setPNoObs(basePseudoCount/
-	//										(runs[k]->getObservationSum()
-	//										+ runs[k]->getSize()*basePseudoCount
-	//										+ lambda*sum(p_total)));
-	//		psum += runs[k]->getPNoObs()*(runs[k]->getSize() - runs[k]->getPSize());
-	//		DEBUG(1, psum);
-	//		assert(fabs(1.0 - psum) <= precision);
-
-
-
-	//		if(fabs(1.0 - psum) > precision) {
-	////			DEBUG((fabs(1.0 - psum) << " > " << precision);
-	//			faultyCount++;
-	//		}
-		psum = 0.0;
+		runs[k]->pRep = firstRunWoObs;
 	    }
-	    
-	    DEBUG(2,"p_total sums to " << sum(p_total));
+	} else {
+	    double normalizingConst = 0.0;
+	    UDmap::iterator j;
+	    for (j = p_total.begin(); j != p_total.end(); j++)
+		normalizingConst += runs[k]->observations[j->first] + param->pseudoCount
+		    + param->lambda*p_total[j->first] * param->numOfBlocks;
+	    for (j = p_total.begin(); j != p_total.end(); j++) {
+		runs[k]->p[j->first] = (runs[k]->observations[j->first]	+ param->pseudoCount
+					+ param->lambda*p_total[j->first]*param->numOfBlocks) / normalizingConst;
+	    }
 	}
-	
-//	if(faultyCount != 0) {
-//		DEBUG(0,"WARNING: " << faultyCount << " runs probably have wrong estimations! P does not sum to 1!");
-//	}
-
+    }
 }
 
-//void AdvancedEstimator::initializeP(std::vector<Experiment*> &runs) {
-//	for(unsigned int k = 0; k < runs.size(); k++) {
-//		runs[k]->setAllPValues(1.0/(double)runs[k]->getSize());
-//	}
-//}
 
 void AdvancedEstimator::estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber){
-
 }

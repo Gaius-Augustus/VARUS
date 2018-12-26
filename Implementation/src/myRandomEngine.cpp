@@ -13,7 +13,6 @@ myRandomEngine::myRandomEngine(ParameterHandler *p) {
      */
     
     param = p;
-    
     if (p->randomSeed > 0){
 	gen.seed(p->randomSeed);
     } else {
@@ -50,8 +49,20 @@ void myRandomEngine::seed(unsigned int t){
     /*! \brief Set the seed of the engine. Only needed for unit-testing to make
      * things reproduce-able.
      */
-    
     gen.seed(t);
 }
 
 
+unsigned myRandomEngine::biasSelect(const std::vector<double> &scores, 
+				    unsigned bestOfK){
+    unsigned choice = 0;
+    double bestScore = std::numeric_limits<double>::min();
+    for (unsigned i=0; i < bestOfK && i< scores.size(); ++i){
+	unsigned idx = select_randomly(scores.size());
+	if (scores[idx] > bestScore){
+	    bestScore = scores[idx];
+	    choice = idx;
+	}
+    }
+    return choice;
+}

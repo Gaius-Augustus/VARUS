@@ -30,11 +30,11 @@ int main(int argc, char *argv[]) {
     Controller *c = new Controller(param);
     c->initialize();
 
-    if(1 == param->createDice){
+    if (1 == param->createDice){
 	c->createDiceFromRuns();
     } else {
 	c->algorithm();
     }
-
+    delete c;
     return EXIT_SUCCESS;
 }
