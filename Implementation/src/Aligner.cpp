@@ -75,7 +75,7 @@ void Aligner::updateObservations(Run *r, UUmap &totalObservations,
 	    DEBUG(2, chromosom_block << " is not UMR");
 	}
     }
-    DEBUG(0, "r->observationSum = " << r->observationSum << " UMRcount = " << UMRcount);
+    DEBUG(4, "r->observationSum = " << r->observationSum << " UMRcount = " << UMRcount);
 }
 
 void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c){

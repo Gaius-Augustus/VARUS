@@ -46,19 +46,25 @@ std::string STAR_Aligner::shellCommand(Run *r) {
 	cmd += " --readFilesIn " + f;
     }
     cmd += " --outFileNamePrefix " + batchDir_;
-    
-    // sjdbFileChrStartEnd
-    // string(s): path to the files with genomic coordinates (chr <tab> start <tab> end <tab> strand) for the splice junction introns. Multiple files can be supplied wand will be concatenated.
 
+    bool useIntronDB = true;
+    string intronDBFname = "intronDB.gff"; // see below
+    ifstream f(intronDBFname.c_str());
+    if (!f.good()) // test for existence
+	useIntronDB = false;
+    f.close();
+
+    if (useIntronDB)
+	cmd += " --sjdbFileChrStartEnd " + intronDBFname;
+   
     // + " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
     // + " --outSAMtype BAM";
-
     return cmd;
 }
  
 void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r) {
-    /*! \brief opens the SAM-file and retrieves how many times each read mapped to a transcript-block.
-     *
+    /*! \brief opens the SAM-file and retrieves 
+     * how many times each read mapped to a transcript-block.
      */
 
     string samFname = batchDir(r) + "Aligned.out.sam";
@@ -130,8 +136,6 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
 
     return;
 }
-
-
 
 
 void STAR_Aligner::checkQuality(const string &samfilename,
@@ -237,7 +241,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     // accumulate introns
     string cumintronsFname = "cumintrons.gff" ,
 	cumintronsTempFname = "cumintrons.temp.gff";
-    string intronDBFname = "intronDB.gff";
+    string intronDBFname = "intronDB.gff"; // see above
     string joincmd = "cat " + hintsfilename;
     ifstream f(cumintronsFname.c_str());
     if (f.good()) // test for existence, otherwise cat gives an error for the very first batch
@@ -264,12 +268,12 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     if (!intronDBFile.is_open())
 	DEBUG(0,"Unable to open " << intronDBFname << " for writing.");
     
-    unsigned mincovthresh = 3; // minimum number of splices to make the db
     bool signif;
     unsigned numsignif = 0; // number of significant introns
+    char *gff[7];
     while (getline(cumIntronFile, line)) {
 	signif = false;
-	if (mincovthresh <= 1)
+	if (param->mincovthresh <= 1)
 	    signif = true;
 	else {
 	    int mult;
@@ -277,17 +281,37 @@ void STAR_Aligner::checkQuality(const string &samfilename,
 	    if (mpos != string::npos) {
 		mpos += strlen("mult=");
 		mult = stoi(line.substr(mpos));
-		if (mult >= mincovthresh)
+		if (mult >= param->mincovthresh)
 		    signif = true;
 	    }
 	}
 	if (signif){
 	    numsignif++;
-	    intronDBFile << line << endl; // TODO: STAR format
+	    char *s = new char[line.length() + 1];
+	    strcpy(s, line.c_str());
+	    unsigned col = 0;
+	    gff[col] = strtok(s, "\t");
+	    while (gff[col] && col < 7-1 ) {
+		gff[++col] = strtok(NULL, "\t");
+	    }
+	    if (col >= 7-1){
+		unsigned strand = 0; // unknown
+		if (gff[6] == "+")
+		    strand = 1;
+		else if (gff[6] == "-")
+		    strand = 2;
+		// STAR format: chr <tab> start <tab> end <tab> strand
+		intronDBFile << gff[0] << "\t" << gff[3] << "\t"
+			     << gff[4] << "\t" << strand << endl;
+	    }
+	    delete [] s;
 	}
     }
+
     cumIntronFile.close();
     intronDBFile.close();
-    DEBUG(0, "number of significant (coverage >= " << mincovthresh << ") introns is "
+    DEBUG(0, "number of significant (coverage >= " << param->mincovthresh << ") introns is "
 	  << numsignif);
+    // TODO:
+    // filterIntronsFindStrand.pl " + intronDBFname > introns.s.f.gff
 }

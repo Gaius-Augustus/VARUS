@@ -144,11 +144,11 @@ void Controller::algorithm(){
 	batchCount++;
 
 	// if maxbatches < batchCount stop downloading
-	if(!continuing()) break;
+	if (!continuing()) break;
 
 	DEBUG(1,"Choosing next Run ...");
 	Run *next_run = chooseNextRun();
-	DEBUG(1,"...done choosing next run.");
+	DEBUG(4,"... done choosing next run.");
 
 	// maxProfit set in chooseNextRun()
 	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("
@@ -191,7 +191,7 @@ void Controller::algorithm(){
 	
 	exportRunStatistics();
 
-	DEBUG(1,"...done Exporting");
+	DEBUG(4,"...done Exporting");
 	  
 	if(param->ignoreReadNum != 1){
 	    updateDownloadableRuns();
@@ -264,12 +264,12 @@ bool Controller::continuing(){
      * Returns true if the program should be continued, false otherwise.
      */
 
-    if(param->maxBatches > 0 && batchCount > param->maxBatches){
+    if (param->maxBatches > 0 && batchCount > param->maxBatches){
 	DEBUG(0,"maxBatches: " << param->maxBatches);
 	return false;
     }
 
-    if(1 == param->profitCondition && maxProfit <= 0){
+    if (1 == param->profitCondition && maxProfit <= 0){
 	DEBUG(0,"maxProfit: " << maxProfit);
 	return false;
     }
@@ -361,7 +361,7 @@ void Controller::calculateProfit(vector<Run*> &runs){
     avgUniq = avgUMR / numRuns;
     avgSpliced = sumSpliced / numRuns;
     DEBUG(0, "Estimated percentage of uniquely mapped reads from a random new run: " << avgUniq);
-    DEBUG(0, "Estimted percentage of spliced reads from a random new run: " << avgSpliced);
+    DEBUG(0, "Estimated percentage of spliced reads from a random new run: " << avgSpliced);
 }
 
 void Controller::exportTotalObservationCSV(string name) {
@@ -462,6 +462,12 @@ void Controller::exportCoverage(){
 	  << ";" << totalObservations[j] << "\n";
 	
     f.close();
+
+    int ot = param->batchSize * batchCount / 10000000;
+    if (param->mincovthresh < ot){ // threshold slowly grows with number of aligned reads
+	DEBUG(0, "Increasing mincovthresh to " << ot);
+	param->mincovthresh = ot;
+    }
 }
 
 void Controller::printRun2File(Run *r) {

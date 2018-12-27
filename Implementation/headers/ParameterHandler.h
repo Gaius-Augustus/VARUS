@@ -147,6 +147,8 @@ class ParameterHandler
 
     std::map<paramCat, std::string> parameterCategories;		//key is name of the category in code, value is name of the category for the usage
 
+    unsigned mincovthresh = 3;  // minimum number of splices to make the db
+
     void printParameterCategory(const paramCat cat, const std::string des, const unsigned int maxParLength);
 
     void read_parameters_from_file(std::string path);	// uses parameters stored in the file
