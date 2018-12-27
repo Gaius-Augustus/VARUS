@@ -268,6 +268,6 @@ void STAR_Aligner::checkQuality(const string &samfilename,
 	    exit(1);
 	}
 	// make 4 column intron DB for aligers
-	filterGTF(cumintronsStrandedFname, intronDBFname, 1); //param->mincovthresh);
+	filterGTF(cumintronsStrandedFname, intronDBFname, param->mincovthresh);
     }
 }
