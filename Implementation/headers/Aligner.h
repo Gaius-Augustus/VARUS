@@ -28,16 +28,22 @@ class Aligner {
 
     void mapReads(Run *r);
 
-    virtual void getAlignedReads(std::unordered_map<std::string, RNAread> &reads, Run *r) = 0;
+    virtual void getAlignedReads(std::unordered_map<std::string,
+				 RNAread> &reads,
+				 Run *r,
+				 int batchNr) = 0;
 
     void updateObservations(Run *r, UUmap &totalObservations,
 			    std::unordered_map<std::string, RNAread> &reads,
 			    ChromosomeInitializer *c);
 
-    void update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c);
+    void update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c, int batchNr);
 
     std::string batchDir(Run *r);
 
+    // filter significantly frequent introns and make intron 'database' for STAR or HISAT
+    // return number of (intron) hints, including multiplicity
+    int filterGTF(std::string gtfInFileName, std::string intronDBFname="", unsigned thresh=0);
 };
 
 #endif /* ALIGNER_H_ */

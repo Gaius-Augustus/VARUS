@@ -62,7 +62,7 @@ std::string STAR_Aligner::shellCommand(Run *r) {
     return cmd;
 }
  
-void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r) {
+void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r, int batchNr) {
     /*! \brief opens the SAM-file and retrieves 
      * how many times each read mapped to a transcript-block.
      */
@@ -70,7 +70,7 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
     string samFname = batchDir(r) + "Aligned.out.sam";
     string logFname = batchDir(r) + "Log.final.out";
     // First check in Log.final.out if the qualityThreshold is guaranteed
-    checkQuality(samFname, logFname, r);
+    checkQuality(samFname, logFname, r, batchNr);
 
     // string deleteLater = param->outFileNamePrefix + r->accesionId;
 
@@ -140,7 +140,7 @@ void STAR_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *r
 
 void STAR_Aligner::checkQuality(const string &samfilename,
 				const string &logfilename,
-				Run *r){
+				Run *r, int batchNr){
     /*
      * evaluate STAR log file
      */
@@ -215,19 +215,13 @@ void STAR_Aligner::checkQuality(const string &samfilename,
 	DEBUG(0, string("Failed to run bam2hints properly:") + hintscmd);
 	exit(1);
     }
-    // parse introns
-    // count number of lines of introns.gff
-    std::ifstream hintsfile(hintsfilename);
-    
-    if (!hintsfile.is_open()) {
-	DEBUG(0,"Unable to open hints file " << hintsfilename);
-	exit(1);
+    // count number of introns in introns.gff (with multiplicity)
+    int numintrons = filterGTF(hintsfilename);
+    if (numintrons<0) {
+	DEBUG(0,"Could not open " << hintsfilename);
+	numintrons = 0; // ignore
     }
-    unsigned numintrons = 0;
-    while (getline(hintsfile, line))
-	numintrons++;
-    hintsfile.close();
-
+	
     double percentSpliced = 100.0 * numintrons / r->batchSize;
 
     DEBUG(0,"Percent spliced reads   |	" << percentSpliced << "%");
@@ -240,7 +234,8 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     
     // accumulate introns
     string cumintronsFname = "cumintrons.gff" ,
-	cumintronsTempFname = "cumintrons.temp.gff";
+	cumintronsTempFname = "cumintrons.temp.gff",
+    	cumintronsStrandedFname = "cumintrons.stranded.gff";
     string intronDBFname = "intronDB.gff"; // see above
     string joincmd = "cat " + hintsfilename;
     ifstream f(cumintronsFname.c_str());
@@ -250,68 +245,29 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     joincmd += " | join_mult_hints.pl >" + cumintronsTempFname;
     status = system(joincmd.c_str());
     if (status != 0) {
-	DEBUG(0, string("Failed to run join_mult_hints.pl properly:") + joincmd);
+	DEBUG(0, string("Failed to run join_mult_hints.pl properly: ") + joincmd);
 	exit(1);
     }
     if (rename(cumintronsTempFname.c_str(), cumintronsFname.c_str()) != 0){
 	DEBUG(0, string("Failed to move ") + cumintronsTempFname);
 	exit(1);
     }
-    
-    // filter significantly frequent introns and make intron 'database' for STAR
-    std::ifstream cumIntronFile(cumintronsFname.c_str());
-    if (!cumIntronFile.is_open()) {
-	DEBUG(0,"Unable to open " << cumintronsFname << endl <<
-	      "Won't use intron database for aligning next run.");
-    }
-    std::ofstream intronDBFile(intronDBFname.c_str());
-    if (!intronDBFile.is_open())
-	DEBUG(0,"Unable to open " << intronDBFname << " for writing.");
-    
-    bool signif;
-    unsigned numsignif = 0; // number of significant introns
-    char *gff[7];
-    while (getline(cumIntronFile, line)) {
-	signif = false;
-	if (param->mincovthresh <= 1)
-	    signif = true;
-	else {
-	    int mult;
-	    size_t mpos = line.find("mult=");
-	    if (mpos != string::npos) {
-		mpos += strlen("mult=");
-		mult = stoi(line.substr(mpos));
-		if (mult >= param->mincovthresh)
-		    signif = true;
-	    }
-	}
-	if (signif){
-	    numsignif++;
-	    char *s = new char[line.length() + 1];
-	    strcpy(s, line.c_str());
-	    unsigned col = 0;
-	    gff[col] = strtok(s, "\t");
-	    while (gff[col] && col < 7-1 ) {
-		gff[++col] = strtok(NULL, "\t");
-	    }
-	    if (col >= 7-1){
-		unsigned strand = 0; // unknown
-		if (gff[6] == "+")
-		    strand = 1;
-		else if (gff[6] == "-")
-		    strand = 2;
-		// STAR format: chr <tab> start <tab> end <tab> strand
-		intronDBFile << gff[0] << "\t" << gff[3] << "\t"
-			     << gff[4] << "\t" << strand << endl;
-	    }
-	    delete [] s;
-	}
-    }
 
-    cumIntronFile.close();
-    intronDBFile.close();
-    DEBUG(0, "number of significant (coverage >= " << param->mincovthresh << ") introns is "
-	  << numsignif);
-    // TODO:
-    // filterIntronsFindStrand.pl " + intronDBFname > introns.s.f.gff
+    // The intron DB update is not done every time as the increments can be small.
+    unsigned period = 500000 / param->batchSize; // update every half million reads
+    if (period < 1)
+	period = 1;
+    if (batchNr % period == 0){
+	// determine strands of introns
+	string strandCmd = "filterIntronsFindStrand.pl";
+	strandCmd += " " + param->genomeFaDir + " " + cumintronsFname + " > " + cumintronsStrandedFname;
+	status = system(strandCmd.c_str());
+	if (status != 0){
+	    DEBUG(0, string("Failed to run filterIntronsFindStrand.pl properly: ")
+		  + strandCmd);
+	    exit(1);
+	}
+	// make 4 column intron DB for aligers
+	filterGTF(cumintronsStrandedFname, intronDBFname, 1); //param->mincovthresh);
+    }
 }

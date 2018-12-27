@@ -47,7 +47,7 @@ Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsi
     X = 0;
     this->numOfSpots = numOfSpots;
     //	assert(batchSize != 0);
-    DEBUG(2,"Creating run with numOfSpots: " << numOfSpots << ", batchSize: " << batchSize);
+    DEBUG(2, "Creating run with numOfSpots: " << numOfSpots << ", batchSize: " << batchSize);
     maxNumOfBatches = ceil((double)numOfSpots/(double)batchSize);
     sigmaIndex = 0;
     this->batchSize = batchSize;

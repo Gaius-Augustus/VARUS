@@ -163,9 +163,8 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
     string line;
     ifstream myfile(c);
 
-    if (!myfile.is_open()) {
+    if (!myfile.is_open())
 	DEBUG(0,"Can't open Runlist " << s);
-    }
 
     while (getline(myfile, line)) {
 	if (!line.empty()) {
@@ -173,9 +172,9 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 		string tmp;
 		stringstream ssin(line);
 		vector<string> wrds;
-		while (ssin >> tmp) {
+		while (ssin >> tmp)
 		    wrds.push_back(tmp);
-		}
+
 		string runName     = wrds[0];
 		string spots       = wrds[1];
 		double avglen      = atof(wrds[3].c_str());
@@ -184,7 +183,6 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 		if (!colorspace) {
 		    // transcriptUnits.size() ca 30 000 for blockSize = 5000
 		    DEBUG(4, "blsize:" << transcriptUnitsByNames.size());
-		
 		    Run *r = new Run(runName, transcriptUnits.size(),
 				     atoi(spots.c_str()), param->batchSize);
 		
@@ -209,9 +207,9 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 	    }
 	}
     }
-    if (0 == runs.size()) {
+    if (0 == runs.size())
 	DEBUG(0, "WARNING:No Runs found!");
-    }
+
     return;
 }
 

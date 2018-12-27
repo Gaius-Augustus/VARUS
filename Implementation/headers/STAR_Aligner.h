@@ -21,10 +21,11 @@ class STAR_Aligner : public Aligner {
  public:
     STAR_Aligner(ParameterHandler *p) : Aligner(p) {}
     std::string shellCommand(Run *r);
-    void getAlignedReads(std::unordered_map<std::string, RNAread> &reads, Run *r);
+    void getAlignedReads(std::unordered_map<std::string, RNAread> &reads, Run *r, int batchNr);
     void checkQuality(const std::string &sam,
 		      const std::string &log,
-		      Run *r);
+		      Run *r,
+		      int batchNr);
 };
 
 #endif /* STAR_ALIGNER_H_ */

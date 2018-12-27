@@ -122,7 +122,7 @@ void Controller::algorithm(){
 	for (unsigned int k = 0; k < runs.size(); k++){
 	    if (param->simulation != 1){
 		down->getBatch(runs[k]);
-		align->update(runs[k],totalObservations,chrom);
+		align->update(runs[k], totalObservations, chrom, batchCount);
 	    } else{
 		sim->simulateObservations(runs[k],totalObservations);
 	    }
@@ -163,7 +163,7 @@ void Controller::algorithm(){
 	    DEBUG(1,"Getting batch number " << next_run->timesDownloaded + 1
 		  << " for " << next_run->accesionId);
 	    down->getBatch(next_run);
-	    align->update(next_run, totalObservations, chrom);
+	    align->update(next_run, totalObservations, chrom, batchCount);
 	    if (next_run->badQuality == false){
 		goodBatchCount++;
 	    }
@@ -306,7 +306,7 @@ void Controller::profit(Run *d) {
     double percentUniqueMatch = (d->timesDownloaded>0)? d->avgUmrPercent : avgUniq;
     double percentSpliced = (d->timesDownloaded>0)? d->avgSpliced : avgSpliced; // use overall average in case the run has no data yet
     double batchsize = param->batchSize;
-
+    
     UDmap &pdist = (d->pRep)? d->pRep->p : d->p; // use either representatives p or own, if there is no representative run
     DEBUG(3,"calculating profit size=" << pdist.size());
     for (UDmap::iterator it = pdist.begin(); it != pdist.end(); ++it) {
@@ -506,7 +506,7 @@ void Controller::createDieFromRun(Run *r) {
 	DEBUG(0,"loading batch " << c << "/" << r->maxNumOfBatches);
 	c++;
 	down->getBatch(r);
-	align->update(r, totalObservations, chrom);
+	align->update(r, totalObservations, chrom, batchCount);
     }
 
     printRun2File(r);

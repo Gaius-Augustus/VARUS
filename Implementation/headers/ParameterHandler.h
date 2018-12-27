@@ -53,7 +53,8 @@ class ParameterHandler
     std::string pathToSTAR;
     std::string pathToRuns;
     //    std::string readFilesIn;
-    std::string genomeDir;
+    std::string genomeDir; // genome index
+    std::string genomeFaDir; // genome fasta file, optional
     std::string outFileNamePrefix;
     uI runThreadN;
     uI blockSize;
@@ -99,13 +100,7 @@ class ParameterHandler
 
     int simpleDM;
 
-    //	int kMeansIterations;
-
     int exportNewtons;
-
-
-    //	std::shared_ptr<Parameters> parameters;
-
 
     bool readAllready;
 
@@ -161,12 +156,11 @@ class ParameterHandler
 
     void print_usage();
 
-    const unsigned int lineWidth = 80;
+    const unsigned int lineWidth = 100;
 
     std::string printTextWithWidthAndLeftOffset(const std::string s, const unsigned int l, const unsigned int off);
 
     std::string lineLength(const std::string s, const unsigned int l, const unsigned int maxS);
-
 
     void exit_text();
 

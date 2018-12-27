@@ -16,18 +16,16 @@ Downloader::~Downloader() {
 }
 
 std::string Downloader::shellCommand(Run *r){
-    std::string s;
-    std::ostringstream n,x;
+    std::ostringstream n, x;
+    
     n << r->N;
     x << r->X;
-
-    if (r->paired == false){
-        s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
-	    + "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId;
-    } else {
-        s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
-	    + "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId + " --split-files";
-    }
+    
+    std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
+	+ "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId;
+    if (r->paired)
+	s += " --split-files";
+    
     return s;
 }
 
@@ -40,7 +38,7 @@ void Downloader::nextBatchIndices(Run *r) {
     
     if (r->X > r->numOfSpots)
 	r->X = r->numOfSpots;
-    
+
     r->sigmaIndex++;
 }
 

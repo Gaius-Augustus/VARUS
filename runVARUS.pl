@@ -256,7 +256,7 @@ foreach my $latinName (keys %species){
     #chdir($latinName) or die "can't chdir $latinName\n";
 
 
-    if($createRunList){
+    if ($createRunList){
         Log(0, "Creating Runlist.txt ...");
     
         my @genus_species = split(/ /,$latinName);
@@ -322,7 +322,7 @@ foreach my $latinName (keys %species){
     # for the current species
     #--------------------------------------------------------------------
 
-    if($runVARUS){
+    if ($runVARUS){
         my $copyCommand = "cp $varusParameters $outFileDir/$folder/VARUSparametersCopy.txt";
         system($copyCommand);
 
@@ -353,6 +353,7 @@ foreach my $latinName (keys %species){
             }
             print $fh "$newLine";
         }
+	print $fh "--genomeFaDir " . $species{$latinName} . "\n";
         close $fh;
         
         my $rmCopy = "rm $outFileDir/$folder/VARUSparametersCopy.txt";
@@ -366,9 +367,7 @@ foreach my $latinName (keys %species){
         #--------------------------------------------------------------------
         my $VARUSCall = "$pathToVARUS/Implementation/$VARUScall | tee -a $outFileDir/$logFileName";
 
-
         Log(0, "Running VARUS for $latinName: in $outFileDir/$folder running $VARUSCall");
-
 
         chdir("$outFileDir/$folder") or die "cannot change: $!\n";
         system($VARUSCall);

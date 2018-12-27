@@ -78,20 +78,19 @@ void Aligner::updateObservations(Run *r, UUmap &totalObservations,
     DEBUG(4, "r->observationSum = " << r->observationSum << " UMRcount = " << UMRcount);
 }
 
-void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c){
-    /* !\brief This function creates an alignment, gets the uniquely mapped reads and updates the run
-     * and totalObservation accordingly.
+void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c, int batchNr){
+    /* !\brief This function creates an alignment, gets the uniquely mapped reads
+     * and updates the run and totalObservation accordingly.
      */
 
     mapReads(r);
     unordered_map<string,RNAread> reads;
-    getAlignedReads(reads, r);
+    getAlignedReads(reads, r, batchNr);
     updateObservations(r, totalObservations, reads, c);
 }
 
 
-
-std::string Aligner::batchDir(Run *r) {
+string Aligner::batchDir(Run *r) {
      /* !\brief The directory of the next batch of the run, e.g. SRR7192719/N6300000X6349999/
      */
     return  param->outFileNamePrefix + r->accesionId + "/"
@@ -99,3 +98,67 @@ std::string Aligner::batchDir(Run *r) {
 	+ "X" + to_string(r->X) + "/";
 }
 
+int Aligner::filterGTF(string gtfInFileName, string intronDBFname, unsigned thresh){
+    bool write = (intronDBFname != "");
+    unsigned numintrons = 0; // mult not ignored, return value
+    ofstream intronDBFile;
+    
+    std::ifstream cumIntronFile(gtfInFileName.c_str());
+    if (!cumIntronFile.is_open()) {
+	DEBUG(0,"Unable to open " << gtfInFileName << endl);
+	return -1;
+	// "Won't use intron database for aligning next run."
+    }
+    if (write){
+	intronDBFile.open(intronDBFname.c_str());
+	if (!intronDBFile.is_open())
+	    DEBUG(0,"Unable to open " << intronDBFname << " for writing.");
+    }
+    
+    bool signif;
+    unsigned numsignif = 0; // number of significant introns, mult ignored
+    char *gff[7];
+    string line;
+    while (getline(cumIntronFile, line)) {
+	signif = false;
+	int mult = 1;
+	size_t mpos = line.find("mult=");
+	if (mpos != string::npos) {
+	    mpos += strlen("mult=");
+	    mult = stoi(line.substr(mpos));
+	}
+	numintrons += mult;
+	if (mult >= param->mincovthresh){
+	    signif = true;
+	    numsignif++;
+	}
+	
+	if (signif && write){
+	    char *s = new char[line.length() + 1];
+	    strcpy(s, line.c_str());
+	    unsigned col = 0;
+	    gff[col] = strtok(s, "\t");
+	    while (gff[col] && col < 7-1)
+		gff[++col] = strtok(NULL, "\t");
+
+	    if (col >= 7-1){
+		unsigned strand = 0; // unknown
+		if (*gff[6] == '+')
+		    strand = 1;
+		else if (*gff[6] == '-')
+		    strand = 2;
+		// STAR format: chr <tab> start <tab> end <tab> strand(0,1,2)
+		intronDBFile << gff[0] << "\t" << gff[3] << "\t"
+			     << gff[4] << "\t" << strand << endl;
+	    }
+	    delete [] s;
+	}
+    }
+
+    cumIntronFile.close();
+    if (write){
+	intronDBFile.close();
+	DEBUG(0, "number of significant (coverage >= " << thresh << ") introns is " << numsignif);
+    }
+    return numintrons;
+}
