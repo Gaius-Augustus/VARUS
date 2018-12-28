@@ -616,7 +616,7 @@ void Controller::mergeAlignments(const int count){
 
 	/*
 	 * For each subfolder search for a sam-file called Aligned.out.sam and convert it to a file
-	 * Aligned.out.bam.
+	 * Aligned.out.bam, if it does not exist already.
 	 */
 
 
@@ -630,10 +630,9 @@ void Controller::mergeAlignments(const int count){
 	DEBUG(0, "Running '" << s <<"'");
 	const char * c = s.c_str();
 	int status = system(c);
-	if(0 != status)
-	{
-		DEBUG(0,"Failed to run 'mergeAlignments.sh' properly!");
-		param->exit_text();
+	if (0 != status) {
+	    DEBUG(0,"Failed to run 'mergeAlignments.sh' properly!");
+	    param->exit_text();
 	}
 
 	lastMerge = batchCount;

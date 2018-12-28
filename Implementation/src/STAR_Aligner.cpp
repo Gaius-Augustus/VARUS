@@ -185,7 +185,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     logfile.close();
 
     /*
-     * evaluate alignment SAM file 
+     * evaluate alignment SAM file
      */
     std::ifstream samfile(samfilename.c_str());
     

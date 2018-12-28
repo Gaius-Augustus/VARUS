@@ -44,17 +44,14 @@ public:
     bool deprecated;
 };
 
-class ParameterHandler
-{
-
-
+class ParameterHandler {
  public:
     ////     paths, commandline
     std::string pathToSTAR;
     std::string pathToRuns;
-    //    std::string readFilesIn;
     std::string genomeDir; // genome index
     std::string genomeFaDir; // genome fasta file, optional
+    std::string aligner; // VARUS or HISAT
     std::string outFileNamePrefix;
     uI runThreadN;
     uI blockSize;
@@ -88,7 +85,6 @@ class ParameterHandler
     int readParametersFromFile;
     std::string pathToParameters;
 
-    //		bool readAllready;
     int exportParametersToFile;
 
     std::string pathToDice;
@@ -119,10 +115,6 @@ class ParameterHandler
 
     char **argv_saved;
 
-    //	std::map <std::string, std::string> parameters;
-    //	std::map<std::string, std::string> usage;
-
-
     std::map <std::string, Parameter> parameters;
 
     enum paramCat{
@@ -140,7 +132,8 @@ class ParameterHandler
 
     std::string STARmanual;
 
-    std::map<paramCat, std::string> parameterCategories;		//key is name of the category in code, value is name of the category for the usage
+    std::map<paramCat, std::string> parameterCategories;
+    // key is name of the category in code, value is name of the category for the usage
 
     unsigned mincovthresh = 3;  // minimum number of splices to make the db
 

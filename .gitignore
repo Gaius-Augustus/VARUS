@@ -1,3 +1,7 @@
 Implementation/VARUS
 *.o
 *~
+GettingStarted/Pombe/Log.out
+runVarus.log
+GettingStarted/Pombe/runVarus.log
+GettingStarted/Pombe/Schizosaccharomyces_pombe/

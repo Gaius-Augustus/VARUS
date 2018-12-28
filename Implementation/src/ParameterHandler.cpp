@@ -2,7 +2,7 @@
  * ParameterHandler.cpp
  *
  *  Created on: 25.11.2016
- *      Author: willy
+ *     Authors: willy, Mario
  */
 
 
@@ -99,7 +99,7 @@ string ParameterHandler::lineLength(string s, const unsigned int l, const unsign
     
     string ret = par;
     
-    for(unsigned int j = 0; j < maxS-par.size(); j++)
+    for (unsigned int j = 0; j < maxS-par.size(); j++)
 	ret += " ";
 
     ret += val + "\n";
@@ -136,15 +136,16 @@ void ParameterHandler::print_usage() {
 	"RNA-seqdata from the NCBI with the aim to achieve a coverage as high as \n"
 	"possible, with as little data being downloaded as possible.\n"
 	"In a stepwise procedure parts of these libraries are downloaded and aligned \n"
-	"to the Genome of the species with STAR. At each step the run that is expected \n"
+	"to the Genome of the species with STAR or HISAT. At each step the run that is expected \n"
 	"to yield the most increase in coverage, is chosen. \n\n"
 	"Input: \n"
 	"- Genome of the target species specified with --genomeDir\n"
-	" The Genome files have to be prepared for STAR. After indexing the Folder should \n"
+	" The Genome files have to be prepared for the aligner. \n"
+	" After indexing with STAR the folder should \n"
 	" contain the following files: \n"
 	" chrLenghth.txt, chrName.txt, chrNameLength.txt, chrStart.txt, Genome, \n"
 	" genomeParameters.txt, SA, SAindex \n\n"
-	+STARmanual+ "\n\n"
+	+ STARmanual+ "\n\n"
 	"- Runlist named \"Runlist.txt\". \n"
 	"Runlist-Format: \n"
 	"@Run_acc total_spots total_bases bool:paired #tabulator separated \n"
@@ -178,13 +179,8 @@ void ParameterHandler::print_usage() {
     maxParLength += 3;
 
     // First print the most important parameters
-    //     cout << "Paths and basic settings:\n";
-    //     cout << "-----------------------------------------------------\n";
+    printParameterCategory(MANDATORY, "", maxParLength);
 
-    printParameterCategory(MANDATORY, "",maxParLength);
-
-    //    // paths and STAR-parameters
-    //    printParameterCategory(BASICSETTINGS,  maxParLength);
 
     printParameterCategory(BASICSETTINGS,
 			   "If you choose to not use an estimator, runs are downloaded randomly"
@@ -271,8 +267,8 @@ void ParameterHandler::printParameterCategory(const paramCat cat, const std::str
 }
 
 ParameterHandler::ParameterHandler() {
-    /*! \brief All parameters are initialized with default-values. To change these values call                                                                                                                                                                      
-     * readArguments().                                                                                                                                                                                                                                             
+    /*! \brief All parameters are initialized with default values.
+     * To change these values call readArguments().
      */
     
     // initialize the parameterCategories first
@@ -296,6 +292,7 @@ ParameterHandler::ParameterHandler() {
 
     param = this;
 
+    // defined default values for parameters and initialize
     mergeThreshold = 2;
     INITPARAM(mergeThreshold,
 	      parameterCategories[BASICSETTINGS],
@@ -329,31 +326,30 @@ ParameterHandler::ParameterHandler() {
 	      "specifies the path to the executable of STAR, the software that"
 	      " aligns the reads to the transcriptome/genome.",false);
 
-    pathToVARUS = "/home/willy/BRAKER/VARUS/Implementation/";;
     INITPARAM(pathToVARUS,
 	      parameterCategories[MANDATORY],
 	      "specifies the path to the executable of VARUS",false);
 
-    //      "/home/willy/workspace/UnitTests/ParameterHandler/script/"
-    pathToRuns                      = "../Tutorial/Drosophila/";
+    pathToRuns = "../Tutorial/Drosophila/";
     INITPARAM(pathToRuns,
 	      parameterCategories[MANDATORY],
 	      "specifies the path to Runlist.txt."
 	      "You can retrieve a Runlist with the perl-script 'RunListRetriever.pl'.",false);
 
-    //      readFilesIn             = "default";
-    //      INITPARAM(readFilesIn, "specifies the path to the folder in which the ");
-    //      "/home/willy/Bachelorarbeit/Manager/genome/"
-    genomeDir                       = "/home/willy/Bachelorarbeit/Manager/genome/";
     INITPARAM(genomeDir,
 	      parameterCategories[MANDATORY],
 	      "specifies the path to the genome/transcriptome"
-	      " that you are investigating.",false);                                                                                                                                                                                                                
-    
+	      " that you are investigating.",false);
+
     INITPARAM(genomeFaDir,
 	      parameterCategories[ESTIMATOR],
 	      "specifies the path to the genome/transcriptome fasta file", false);
 
+    aligner = "STAR";
+    INITPARAM(aligner,
+	      parameterCategories[MANDATORY],
+	      "specifies the aligner, STAR or HISAT", false);
+    
     outFileNamePrefix 	= "../Tutorial/Drosophila/";
     INITPARAM(outFileNamePrefix,
 	      parameterCategories[MANDATORY],
@@ -364,7 +360,7 @@ ParameterHandler::ParameterHandler() {
 	      parameterCategories[BASICSETTINGS],
 	      "Number of threads to run STAR parallel with. Read STAR-manual for more information.\n",false);
 
-    blockSize = 5000;		// <---- 5000 default
+    blockSize = 5000;
     INITPARAM(blockSize,
 	      parameterCategories[BASICSETTINGS],
 	      "the number of bases one block will have. "
@@ -435,7 +431,7 @@ ParameterHandler::ParameterHandler() {
 	      "sets the number of components of the dirichlet mixture or the cluster estimator. "
 	      "Only relevant for estimators 3 and 4.",true);
 	
-    numOfBlocks = 29919;
+    numOfBlocks = 10000;
     INITPARAM(numOfBlocks,
 	      parameterCategories[BASICSETTINGS],
 	      "sets the number of blocks into which the genome should be divided."
@@ -559,8 +555,8 @@ ParameterHandler::~ParameterHandler() {
 }
 
 void ParameterHandler::readArguments(int argc, char *argv[]) {
-	/*! \brief Reads the command line arguments.
-	 */
+    /*! \brief Reads the command line arguments.
+     */
 
     const char* const short_opts = "h";
     const option long_opts[] = {
@@ -569,10 +565,10 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 	{"components", 1, nullptr, 'c'},
 	{"cost", 1, nullptr, 'C'},
 	{"createDice", 1, nullptr, 'D'},
-	//			{"dieList", 1, nullptr, 'L'},
 	{"estimator", 1, nullptr, 'e'},
 	{"genomeDir", 1, nullptr, 'g'},
 	{"genomeFaDir", 1, nullptr, 'x'},
+	{"aligner", 1, nullptr, 'y'},
 	{"lambda", 1, nullptr, 'l'},
 	{"lessInfo", 1, nullptr, 'I'},
 	{"loadAllOnce", 1, nullptr, 'A'},
@@ -659,6 +655,11 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 	    PARAM(genomeFaDir);
             break;
 
+        case 'y':
+            aligner = std::string(optarg);
+	    PARAM(aligner);
+            break;
+
         case 'l':
             lambda = std::stof(optarg);
 	    PARAM(lambda);
@@ -727,7 +728,7 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
         case 'v':
             verbosityDebug = std::stoi(optarg);
 	    PARAM(verbosityDebug);
-	    //            	verbosity_out_level = verbosityDebug;
+	    // verbosity_out_level = verbosityDebug;
             break;
 
         case 'i':
@@ -836,7 +837,6 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
         }
     }
 
-
     if (readParametersFromFile != 0) {
 	if (readAllready == false) {
 	    argc_saved = argc;
@@ -932,12 +932,10 @@ void ParameterHandler::read_parameters_from_file(string path) {
     //	DEBUG(1,"reading from " << path);
     ifstream filestr;
     filestr.open (path);
-    if (!filestr.is_open())
-	{
-	    DEBUG(0,"Unable to open parameters-file " << path);
-	    if(path.empty()) DEBUG(0,"path is empty!");
-	}
-
+    if (!filestr.is_open()){
+	DEBUG(0,"Unable to open parameters-file " << path);
+	if(path.empty()) DEBUG(0,"path is empty!");
+    }
 
     std::vector<std::string> wrds;
     wrds.push_back("./RNAM");

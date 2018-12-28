@@ -46,10 +46,10 @@ my $pathToSpecies = getcwd;
 my $outFileDir = getcwd;
 my $varusParameters = getcwd . "/VARUSparameters.txt";
 
-my $createSTARindex = 1;
+my $createindex = 1;
 my $createRunList = 1;
 my $runVARUS = 1;
-my $createStatistics = 1;
+my $createStatistics = 0;
 my $runThreadN = 4;
 
 # Logging
@@ -67,6 +67,7 @@ my $allRuns = 1;
 my $pathToSTAR = "/usr/bin/";
 
 my $VARUScall = "./VARUS";
+my $aligner = "STAR";
 
 my $usage =
 "Usage:
@@ -79,7 +80,7 @@ my $usage =
 
                                     specifies the path to the STAR executable
 
-    --createSTARindex   1           creates the index, 0 if you don't want to create the index
+    --createindex       1           creates the genome index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
     --runThreadN        $runThreadN           Number of threads used for STAR index creation
     --createRunList     1           creates the RunList, 0 if you don't want to create the RunList
@@ -89,7 +90,7 @@ my $usage =
 
     --runVARUS          1           runs VARUS
 
-    --createStatistics  1           creates a plot of the coverage achieved with all downloads
+    --createStatistics  0           creates a plot of the coverage achieved with all downloads
 
     --readFromTable     1           searches for a file 'species.txt' with two columns ;-separated
                                     first column=species name in latin
@@ -104,6 +105,7 @@ my $usage =
 
     --VARUScall                     default ./VARUS
     --logfile                       default $logFileName
+    --aligner           $aligner        alignment program: STAR or HISAT
     --verbosity         $verbosity           between 0 and 5 for less and more logging output
 ";
 
@@ -114,7 +116,7 @@ my $outfiles = 0; # if true, output the files with the list in addition to the s
 GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'outFileDir=s'=>\$outFileDir,
            'varusParameters=s'=>\$varusParameters,
-           'createSTARindex=i'=>\$createSTARindex,
+           'createindex=i'=>\$createindex,
 	   'runThreadN=i'=>\$runThreadN,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
@@ -130,6 +132,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'VARUScall=s'=>\$VARUScall,
 	   'help!'=>\$help,
 	   'logfile=s'=>\$logFileName,
+	   'aligner=s'=>\$aligner,
 	   'verbosity=i'=>\$verbosity)
 or die($usage);
 
@@ -137,6 +140,11 @@ my $n = scalar @ARGV;
 if ($help) {
     print $usage;
     exit;
+}
+
+if ($aligner ne "STAR" && $aligner ne "HISAT"){
+    print STDERR "aligner must be either STAR or HISAT \n";
+    exit 1;
 }
 
 #--------------------------------------------------------------------
@@ -151,9 +159,8 @@ sub Log
 {
     my ($lvl, $msg) = @_;
 
-    if($lvl <= $verbosity){
-
-        if($timeStamp == 1){
+    if ($lvl <= $verbosity){
+        if ($timeStamp == 1){
             $msg = getLoggingTime()." ".$msg;
         }
         $msg = $msg."\n";
@@ -166,7 +173,6 @@ sub Log
 }
 
 sub getLoggingTime {
-
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
     my $nice_timestamp = sprintf ( "%04d/%02d/%02d %02d:%02d:%02d",
                                    $year+1900,$mon+1,$mday,$hour,$min,$sec);
@@ -182,7 +188,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
   pathToScecies: $pathToSpecies
   outFileDir: $outFileDir
   varusParameters: $varusParameters
-  createSTARindex: $createSTARindex
+  createindex: $createindex
   createRunList: $createRunList
   logFileName: $logFileName
   verbosity: $verbosity
@@ -193,50 +199,50 @@ Log(0, "Started runVarus.pl with the following parameters:\n
 
 
 my %species;
-if($readFromTable != 0){
-	Log(0, "Reading in species from $pathToSpecies/species.txt...");
+if ($readFromTable != 0){
+    Log(0, "Reading in species from $pathToSpecies/species.txt...");
 
-	open(DAT,"$pathToSpecies/species.txt") || die Log(0, "Could not open file $pathToSpecies/species.txt \n");
-	my @line;
+    open(DAT,"$pathToSpecies/species.txt") || die Log(0, "Could not open file $pathToSpecies/species.txt \n");
+    my @line;
 
-	while(<DAT>){
-		my $first = substr $_, 0, 1;
-		if($first ne '#'){
-		    @line = split(/;/,$_);
-		    my $speciesname = $line[0];
-		    my $genomefname = $line[1];
-		    $genomefname =~ s/^\s+|\s+$//g;
-		    $species{$speciesname} = $genomefname;
-		    
-		    Log(5, "Found species $speciesname with genome $genomefname");
-		}
-		else {
-		    Log(5, "Reading comment from species.txt");
-		}
+    while(<DAT>){
+	my $first = substr $_, 0, 1;
+	if ($first ne '#'){
+	    @line = split(/;/,$_);
+	    my $speciesname = $line[0];
+	    my $genomefname = $line[1];
+	    $genomefname =~ s/^\s+|\s+$//g;
+	    $species{$speciesname} = $genomefname;
+
+	    Log(5, "Found species $speciesname with genome $genomefname");
 	}
-	close DAT;
+	else {
+	    Log(5, "Reading comment from species.txt");
+	}
+    }
+    close DAT;
 
-	my $speciesNum = scalar keys %species;
-	Log(0, "...done reading species. Found $speciesNum species.\n$sep");
+    my $speciesNum = scalar keys %species;
+    Log(0, "...done reading species. Found $speciesNum species.\n$sep");
 } else {
-	if($latinSpecies eq ""){
-		Log(0,"Missing latinSpecies! Exiting...");
-		exit;
-	}
-	if($latinGenus eq ""){
-		Log(0,"Missing latinGenus! Exiting...");
-		exit;
-	}
-	if($speciesGenome eq ""){
-		Log(0,"Missing speciesGenome! Exiting...");
-		exit;
-	}
+    if ($latinSpecies eq ""){
+	Log(0,"Missing latinSpecies! Exiting...");
+	exit;
+    }
+    if ($latinGenus eq ""){
+	Log(0,"Missing latinGenus! Exiting...");
+	exit;
+    }
+    if ($speciesGenome eq ""){
+	Log(0,"Missing speciesGenome! Exiting...");
+	exit;
+    }
 
-	$species{"$latinGenus $latinSpecies"}=$speciesGenome;
+    $species{"$latinGenus $latinSpecies"}=$speciesGenome;
 }
 
 #--------------------------------------------------------------------
-# Loop over all species 
+# Loop over all species
 #--------------------------------------------------------------------
 
 Log(0, "Starting to loop over all species ...");
@@ -258,11 +264,11 @@ foreach my $latinName (keys %species){
 
     if ($createRunList){
         Log(0, "Creating Runlist.txt ...");
-    
+
         my @genus_species = split(/ /,$latinName);
         my $cmd = "perl $pathToVARUS/RunListRetriever/RunListRetriever.pl --genus ".$genus_species[0]." --species ".$genus_species[1]." --outFileDir ".$outFileDir."/".$folder."/ ";
 
-        if($allRuns){
+        if ($allRuns){
             $cmd = $cmd." --all";
         }
 
@@ -270,52 +276,54 @@ foreach my $latinName (keys %species){
         system($cmd);
         my $runListStatus = $? >> 8;
 
-        if($runListStatus != 0){
+        if ($runListStatus != 0){
             Log(0, "FAILED to create RunList for $latinName. Phrase not Found. Check that your genus and species are correct. Skipping $latinName...");
             last;
         }
-        
+
         Log(0, "... done creating Runlist.txt\n$sep");
     }
     #--------------------------------------------------------------------
-    # Create an Index for the genome using STAR
+    # Create an index for the genome
     #--------------------------------------------------------------------
 
-    if ($createSTARindex){
-        Log(0, "Creating STAR-index...");
-        my $genomeCur = $outFileDir."/".$folder."/genome";
-        mkdir($genomeCur, 0700) unless(-d $genomeCur );
+    if ($createindex){
+	Log(0, "Creating $aligner index...");
+	my $genomeCur = $outFileDir."/".$folder."/genome";
+	mkdir($genomeCur, 0700) unless(-d $genomeCur );
 	my $genomefname = $species{$latinName};
 	if (substr($genomefname, 0, 1) ne '/'){
 	    $genomefname = $outFileDir . "/" . $genomefname;
 	}
-	my $tmpdirname = "STARtmp" . int(rand(10000000));
-        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
-	    . "--outTmpDir $tmpdirname "
-	    . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
-	
-        Log(0,"Invoking STAR-indexer call: ".$genomeGenerateCmd);
 
-        if($displaySTARIndexerOutput == 0) {
-        #    $genomeGenerateCmd = $genomeGenerateCmd." >nul 2>&1";
-        }
+	if ($aligner eq "STAR"){
+	    my $tmpdirname = "STARtmp" . int(rand(10000000));
+	    my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
+	      . "--outTmpDir $tmpdirname "
+	      . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
 
+	    Log(0,"Invoking STAR-indexer call: " . $genomeGenerateCmd);
 
-        #$genomeGenerateCmd = $genomeGenerateCmd." | tee -a $outFileDir/$logFileName";
-        #$genomeGenerateCmd = $genomeGenerateCmd." | tee -a $outFileDir/$logFileName";
-        #$genomeGenerateCmd = $genomeGenerateCmd." 2>&1 | tee -a $outFileDir/$logFileName";
+	    my $indexStatus = system($genomeGenerateCmd);
 
+	    $indexStatus = $? >> 8;
+	    if ($indexStatus != 0){
+		Log(0, "FAILED to create STAR-index for $latinName. Skipping $latinName...");
+		last;
+	    }
+	} else { # HISAT index
+	    my $idxCmd = "hisat-build $genomefname $genomeCur/hisatidx";
+	    Log(0,"Invoking HISAT indexer call: " . $idxCmd);
 
+	    my $indexStatus = system($idxCmd);
 
-        my $indexStatus = system($genomeGenerateCmd);
-
-        $indexStatus = $? >> 8;
-        if($indexStatus != 0){
-            Log(0, "FAILED to create STAR-index for $latinName. Skipping $latinName...");
-            last;
-        }
-
-        Log(0, "... done creating STAR-index.\n$sep");
+	    $indexStatus = $? >> 8;
+	    if ($indexStatus != 0){
+		Log(0, "FAILED to create HISAT index for $latinName. Is hisat-build in the PATH?\nSkipping $latinName...");
+		last;
+	    }
+	}
+        Log(0, "... done creating $aligner index.\n$sep");
     }
     #--------------------------------------------------------------------
     # Copy the parameters-file for VARUS in the folder and adjust accordingly
@@ -329,7 +337,7 @@ foreach my $latinName (keys %species){
         Log(0, "Adjusting parameters for VARUS ...");
         open(DAT,"$outFileDir/$folder/VARUSparametersCopy.txt") || 
         die "Could not open file $outFileDir/$folder/VARUSparametersCopy.txt \n";
-        
+
         open(my $fh, '>', "$outFileDir/$folder/VARUSparameters.txt") or die "Could not open file '$$outFileDir/$folder/VARUSparameters.txt' $!";
 
         while(<DAT>){
@@ -354,13 +362,14 @@ foreach my $latinName (keys %species){
             print $fh "$newLine";
         }
 	print $fh "--genomeFaDir " . $species{$latinName} . "\n";
+	print $fh "--aligner $aligner\n";
         close $fh;
-        
+
         my $rmCopy = "rm $outFileDir/$folder/VARUSparametersCopy.txt";
         system($rmCopy);
 
         Log(0, "... done adjusting parameters.\n$sep");
-        
+
 
         #--------------------------------------------------------------------
         # Call VARUS and download until VARUS decides to abort
@@ -371,31 +380,23 @@ foreach my $latinName (keys %species){
 
         chdir("$outFileDir/$folder") or die "cannot change: $!\n";
         system($VARUSCall);
-		chdir("$outFileDir") or die "cannot change: $!\n";
+	chdir("$outFileDir") or die "cannot change: $!\n";
         Log(0, "...done with $latinName\n$sep");
     }
 
     #--------------------------------------------------------------------
-    # Create Statistics for the VARUS-run with this species
+    # Create Statistics for the VARUS run with this species
     # TODO: File with bad runs, file with good runs to download more from
     #--------------------------------------------------------------------
-    if($createStatistics){
+    if ($createStatistics){
         #--------------------------------------------------------------------
         # Make a barplot of the coverage
         #--------------------------------------------------------------------
-	    my $visCall = "$pathToVARUS/VisualizationTool/./produceStats.R $outFileDir/$folder/Coverage.csv $outFileDir/$folder/";
+	my $visCall = "$pathToVARUS/VisualizationTool/./produceStats.R $outFileDir/$folder/Coverage.csv $outFileDir/$folder/";
 
-	    Log(0, "Creating statistics for $latinName ...");
-	    system($visCall);
+	Log(0, "Creating statistics for $latinName ...");
+	system($visCall);
 
-	    Log(0, "...done with statistics for $latinName");
+	Log(0, "...done with statistics for $latinName");
     }
 }
-
-
-
-
-
-
-
-

@@ -13,7 +13,7 @@
 #include "ChromosomeInitializer.h"
 
 class Aligner {
-    /*! \brief This class controlls the alignment-steps for the runs.
+    /*! \brief This class controlls the alignment steps for the runs.
      *
      * The allignemnt is done with STAR or HISAT.
      */
@@ -32,7 +32,9 @@ class Aligner {
 				 RNAread> &reads,
 				 Run *r,
 				 int batchNr) = 0;
-
+    void sam2transcriptUnits(std::unordered_map<std::string, RNAread> &reads,
+			     std::string samFname);
+    
     void updateObservations(Run *r, UUmap &totalObservations,
 			    std::unordered_map<std::string, RNAread> &reads,
 			    ChromosomeInitializer *c);
@@ -44,6 +46,8 @@ class Aligner {
     // filter significantly frequent introns and make intron 'database' for STAR or HISAT
     // return number of (intron) hints, including multiplicity
     int filterGTF(std::string gtfInFileName, std::string intronDBFname="", unsigned thresh=0);
+
+    void cleanupAfterAlignment(Run *r);
 };
 
 #endif /* ALIGNER_H_ */

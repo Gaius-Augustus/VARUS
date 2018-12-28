@@ -1,8 +1,8 @@
 /*
- * Aligner.h
+ * STAR_Aligner.h
  *
  *  Created on: 30.11.2016
- *      Author: willy
+ *     Authors: willy, Mario
  */
 
 #ifndef STAR_ALIGNER_H_
@@ -15,7 +15,6 @@
 
 class STAR_Aligner : public Aligner {
     /*! \brief 
-     *
      * STAR aligner
      */
  public:

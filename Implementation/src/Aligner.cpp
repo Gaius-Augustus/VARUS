@@ -31,9 +31,8 @@ void Aligner::mapReads(Run *r) {
     string alignCmd = shellCommand(r);
 
     int status = system(alignCmd.c_str());
-    if (0 != status) {
+    if (0 != status)
 	DEBUG(0, "Failed to run aligner properly: " << alignCmd);
-    }
 }
 
 void Aligner::updateObservations(Run *r, UUmap &totalObservations,
@@ -87,8 +86,62 @@ void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c,
     unordered_map<string,RNAread> reads;
     getAlignedReads(reads, r, batchNr);
     updateObservations(r, totalObservations, reads, c);
+    cleanupAfterAlignment(r);
 }
 
+
+void Aligner::sam2transcriptUnits(unordered_map<string, RNAread> &reads,
+				  string samFname){
+    string line;
+    ifstream samFile(samFname.c_str());
+
+    if (!samFile.is_open()) {
+	DEBUG(0,"Unable to open alignment " << samFname);
+	return;
+    }
+
+    while (getline(samFile, line)) {
+	if (!line.empty()) {
+	    if (line[0] != '@') {
+		string tmp;
+		stringstream ssin(line);
+		vector<string> wrds;
+		while (ssin >> tmp) {
+		    wrds.push_back(tmp);
+		}
+
+		// SRR034413.5	0   FBgn0086917	22037	0  2S89M  *  0	0
+		if (wrds.size() > 3) {
+		    string readName = wrds[0];
+		    string chromosomeName = wrds[2];
+		    string mappedAtChromosomPos = wrds[3];
+
+		    // determine which block the read mapped to of "chromosomeName"
+		    // mapping-pos / blockSize rounded down
+		    std::ostringstream oss;
+		    oss << floor(atoll(mappedAtChromosomPos.c_str()) / param->blockSize);
+		    string chromosomBlock = chromosomeName + ":" + oss.str();
+
+		    // ToDo: cigar-string
+		    if (reads.find(readName) != reads.end()) {
+			// add the transcript_unit-name to the transcript_unit-list of the read
+			if (reads[readName].transcriptUnits.find(chromosomBlock)
+			    != reads[readName].transcriptUnits.end()) {
+			    reads[readName].transcriptUnits[chromosomBlock] += 1;
+			} else {
+			    reads[readName].transcriptUnits[chromosomBlock] = 1;
+			}
+		    } else {
+			RNAread mp;
+			mp.transcriptUnits[chromosomBlock] = 1;
+			reads[readName] = mp;
+		    }
+		}
+	    }
+	}
+    }
+    samFile.close();
+}
 
 string Aligner::batchDir(Run *r) {
      /* !\brief The directory of the next batch of the run, e.g. SRR7192719/N6300000X6349999/
@@ -161,4 +214,24 @@ int Aligner::filterGTF(string gtfInFileName, string intronDBFname, unsigned thre
 	DEBUG(0, "number of significant (coverage >= " << thresh << ") introns is " << numsignif);
     }
     return numintrons;
+}
+
+void Aligner::cleanupAfterAlignment(Run *r){
+    // zip .fasta files
+    string batchDir_ = batchDir(r);
+    string zipCmd = "gzip";
+    zipCmd += " " + batchDir_ + "*.fasta";
+    DEBUG(0, "cleanupAfterAlignmen: " << zipCmd);
+    int status = system(zipCmd.c_str());
+    if (status != 0)
+	DEBUG(0, "Failed to run gzip properly: " << zipCmd);
+
+    // delete .sam files
+    string delCmd = "rm";
+    delCmd += " " + batchDir_ + "*.sam";
+    DEBUG(0, "cleanupAfterAlignmen: " << delCmd);
+    status = system(delCmd.c_str());
+    if (status != 0)
+	DEBUG(0, "Failed to delete .sam file: " << delCmd);
+    
 }

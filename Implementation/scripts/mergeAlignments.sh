@@ -39,7 +39,9 @@ do
      # echo $s
         filename="${s%.sam}"
         f="$filename.bam"
-        samtools view -S -b $s > $f
+	if [ ! -f $f ]; then
+            samtools view -S -b $s > $f
+        fi
     done
 done
 
