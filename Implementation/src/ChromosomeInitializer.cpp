@@ -72,16 +72,22 @@ void ChromosomeInitializer::getChromosomeLengths() {
      */
 
     if (param->genomeDir != "") {
-	string s = param->genomeDir + "chrNameLength.txt";
+	string sizesTblFname = param->genomeDir + "chrSizes.tbl";
+	string sizesCmd = param->pathToVARUS + "/scripts/getChrLen.pl "
+	    + param->genomeFaFile + " > " + sizesTblFname;
 
-	const char * c = s.c_str();
-	string line;
-	ifstream myfile(c);
-
-	if (!myfile.is_open()) {
-	    DEBUG(0,"Can't open chromosomefile " << s);
+	int status = system(sizesCmd.c_str());
+	if (status != 0) {
+	    DEBUG(0,"Failed to obtain chromosome sizes with:\n" << sizesCmd);
+	    param->exit_text();
 	}
 
+	ifstream myfile(sizesTblFname.c_str());
+
+	if (!myfile.is_open())
+	    DEBUG(0,"Can't open chromosomefile " << s);
+
+	string line;
 	while (getline(myfile, line)) {
 	    if (line.size() > 1) {
 		// example line: FBgn0000003	299

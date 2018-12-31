@@ -262,7 +262,7 @@ void ParameterHandler::printParameterCategory(const paramCat cat, const std::str
 
 
  void ParameterHandler::exit_text(){
-     cout << "Try ./VARUS-help for more information." << endl;
+     cout << "Try ./VARUS -help for more information." << endl;
      exit(1);
 }
 
@@ -341,7 +341,7 @@ ParameterHandler::ParameterHandler() {
 	      "specifies the path to the genome/transcriptome"
 	      " that you are investigating.",false);
 
-    INITPARAM(genomeFaDir,
+    INITPARAM(genomeFaFile,
 	      parameterCategories[ESTIMATOR],
 	      "specifies the path to the genome/transcriptome fasta file", false);
 
@@ -567,7 +567,7 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 	{"createDice", 1, nullptr, 'D'},
 	{"estimator", 1, nullptr, 'e'},
 	{"genomeDir", 1, nullptr, 'g'},
-	{"genomeFaDir", 1, nullptr, 'x'},
+	{"genomeFaFile", 1, nullptr, 'x'},
 	{"aligner", 1, nullptr, 'y'},
 	{"lambda", 1, nullptr, 'l'},
 	{"lessInfo", 1, nullptr, 'I'},
@@ -651,8 +651,8 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
             break;
 
         case 'x':
-            genomeFaDir = std::string(optarg);
-	    PARAM(genomeFaDir);
+            genomeFaFile = std::string(optarg);
+	    PARAM(genomeFaFile);
             break;
 
         case 'y':

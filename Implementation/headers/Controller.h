@@ -12,6 +12,7 @@
 #include "ChromosomeInitializer.h"
 #include "Aligner.h"
 #include "STAR_Aligner.h"
+#include "HISAT_Aligner.h"
 #include "Downloader.h"
 #include "ParameterHandler.h"
 #include "debug.h"

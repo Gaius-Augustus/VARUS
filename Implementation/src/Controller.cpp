@@ -24,7 +24,10 @@ Controller::Controller(ParameterHandler *p) {
     if (param->simulation != 1){
 	chrom 	= new ChromosomeInitializer(p);
 	down 	= new Downloader(p);
-	align 	= new STAR_Aligner(p);
+	if (param->aligner == "STAR")
+	    align = new STAR_Aligner(p);
+	else
+	    align = new HISAT_Aligner(p);
 	sim 	= nullptr;
     } else {
 	sim 	= new Simulator(p);

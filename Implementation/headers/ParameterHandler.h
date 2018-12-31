@@ -50,7 +50,7 @@ class ParameterHandler {
     std::string pathToSTAR;
     std::string pathToRuns;
     std::string genomeDir; // genome index
-    std::string genomeFaDir; // genome fasta file, optional
+    std::string genomeFaFile; // genome fasta file, optional
     std::string aligner; // VARUS or HISAT
     std::string outFileNamePrefix;
     uI runThreadN;
@@ -135,7 +135,7 @@ class ParameterHandler {
     std::map<paramCat, std::string> parameterCategories;
     // key is name of the category in code, value is name of the category for the usage
 
-    unsigned mincovthresh = 3;  // minimum number of splices to make the db
+    unsigned mincovthresh = 4;  // minimum number of splices to make the db
 
     void printParameterCategory(const paramCat cat, const std::string des, const unsigned int maxParLength);
 

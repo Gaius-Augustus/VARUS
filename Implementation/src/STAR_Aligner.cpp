@@ -260,7 +260,7 @@ void STAR_Aligner::checkQuality(const string &samfilename,
     if (batchNr % period == 0){
 	// determine strands of introns
 	string strandCmd = "filterIntronsFindStrand.pl";
-	strandCmd += " " + param->genomeFaDir + " " + cumintronsFname + " > " + cumintronsStrandedFname;
+	strandCmd += " " + param->genomeFaFile + " " + cumintronsFname + " > " + cumintronsStrandedFname;
 	status = system(strandCmd.c_str());
 	if (status != 0){
 	    DEBUG(0, string("Failed to run filterIntronsFindStrand.pl properly: ")

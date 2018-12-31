@@ -292,7 +292,7 @@ foreach my $latinName (keys %species){
 	my $genomeCur = $outFileDir."/".$folder."/genome";
 	mkdir($genomeCur, 0700) unless(-d $genomeCur );
 	my $genomefname = $species{$latinName};
-	if (substr($genomefname, 0, 1) ne '/'){
+	if (substr($genomefname, 0, 1) ne '/' && substr($genomefname, 0, 1) ne '~'){
 	    $genomefname = $outFileDir . "/" . $genomefname;
 	}
 
@@ -361,7 +361,7 @@ foreach my $latinName (keys %species){
             }
             print $fh "$newLine";
         }
-	print $fh "--genomeFaDir " . $species{$latinName} . "\n";
+	print $fh "--genomeFaFile " . $species{$latinName} . "\n";
 	print $fh "--aligner $aligner\n";
         close $fh;
 

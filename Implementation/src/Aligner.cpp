@@ -22,17 +22,24 @@ Aligner::~Aligner() {
 }
 
 
-void Aligner::mapReads(Run *r) {
+int Aligner::mapReads(Run *r) {
     /*! \brief Calls aligner through the shell. The reads of the last downloaded batch 
      * are mapped to the transcript-units.
      */
 
     // build the command
     string alignCmd = shellCommand(r);
-
+    if (alignCmd == ""){
+	DEBUG(0, "Aboring mapping of reads.");
+	return 1;
+    }
+  
     int status = system(alignCmd.c_str());
-    if (0 != status)
-	DEBUG(0, "Failed to run aligner properly: " << alignCmd);
+    if (0 != status){
+	DEBUG(0, "Failed to run aligner properly: " << alignCmd << endl << "status=" << status);
+	return 2;
+    }
+    return 0;
 }
 
 void Aligner::updateObservations(Run *r, UUmap &totalObservations,
@@ -82,7 +89,9 @@ void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c,
      * and updates the run and totalObservation accordingly.
      */
 
-    mapReads(r);
+    int mapStatus = mapReads(r);
+    if (mapStatus != 0)
+	return; // abort only this batch upon an error
     unordered_map<string,RNAread> reads;
     getAlignedReads(reads, r, batchNr);
     updateObservations(r, totalObservations, reads, c);
@@ -221,7 +230,7 @@ void Aligner::cleanupAfterAlignment(Run *r){
     string batchDir_ = batchDir(r);
     string zipCmd = "gzip";
     zipCmd += " " + batchDir_ + "*.fasta";
-    DEBUG(0, "cleanupAfterAlignmen: " << zipCmd);
+    DEBUG(0, "cleanupAfterAlignment: " << zipCmd);
     int status = system(zipCmd.c_str());
     if (status != 0)
 	DEBUG(0, "Failed to run gzip properly: " << zipCmd);
@@ -229,7 +238,7 @@ void Aligner::cleanupAfterAlignment(Run *r){
     // delete .sam files
     string delCmd = "rm";
     delCmd += " " + batchDir_ + "*.sam";
-    DEBUG(0, "cleanupAfterAlignmen: " << delCmd);
+    DEBUG(0, "cleanupAfterAlignment: " << delCmd);
     status = system(delCmd.c_str());
     if (status != 0)
 	DEBUG(0, "Failed to delete .sam file: " << delCmd);

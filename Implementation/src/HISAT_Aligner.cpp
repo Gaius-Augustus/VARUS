@@ -11,7 +11,6 @@
 
 #include "../headers/systemFunctions.h"
 
-
 using namespace std;
 
 std::string HISAT_Aligner::shellCommand(Run *r) {
@@ -23,6 +22,7 @@ std::string HISAT_Aligner::shellCommand(Run *r) {
 
     string cmd = "hisat";
     cmd += " -p " + to_string(param->runThreadN)
+        + " -f" // Reads (specified with <m1>, <m2>, <s>) are FASTA files.
 	+ " -x " + param->genomeDir + "/hisatidx";
     
     if (r->paired == false) { // unpaired reads
@@ -37,12 +37,13 @@ std::string HISAT_Aligner::shellCommand(Run *r) {
 	    exit(1);
 	}
 	if (files.size() < 2){
-	    DEBUG(0, "Paired run but found only one fasta files!");
-	    exit(1);
+	    DEBUG(0, "Paired run but found only one fasta file! Aborting batch.");
+	    return "";
 	}
 	cmd += " -1 " + files[0] + " -2 " + files[files.size()-1];
     }
-    cmd += " -S " + batchDir_ + "Alignment.out.sam";
+    cmd += " -S " + batchDir_ + "Aligned.out.sam"
+	+ " 2> " + batchDir_ + "Log.final.out";
 
     bool useIntronDB = true;
     string intronDBFname = "intronDB.gff"; // see below
@@ -53,7 +54,7 @@ std::string HISAT_Aligner::shellCommand(Run *r) {
 
     if (useIntronDB)
 	cmd += " --known-splicesite-infile " + intronDBFname;
-   
+    // cout << "HISAT cmd:\n" << cmd << endl;
     return cmd;
 }
  
@@ -74,10 +75,12 @@ void HISAT_Aligner::getAlignedReads(unordered_map<string, RNAread> &reads, Run *
 void HISAT_Aligner::checkQuality(const string &samfilename,
 				const string &logfilename,
 				Run *r, int batchNr){
+    string batchDir_ = batchDir(r);
+
     /*
      * evaluate HISAT log file
      */
-    string batchDir_ = batchDir(r);
+
     string line;
     std::ifstream logfile(logfilename.c_str());
     
@@ -86,24 +89,23 @@ void HISAT_Aligner::checkQuality(const string &samfilename,
 	r->badQuality = true;
     }
     
+    int numUniq = -1;
     while (getline(logfile, line)) {
-	if (line.find("Uniquely mapped reads number |") != string::npos) {
-	    string tmp;
+	// example HISAT lines
+	// from paired reads: 21662 (43.32%) aligned concordantly exactly 1 time
+	// from unpaired : 29826 (59.65%) aligned exactly 1 time
+	// parse the read number from the first occurence (for paired reads the unpaired pattern occurs in wrong context)
+	if (numUniq == -1 &&
+	    (line.find("aligned concordantly exactly 1 time") != string::npos ||
+	     line.find("aligned exactly 1 time") != string::npos)) {
+
 	    stringstream ssin(line);
-	    vector<string> wrds;
-	    while (ssin >> tmp) {
-		wrds.push_back(tmp);
-	    }
-	    
-	    string numberstr = wrds[wrds.size()-1];
-	    double quality = 100 * std::stof(numberstr) / r->batchSize;
+	    ssin >> numUniq;
+	    double quality = 100.0 * numUniq / r->batchSize;
 	    
 	    DEBUG(0,"Uniquely mapped reads % |	" << quality << "%");
 	    
-	    if("-nan" == numberstr){
-		DEBUG(0,"Detected run with no matches.");
-		r->badQuality = true;
-	    } else if(param->qualityThreshold > quality){
+	    if (quality < param->qualityThreshold){
 		DEBUG(0,"Detected run with poor alignability.");
 		r->badQuality = true;
 	    }
@@ -117,6 +119,7 @@ void HISAT_Aligner::checkQuality(const string &samfilename,
     }
     logfile.close();
 
+    
     /*
      * evaluate alignment SAM file
      */
@@ -175,7 +178,7 @@ void HISAT_Aligner::checkQuality(const string &samfilename,
     if (f.good()) // test for existence, otherwise cat gives an error for the very first batch
 	joincmd += " " + cumintronsFname;
     f.close();
-    joincmd += " | join_mult_hints.pl >" + cumintronsTempFname;
+    joincmd += " | sort -k 1,1 -k 4,4n -k 5,5n | join_mult_hints.pl >" + cumintronsTempFname;
     status = system(joincmd.c_str());
     if (status != 0) {
 	DEBUG(0, string("Failed to run join_mult_hints.pl properly: ") + joincmd);
@@ -193,7 +196,7 @@ void HISAT_Aligner::checkQuality(const string &samfilename,
     if (batchNr % period == 0){
 	// determine strands of introns
 	string strandCmd = "filterIntronsFindStrand.pl";
-	strandCmd += " " + param->genomeFaDir + " " + cumintronsFname + " > " + cumintronsStrandedFname;
+	strandCmd += " " + param->genomeFaFile + " " + cumintronsFname + " > " + cumintronsStrandedFname;
 	status = system(strandCmd.c_str());
 	if (status != 0){
 	    DEBUG(0, string("Failed to run filterIntronsFindStrand.pl properly: ")

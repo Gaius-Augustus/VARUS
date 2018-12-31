@@ -26,7 +26,7 @@ class Aligner {
 
     virtual std::string shellCommand(Run *r) = 0;
 
-    void mapReads(Run *r);
+    int mapReads(Run *r); // returns 0 iff successful
 
     virtual void getAlignedReads(std::unordered_map<std::string,
 				 RNAread> &reads,
