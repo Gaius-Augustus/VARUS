@@ -58,7 +58,7 @@ unsigned myRandomEngine::biasSelect(const std::vector<double> &scores,
     unsigned choice = 0;
     double bestScore = std::numeric_limits<double>::min();
     for (unsigned i=0; i < bestOfK && i< scores.size(); ++i){
-	unsigned idx = select_randomly(scores.size());
+	unsigned idx = select_randomly(scores.size()-1);
 	if (scores[idx] > bestScore){
 	    bestScore = scores[idx];
 	    choice = idx;

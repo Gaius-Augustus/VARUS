@@ -128,6 +128,9 @@ void Aligner::sam2transcriptUnits(unordered_map<string, RNAread> &reads,
 		    // determine which block the read mapped to of "chromosomeName"
 		    // mapping-pos / blockSize rounded down
 		    std::ostringstream oss;
+		    long long int tile = atoll(mappedAtChromosomPos.c_str());
+		    if (tile == 0) // parse error or 0 for the unmapped reads
+			continue;
 		    oss << floor(atoll(mappedAtChromosomPos.c_str()) / param->blockSize);
 		    string chromosomBlock = chromosomeName + ":" + oss.str();
 

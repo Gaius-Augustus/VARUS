@@ -151,7 +151,7 @@ void Controller::algorithm(){
 
 	DEBUG(1,"Choosing next Run ...");
 	Run *next_run = chooseNextRun();
-	DEBUG(4,"... done choosing next run.");
+	DEBUG(1,"... chose " << next_run->accesionId);
 
 	// maxProfit set in chooseNextRun()
 	DEBUG(1,"Iteration: " << batchCount << "(" << goodBatchCount << " good batches) ("
@@ -220,7 +220,7 @@ Run*  Controller::chooseNextRun(){
     /*! \brief This function returns a pointer to the Run that should be downloaded next.
      *
      * If no estimator is selected, the next run is choosen randomly. If two or more
-     * Runs yield equal scores the Run is choosen randomly among the runs with the
+     * Runs yield equal scores the run is chosen randomly among the runs with the
      * highest score.
      */
 
@@ -233,32 +233,31 @@ Run*  Controller::chooseNextRun(){
     if (param->estimator == 0){
 	// chooses a run randomly
 	return ran->select_randomly(downloadableRuns);
-    } else {
-	if (downloadableRuns.size() > 0){
-	    maxProfit = downloadableRuns[0]->expectedProfit;
-	    candidates.push_back(downloadableRuns[0]);
-	    scores.push_back(downloadableRuns[0]->avglen);
-	    for (unsigned int i = 1; i < downloadableRuns.size(); i++){
-		Run *r = downloadableRuns[i];
-		// found a better score
-		if (maxProfit < r->expectedProfit){
-		    candidates.clear();
-		    scores.clear();
-		    candidates.push_back(r);
-		    scores.push_back(r->avglen);
-		    maxProfit = r->expectedProfit;
-		} else if (maxProfit == r->expectedProfit){ // score is equal
-		    candidates.push_back(r);
-		    scores.push_back(r->avglen);
-		}
-	    }
-	    unsigned choice = ran->biasSelect(scores);
-	    DEBUG(3, "Bias chosen len=" << scores[choice]);
-	    return candidates[choice];
-	    // return ran->select_randomly(candidates);
-	}
     }
-    return downloadableRuns[index];
+    if (downloadableRuns.size() > 0){
+	maxProfit = downloadableRuns[0]->expectedProfit;
+	candidates.push_back(downloadableRuns[0]);
+	scores.push_back(downloadableRuns[0]->avglen);
+	for (unsigned int i = 1; i < downloadableRuns.size(); i++){
+	    Run *r = downloadableRuns[i];
+	    // found a better score
+	    if (maxProfit < r->expectedProfit){
+		candidates.clear();
+		scores.clear();
+		candidates.push_back(r);
+		scores.push_back(r->avglen);
+		maxProfit = r->expectedProfit;
+	    } else if (maxProfit == r->expectedProfit){ // score is equal
+		candidates.push_back(r);
+		scores.push_back(r->avglen);
+	    }
+	}
+	unsigned choice = ran->biasSelect(scores);
+	DEBUG(1, "Bias chosen len=" << scores[choice] << " choice=" << choice<< " of " << scores.size());
+	return candidates[choice];
+    }
+
+    return nullptr;
 }
 
 bool Controller::continuing(){
