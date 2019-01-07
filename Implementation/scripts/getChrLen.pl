@@ -20,7 +20,8 @@ $seqfilename = $ARGV[0];
 open(FASTA, "<$seqfilename") || die "Couldn't open $seqfilename\n";
 
 $/="\n>";
-
+my $ave = 0;
+my $n = 0;
 while(<FASTA>) {
     /[>]*(.*)\n/;
     my $name = $1;
@@ -29,5 +30,9 @@ while(<FASTA>) {
     $seq =~ s/>//;
     $seq =~ s/\n//g;
     my $seqlen = length($seq);
+    $ave += $seqlen;
+    $n++;
     print "$name\t$seqlen\n";
 }
+
+print STDERR "avg seq len = " . int(100*$ave/$n)/100 . "\n";
