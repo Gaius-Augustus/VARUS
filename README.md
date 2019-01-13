@@ -1,10 +1,10 @@
 # VARUS: Drawing Diverse Samples from RNA-Seq Libraries
-**VARUS** was originally written by Willy Bruhn as a Bachelors' thesis supervised by Mario Stanke. This repository is a copy of https://github.com/WillyBruhn/VARUS made in November 2018 and contains many bigfixes, an incremental intron database feature and an extension for using HISAT.
+**VARUS** was originally written by Willy Bruhn as a Bachelors' thesis supervised by Mario Stanke. This repository is a copy of https://github.com/WillyBruhn/VARUS made in November 2018 and contains many bugfixes, an incremental intron database feature and an extension for using HISAT al alternative alignment program.
 
-**VARUS** automates the selection and download of a limited number of RNA-seq reads from at NCBI's Sequence Read Archive (SRA) targeting a **sufficiently** high coverage for many genes.
-Each iteration of the online algorithm
+**VARUS** automates the selection and download of a limited number of RNA-seq reads from at NCBI's Sequence Read Archive (SRA) targeting a **sufficiently** high coverage for many genes for
+the purpose of gene-finder training and genome annotation. Each iteration of the online algorithm
 
-- selects a run to download, that is expected to complement previously downloaded reads
+- selects a run to download that is expected to complement previously downloaded reads
 - downloads a sample of reads ("batch") from the run with **fastq-dump**
 - aligns the reads with **STAR** or **HISAT**
 - evaluates the alignment
@@ -18,7 +18,7 @@ git clone https://github.com/MarioStanke/VARUS.git
 ```
 
 **VARUS** depends on
-- samtools, 
+- [samtools](http://samtools.sourceforge.net/), 
 - [fastq-dump](https://ncbi.github.io/sra-tools/fastq-dump.html) and 
 - [STAR](https://github.com/alexdobin/STAR) or [HISAT](https://ccb.jhu.edu/software/hisat) (tested with HISAT 1, version 0.1.6-beta) and
 - requires the script [filterIntronsFindStrand.pl](https://github.com/Gaius-Augustus/BRAKER/blob/master/scripts/filterIntronsFindStrand.pl) to be in the executable path.
@@ -44,13 +44,11 @@ Change to directory `example` and follow the instructions in example/README.
 ## Running VARUS
 Copy the file `VARUSparameters.txt` from the example folder to your working directory and adjust it if necessary:
 
-Pay attention to the following parameters:
+Most important parameters:
 
-**--pathToSTAR** must point to the executable of **STAR**. <!-- make this consistent over aligners -->
+**--batchSize** specifies how many reads should be downloaded in each iteration (e.g. 50000 or 200000)
 
-**--maxBatches** specifies how many runs you want to download at most.
-
-**--batchSize** specifies how many reads you want to download in each step.
+**--maxBatches** specifies how many batches should be downloaded at most
 
 The final output is a sorted spliced alignment file (all batches together) called ***VARUS.bam***.
 

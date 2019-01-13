@@ -64,7 +64,8 @@ my $latinSpecies ="";
 my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
-my $pathToSTAR = "/usr/bin/";
+my $pathToSTAR = "";
+my $pathToHISAT = "";
 
 my $VARUScall = "./VARUS";
 my $aligner = "STAR";
@@ -76,9 +77,10 @@ my $usage =
 
     --varusParameters               path to a parameters file, defaults to /current/working/directory/VARUSparameters.txt 
 
-    --pathToSTAR                    ../../STAR/bin/Linux_x86_64/
-
-                                    specifies the path to the STAR executable
+    --pathToSTAR                    specifies the path to the STAR executable, only required it
+                                    STAR is not in the PATH
+    --pathToHISAT                   specifies the path to the HISAT executables, only required it
+                                    hisat-build is not in the PATH
 
     --createindex       1           creates the genome index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
@@ -129,6 +131,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'displayRunListOutput!'=>\$displayRunListOutput,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
 	   'pathToSTAR=s'=>\$pathToSTAR,
+	   'pathToHISAT=s'=>\$pathToHISAT,
 	   'VARUScall=s'=>\$VARUScall,
 	   'help!'=>\$help,
 	   'logfile=s'=>\$logFileName,
@@ -299,7 +302,9 @@ foreach my $latinName (keys %genome){
 
 	if ($aligner eq "STAR"){
 	    my $tmpdirname = "STARtmp" . int(rand(10000000));
-	    my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
+	    my $genomeGenerateCmd = "";
+	    $genomeGenerateCmd .= "$pathToSTAR/" if ($pathToSTAR ne "");
+	    $genomeGenerateCmd .= "STAR --runThreadN $runThreadN --runMode genomeGenerate "
 	      . "--outTmpDir $tmpdirname "
 	      . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
 
@@ -313,7 +318,9 @@ foreach my $latinName (keys %genome){
 		last;
 	    }
 	} else { # HISAT index
-	    my $idxCmd = "hisat-build $genomefname $genomeCur/hisatidx";
+	    my $idxCmd = "";
+	    $idxCmd .= "$pathToHISAT/" if ($pathToHISAT ne "");
+	    $idxCmd .= "hisat-build $genomefname $genomeCur/hisatidx";
 	    Log(0,"Invoking HISAT indexer call: " . $idxCmd);
 
 	    my $indexStatus = system($idxCmd);
