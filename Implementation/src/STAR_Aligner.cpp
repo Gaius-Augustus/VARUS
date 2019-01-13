@@ -21,8 +21,14 @@ std::string STAR_Aligner::shellCommand(Run *r) {
 
     string cmd;
     string batchDir_ = batchDir(r);
-
-    cmd = param->pathToSTAR + "STAR"
+    
+    if (param->pathToSTAR != ""){
+	cmd = param->pathToSTAR;
+	if (cmd[cmd.length()-1] != '/')
+	    cmd += "/";
+    }	
+    
+    cmd += string("STAR")
 	+ " --runThreadN " + to_string(param->runThreadN)
 	+ " --genomeDir " + param->genomeDir;
 

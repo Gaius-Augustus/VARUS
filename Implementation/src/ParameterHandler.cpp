@@ -154,7 +154,7 @@ void ParameterHandler::print_usage() {
 	"DRR030358      20853417        1       750723012       0 \n"
 	"                                       ...                                             \n\n"
 	"An exemplary call of VARUS might look like this:\n\n"
-	"./VARUS --blockSize 5000 --batchSize 10000 --genomeDir <...> --pathToStar <...>\n"
+	"./VARUS --blockSize 5000 --batchSize 10000 --genomeDir <...>\n"
 	" --pathToRuns <...> --outFileNamePrefix <...> \n\n"
 	"We divide the genome in many smaller blocks.This is done because on some larger \n"
 	"transcripts the coverage is also desired to be evenly distributed.\n"
@@ -319,11 +319,10 @@ ParameterHandler::ParameterHandler() {
 	      "the path as well like /path/to/fastqdump/./fastq-dump."
 	      "Note that this string has to contain './fastq-dump' as well.",false);
 
-    //"/home/willy/Bachelorarbeit/STAR-2.5.1b/source/"
-    pathToSTAR    = "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
+    pathToSTAR    = ""; // empty means that the PATH is searched
     INITPARAM(pathToSTAR,
 	      parameterCategories[MANDATORY],
-	      "specifies the path to the executable of STAR, the software that"
+	      "specifies the path to the executable of STAR, that"
 	      " aligns the reads to the transcriptome/genome.",false);
 
     INITPARAM(pathToVARUS,
