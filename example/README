@@ -1,0 +1,25 @@
+You can perform a test of VARUS on this sample data like this:
+
+1. Edit VARUSparameters.txt
+   At a minimum the path to the VARUS folder 'Implementation' needs to be set correctly.
+   For a quick test of the program, we recommend to set maxBatches to 20.
+
+
+2a. Run VARUS on a single species like this
+
+runVARUS.pl --aligner=HISAT --readFromTable=0 --createindex=1\
+  --latinGenus=Schizosaccharomyces --latinSpecies=pombe \
+  --speciesGenome=S.pombe.genome.fa \
+  --logfile=S.pombe.log 2> S.pombe.err\
+
+This command will create a subdirectory Schizosaccharomyces_pombe in the example folder which
+will eventually contain
+ - a file Runlist.txt with a table with all available RNA-seq runs 
+ - a folder genome with the genome index
+ - a file VARUS.bam with spliced alignments from all batches and runs
+
+2b. Alternatively, run VARUS on a list of species like this
+
+runVARUS.pl --aligner=HISAT --readFromTable=1 --createindex=1
+
+This command will read the file 'species.txt' and run VARUS on each species therein.

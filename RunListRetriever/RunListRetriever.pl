@@ -1,4 +1,4 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 use strict;
 use warnings;
 use Getopt::Long;
@@ -6,24 +6,6 @@ use Getopt::Long;
 use 5.010;
 # Program to retrieve a list of available Runs and number of reads per run for a given Species
 # Willy Bruhn 2.3.2016
-
-# 26 540 Runs at 6.12.2017 for Drosophila melanogaster
-
-#1. URL aus Speciesname basteln
-#SPECIESNAME-GENUS=Drosophila
-#SPECIESNAME-SPECIES=melanogaster
-#URL =  "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=" + Drosophila + "+" + melanogaster + "%5borgn%5d+AND+biomol_rna%5bProp%5d&usehistory=y"
-
-#wget -O list.xml $URL
-
-# dann aus list.xml die WebENV herausparsen
-#WEBENV=NCID_1_68563684_165.112.9.37_9001_1456932823_1456949776_0MetA0_S_MegaStore_F_1
-
-#wget -O out0-3.html "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=sra&WebEnv=" + WEBENV + "&query_key=1&retmax=10000&retstart=0"
-
-
-#/home/willy/Uni/5.Semester/Bachelorarbeit/pearlAccesionManager/./RunListRetriever.pl --retstart 0 --retmax 5 --outFileDir /home/willy/Uni/5.Semester/Bachelorarbeit/Manager/test11/
-
 
 my $usage = "Usage:\n";
 $usage .= "  --genus: \te.g. Homo\n";
@@ -78,17 +60,17 @@ if (! defined $species_name_GENUS || ! defined $species_name_SPECIES){
 
 sub retrieveID{
     my ($IDFile) = @_;
-    
+
     my $URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=
 	$species_name_GENUS+$species_name_SPECIES%5borgn%5d+AND+biomol_rna%5bProp%5d&usehistory=y";
-    
+
     my $stat = system "wget --waitretry=30 -O $outFileDir$IDFile \"$URL\"";
-    
+
     if ($stat != 0){
 	print "Check that you have a stable internet connection. Exiting...\n";
 	exit 1;
     }
-	
+
     my $WEBENV;
     my $notfound = 0;
     open(FILE, "<", "$outFileDir$IDFile") or die("Could not open file $outFileDir$IDFile");
@@ -104,13 +86,13 @@ sub retrieveID{
 	}
     }
     close (FILE);
-	
+
     #print "$WEBENV\n";
-	
+
     if ($notfound) {
 	print "Phrase not Found. Check that your genus and species are correct. Exiting RunListRetriever...\n";
 	cleanUp() unless !$cleanup;
-	exit 1;    
+	exit 1;
     }
     print "Server has $count data sets\n";
     return $WEBENV;
@@ -147,7 +129,7 @@ sub getRuns {
 	    $Run_acc = $1;
 	    $total_spots = $2;
 	    $total_bases = $3;
-	    
+
 	    if((($onlyPaired == 1 && $paired == 1) || $onlyPaired == 0) && $total_bases ne "" && $total_spots ne "") {
 		# print "$Run_acc\t$total_spots\t$total_bases\n";
 		my $avglen = int(100*$total_bases / $total_spots)/100;
@@ -160,7 +142,7 @@ sub getRuns {
 
     }
     close (FILE);
-    
+
     my $size = scalar @array;
     print "------------------------------------------------------------------------\n";
     print "Found $size runs in $outFileDir$listFile\n";

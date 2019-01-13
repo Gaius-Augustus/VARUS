@@ -2,8 +2,8 @@
 
 #--------------------------------------------------------------------
 # date:   11/28/2017
-# author: Willy Bruhn
-# contact: willy.bruhn@gmx.de
+# authors: Willy Bruhn, Mario Stanke
+# contact: willy.bruhn@gmx.de, mario.stanke@uni-greifswald.de
 #
 # Starting point for VARUS.
 # 0.) For each species a separate folder is created where all output goes to.
@@ -198,7 +198,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
   $sep");
 
 
-my %species;
+my %genome;
 if ($readFromTable != 0){
     Log(0, "Reading in species from $pathToSpecies/species.txt...");
 
@@ -212,7 +212,7 @@ if ($readFromTable != 0){
 	    my $speciesname = $line[0];
 	    my $genomefname = $line[1];
 	    $genomefname =~ s/^\s+|\s+$//g;
-	    $species{$speciesname} = $genomefname;
+	    $genome{$speciesname} = $genomefname;
 
 	    Log(5, "Found species $speciesname with genome $genomefname");
 	}
@@ -222,7 +222,7 @@ if ($readFromTable != 0){
     }
     close DAT;
 
-    my $speciesNum = scalar keys %species;
+    my $speciesNum = scalar keys %genome;
     Log(0, "...done reading species. Found $speciesNum species.\n$sep");
 } else {
     if ($latinSpecies eq ""){
@@ -238,7 +238,7 @@ if ($readFromTable != 0){
 	exit;
     }
 
-    $species{"$latinGenus $latinSpecies"}=$speciesGenome;
+    $genome{"$latinGenus $latinSpecies"} = $speciesGenome;
 }
 
 #--------------------------------------------------------------------
@@ -247,7 +247,7 @@ if ($readFromTable != 0){
 
 Log(0, "Starting to loop over all species ...");
 
-foreach my $latinName (keys %species){
+foreach my $latinName (keys %genome){
     #--------------------------------------------------------------------
     # Create a folder for the given species and create a Runlist.txt
     # and download all the available accession-ids.
@@ -287,14 +287,15 @@ foreach my $latinName (keys %species){
     # Create an index for the genome
     #--------------------------------------------------------------------
 
+    my $genomefname = $genome{$latinName};
+    if (substr($genomefname, 0, 1) ne '/' && substr($genomefname, 0, 1) ne '~'){
+	$genomefname = $outFileDir . "/" . $genomefname; # outFileDir is cwd
+    }
+
     if ($createindex){
 	Log(0, "Creating $aligner index...");
 	my $genomeCur = $outFileDir."/".$folder."/genome";
 	mkdir($genomeCur, 0700) unless(-d $genomeCur );
-	my $genomefname = $species{$latinName};
-	if (substr($genomefname, 0, 1) ne '/' && substr($genomefname, 0, 1) ne '~'){
-	    $genomefname = $outFileDir . "/" . $genomefname;
-	}
 
 	if ($aligner eq "STAR"){
 	    my $tmpdirname = "STARtmp" . int(rand(10000000));
@@ -361,7 +362,7 @@ foreach my $latinName (keys %species){
             }
             print $fh "$newLine";
         }
-	print $fh "--genomeFaFile " . $species{$latinName} . "\n";
+	print $fh "--genomeFaFile $genomefname\n";
 	print $fh "--aligner $aligner\n";
         close $fh;
 

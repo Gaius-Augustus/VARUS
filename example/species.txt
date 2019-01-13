@@ -1,2 +1,3 @@
-# First column is the latin speciesname; second column is the name of the corresponding genome
-Schizosaccharomyces pombe; pombe.fasta
+# binomial name; path to genome
+Schizosaccharomyces pombe; S.pombe.genome.fa
+Saccharomyces cerevisiae; S.cerevisiae.genome.fa
