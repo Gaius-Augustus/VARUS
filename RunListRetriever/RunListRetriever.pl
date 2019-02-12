@@ -34,10 +34,10 @@ $usage .= "  --outFileDir: default: \"\", the directory where all files will be 
 $usage .= "  --all: \tdefault: 'true', retrieve all available runs\n";
 $usage .= "  --paired: \tdefault: 'false', retrieve only paired-seq runs\n";
 
-my $species_name_GENUS; # e.g. "Drosophila"
+my $species_name_GENUS;   # e.g. "Drosophila"
 my $species_name_SPECIES; # e.g. "melanogaster"
-my $retmax = 100;		# number of runs to be downloaded
-my $retstart = 1;		# first run; download from $retstart to $retstart + $retmax-1
+my $retmax = 100;	  # number of runs to be downloaded
+my $retstart = 1;         # first run; download from $retstart to $retstart + $retmax-1
 my $all = 1;
 my $outFileDir = "";
 my $help = 0;
