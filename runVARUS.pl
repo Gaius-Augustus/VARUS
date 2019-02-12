@@ -2,8 +2,8 @@
 
 #--------------------------------------------------------------------
 # date:   11/28/2017
-# author: Willy Bruhn
-# contact: willy.bruhn@gmx.de
+# authors: Willy Bruhn, Mario Stanke
+# contact: willy.bruhn@gmx.de, mario.stanke@uni-greifswald.de
 #
 # Starting point for VARUS.
 # 0.) For each species a separate folder is created where all output goes to.
@@ -64,7 +64,8 @@ my $latinSpecies ="";
 my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
-my $pathToSTAR = "/usr/bin/";
+my $pathToSTAR = "";
+my $pathToHISAT = "";
 
 my $VARUScall = "./VARUS";
 my $aligner = "STAR";
@@ -76,9 +77,10 @@ my $usage =
 
     --varusParameters               path to a parameters file, defaults to /current/working/directory/VARUSparameters.txt 
 
-    --pathToSTAR                    ../../STAR/bin/Linux_x86_64/
-
-                                    specifies the path to the STAR executable
+    --pathToSTAR                    specifies the path to the STAR executable, only required it
+                                    STAR is not in the PATH
+    --pathToHISAT                   specifies the path to the HISAT executables, only required it
+                                    hisat-build is not in the PATH
 
     --createindex       1           creates the genome index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
@@ -129,6 +131,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'displayRunListOutput!'=>\$displayRunListOutput,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
 	   'pathToSTAR=s'=>\$pathToSTAR,
+	   'pathToHISAT=s'=>\$pathToHISAT,
 	   'VARUScall=s'=>\$VARUScall,
 	   'help!'=>\$help,
 	   'logfile=s'=>\$logFileName,
@@ -198,7 +201,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
   $sep");
 
 
-my %species;
+my %genome;
 if ($readFromTable != 0){
     Log(0, "Reading in species from $pathToSpecies/species.txt...");
 
@@ -212,7 +215,7 @@ if ($readFromTable != 0){
 	    my $speciesname = $line[0];
 	    my $genomefname = $line[1];
 	    $genomefname =~ s/^\s+|\s+$//g;
-	    $species{$speciesname} = $genomefname;
+	    $genome{$speciesname} = $genomefname;
 
 	    Log(5, "Found species $speciesname with genome $genomefname");
 	}
@@ -222,7 +225,7 @@ if ($readFromTable != 0){
     }
     close DAT;
 
-    my $speciesNum = scalar keys %species;
+    my $speciesNum = scalar keys %genome;
     Log(0, "...done reading species. Found $speciesNum species.\n$sep");
 } else {
     if ($latinSpecies eq ""){
@@ -238,7 +241,7 @@ if ($readFromTable != 0){
 	exit;
     }
 
-    $species{"$latinGenus $latinSpecies"}=$speciesGenome;
+    $genome{"$latinGenus $latinSpecies"} = $speciesGenome;
 }
 
 #--------------------------------------------------------------------
@@ -247,7 +250,7 @@ if ($readFromTable != 0){
 
 Log(0, "Starting to loop over all species ...");
 
-foreach my $latinName (keys %species){
+foreach my $latinName (keys %genome){
     #--------------------------------------------------------------------
     # Create a folder for the given species and create a Runlist.txt
     # and download all the available accession-ids.
@@ -287,18 +290,21 @@ foreach my $latinName (keys %species){
     # Create an index for the genome
     #--------------------------------------------------------------------
 
+    my $genomefname = $genome{$latinName};
+    if (substr($genomefname, 0, 1) ne '/' && substr($genomefname, 0, 1) ne '~'){
+	$genomefname = $outFileDir . "/" . $genomefname; # outFileDir is cwd
+    }
+
     if ($createindex){
 	Log(0, "Creating $aligner index...");
 	my $genomeCur = $outFileDir."/".$folder."/genome";
 	mkdir($genomeCur, 0700) unless(-d $genomeCur );
-	my $genomefname = $species{$latinName};
-	if (substr($genomefname, 0, 1) ne '/' && substr($genomefname, 0, 1) ne '~'){
-	    $genomefname = $outFileDir . "/" . $genomefname;
-	}
 
 	if ($aligner eq "STAR"){
 	    my $tmpdirname = "STARtmp" . int(rand(10000000));
-	    my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN $runThreadN --runMode genomeGenerate "
+	    my $genomeGenerateCmd = "";
+	    $genomeGenerateCmd .= "$pathToSTAR/" if ($pathToSTAR ne "");
+	    $genomeGenerateCmd .= "STAR --runThreadN $runThreadN --runMode genomeGenerate "
 	      . "--outTmpDir $tmpdirname "
 	      . "--genomeDir " . $genomeCur . " --genomeFastaFiles $genomefname";
 
@@ -312,7 +318,9 @@ foreach my $latinName (keys %species){
 		last;
 	    }
 	} else { # HISAT index
-	    my $idxCmd = "hisat-build $genomefname $genomeCur/hisatidx";
+	    my $idxCmd = "";
+	    $idxCmd .= "$pathToHISAT/" if ($pathToHISAT ne "");
+	    $idxCmd .= "hisat-build $genomefname $genomeCur/hisatidx";
 	    Log(0,"Invoking HISAT indexer call: " . $idxCmd);
 
 	    my $indexStatus = system($idxCmd);
@@ -361,7 +369,7 @@ foreach my $latinName (keys %species){
             }
             print $fh "$newLine";
         }
-	print $fh "--genomeFaFile " . $species{$latinName} . "\n";
+	print $fh "--genomeFaFile $genomefname\n";
 	print $fh "--aligner $aligner\n";
         close $fh;
 
