@@ -2,7 +2,7 @@
  * AdvancedEstimator.cpp
  *
  *  Created on: 31.08.2016
- *      Author: willy
+ *      Authors: willy, Mario Stanke
  */
 
 #include "../headers/AdvancedEstimator.h"
@@ -47,12 +47,11 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
     
     unsigned int totalAliCount = 0;
     for (UUmap::iterator j = obs_total.begin(); j != obs_total.end(); j++)
-	totalAliCount += obs_total[j->first];
+	totalAliCount += j->second;
     
     double normalizer = 1.0 / (totalAliCount + pC * obs_total.size());
     for (UUmap::iterator j = obs_total.begin(); j != obs_total.end(); j++) 
 	p_total[j->first] = normalizer * (pC + obs_total[j->first]);
-    
     
     DEBUG(1, "total alignment count=" << totalAliCount);
 
@@ -61,12 +60,15 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
     double normalizingConst = (param->pseudoCount + param->lambda) * param->numOfBlocks;	    
 
     DEBUG(2, "Making estimation for runs not downloaded yet...");
+    
     normalizer = 0.0;
     for (UDmap::iterator i = p_total.begin(); i != p_total.end(); i++)
 	normalizer += param->pseudoCount  + param->lambda * p_total[i->first] * param->numOfBlocks;
     normalizer = 1.0 / normalizer;
     for (UDmap::iterator i = p_total.begin(); i != p_total.end(); i++){
 	pnoObs[i->first] = normalizer * (param->pseudoCount  + param->lambda * p_total[i->first] * param->numOfBlocks);
+	// with lamba=1 the pseudocount from the background distribution from all runs is as if there was on average
+	// 1 read from each block
 	DEBUG(2, "pseudoCount=" << param->pseudoCount << "\tlambda* p_total[i->first] * param->numOfBlocks= " << param->lambda
 	      << " * " <<  p_total[i->first] << " * " << param->numOfBlocks << " = " << param->lambda * p_total[i->first] * param->numOfBlocks
 	      << "\tpnoObs=" << pnoObs[i->first]);

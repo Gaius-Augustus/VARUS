@@ -21,7 +21,7 @@ class Run {
 	const unsigned int batchSize);
     ~Run();
 
-    UUmap observations;
+    UUmap observations; // key: transcript unit index, value: read mapping count
     UDmap p;   // estimator for all entries with an observation
     Run *pRep; /* Another run representing this run with its probability distribution p.
 		  This can be used to save time and memory, in particular when all runs not yet downloaded
