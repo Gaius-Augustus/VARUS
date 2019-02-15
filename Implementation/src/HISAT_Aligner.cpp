@@ -20,7 +20,7 @@ std::string HISAT_Aligner::shellCommand(Run *r) {
 
     string batchDir_ = batchDir(r);
 
-    string cmd = "hisat";
+    string cmd = "hisat2"; // here hisat for HISAT v1
     cmd += " -p " + to_string(param->runThreadN)
         + " -f" // Reads (specified with <m1>, <m2>, <s>) are FASTA files.
 	+ " -x " + param->genomeDir + "/hisatidx";

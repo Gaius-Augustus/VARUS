@@ -20,7 +20,7 @@ git clone https://github.com/MarioStanke/VARUS.git
 **VARUS** depends on
 - [samtools](http://samtools.sourceforge.net/), 
 - [fastq-dump](https://ncbi.github.io/sra-tools/fastq-dump.html) and 
-- [STAR](https://github.com/alexdobin/STAR) or [HISAT](https://ccb.jhu.edu/software/hisat) (tested with HISAT 1, version 0.1.6-beta) and
+- [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2) (tested with HISAT 2, version 2.0.0-beta) and
 - requires the script [filterIntronsFindStrand.pl](https://github.com/Gaius-Augustus/BRAKER/blob/master/scripts/filterIntronsFindStrand.pl) to be in the executable path.
 
 Compile **VARUS** manually with

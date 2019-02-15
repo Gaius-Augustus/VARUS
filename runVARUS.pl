@@ -320,7 +320,7 @@ foreach my $latinName (keys %genome){
 	} else { # HISAT index
 	    my $idxCmd = "";
 	    $idxCmd .= "$pathToHISAT/" if ($pathToHISAT ne "");
-	    $idxCmd .= "hisat-build $genomefname $genomeCur/hisatidx";
+	    $idxCmd .= "hisat2-build $genomefname $genomeCur/hisatidx"; # hisat-build for HISAT v1
 	    Log(0,"Invoking HISAT indexer call: " . $idxCmd);
 
 	    my $indexStatus = system($idxCmd);

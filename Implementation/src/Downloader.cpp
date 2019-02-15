@@ -50,6 +50,8 @@ bool Downloader::getBatch(Run *r, bool all){
      *	In this case the reads can not be aligned. This function returns "false", if the
      *	download failed.
      */
+    unsigned numberOfAttempts = 2;
+    unsigned attempt = 0;
     
     if (all == false)
 	nextBatchIndices(r);	// chooses the correct N and X
@@ -61,18 +63,21 @@ bool Downloader::getBatch(Run *r, bool all){
     std::string s = shellCommand(r);
     
     DEBUG(0,"getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s);
-    
-    int status = system(s.c_str());
-    
-    r->timesDownloaded++;
-    if(0 != status) {
-        DEBUG(0,"Failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X);
-//        DEBUG(0,"Calling from " << system("pwd > cur.txt"))
-//        writeBadRunSection(outFileNamePrefix);
 
-//        exit(0);
-        return false;
+    int status = -1;
+
+    while (status != 0 && ++attempt <= numberOfAttempts){
+	status = system(s.c_str()); // run fastq-dump
+	if (status != 0) {
+	    DEBUG(0,"Failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X <<
+		  (attempt < numberOfAttempts? ". Retrying..." : "") );
+	}
     }
+    if (status != 0){
+	DEBUG(0,"Definitively failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X);
+	return false;
+    }
+    r->timesDownloaded++;
     
     return true;
 }

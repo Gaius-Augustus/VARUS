@@ -119,7 +119,8 @@ void Controller::algorithm(){
      */
 
     maxProfit = 1;
-
+    bool downloadSuccessful;
+    
     if (param->loadAllOnce == 1){
 	DEBUG(1,"Loading all once");
 	for (unsigned int k = 0; k < runs.size(); k++){
@@ -165,8 +166,12 @@ void Controller::algorithm(){
 	    assert(next_run != nullptr);
 	    DEBUG(1,"Getting batch number " << next_run->timesDownloaded + 1
 		  << " for " << next_run->accesionId);
-	    down->getBatch(next_run);
-	    align->update(next_run, totalObservations, chrom, batchCount);
+	    downloadSuccessful = down->getBatch(next_run);
+	    if (!downloadSuccessful){
+		DEBUG(1, "Download failed. Will ignore this run.");
+		next_run->badQuality = true;
+	    } else 
+		align->update(next_run, totalObservations, chrom, batchCount);
 	    if (next_run->badQuality == false){
 		goodBatchCount++;
 	    }
@@ -578,11 +583,11 @@ void Controller::updateDownloadableRuns(){
     
     while (it != downloadableRuns.end()) {
 	if ((*it)->badQuality == true){
-	    DEBUG(0,"Deleting run " << (*it)->accesionId << " because of bad quality.");
+	    DEBUG(0,"Ignoring run " << (*it)->accesionId << " because of bad quality.");
 	    badQualityRuns.push_back(*it);
 	    it = downloadableRuns.erase(it);
 	} else if((*it)->timesDownloaded*param->batchSize >= (*it)->numOfSpots){
-	    DEBUG(0,"Deleting run " << (*it)->accesionId << " because no reads are left to download.");
+	    DEBUG(0,"From run " << (*it)->accesionId << " no reads are left to download.");
 	    it = downloadableRuns.erase(it);
 	}
 	else ++it;

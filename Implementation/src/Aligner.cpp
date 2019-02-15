@@ -30,7 +30,7 @@ int Aligner::mapReads(Run *r) {
     // build the command
     string alignCmd = shellCommand(r);
     if (alignCmd == ""){
-	DEBUG(0, "Aboring mapping of reads.");
+	DEBUG(0, "Aborting mapping of reads.");
 	return 1;
     }
   
