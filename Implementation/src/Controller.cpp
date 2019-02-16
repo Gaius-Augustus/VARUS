@@ -183,10 +183,10 @@ void Controller::algorithm(){
 	totalProfit = totalScore - param->cost*param->batchSize*batchCount;
 
 	if (param->estimator != 0){
-	    DEBUG(1,"Estimating...");
+	    DEBUG(2, "Estimating probability distributions ...");
 	    // we pass all runs since the DM uses the information from all runs
 	    est->estimateP(runs, batchCount);
-	    DEBUG(1,"... done Estimating");
+	    DEBUG(2, "... done estimating.");
 	}
 	
 	calculateProfit(downloadableRuns);
@@ -196,12 +196,13 @@ void Controller::algorithm(){
 	    exportTotalObservationCSVlessInfo(next_run); // ->accesionId
 	else
 	    exportTotalObservationCSV(next_run->accesionId);
-	
-	exportRunStatistics();
+
+	if (batchCount < 10 || batchCount%10 == 1)
+	    exportRunStatistics(); // this is overwriting the file RunStatistics.csv
 
 	DEBUG(4,"...done Exporting");
 	  
-	if(param->ignoreReadNum != 1){
+	if (param->ignoreReadNum != 1){
 	    updateDownloadableRuns();
 	}
 
@@ -216,8 +217,8 @@ void Controller::algorithm(){
 	    mergeAlignments(goodBatchCount);
 	}
     }
-
     exportCoverage();
+    exportRunStatistics();
     finalMerge();
 }
 
@@ -693,7 +694,10 @@ void Controller::exportRunStatistics(){
     string fileName = param->outFileNamePrefix;
     fileName += "RunStatistics";
     fileName += ".csv";
-
+    unsigned numberOfRuns = 0;
+    unsigned numberRunsWithDownload = 0;
+    unsigned numberBadRuns = 0;
+    
     std::sort (runs.begin(), runs.end(), runCount);
 
     fstream f;
@@ -705,7 +709,14 @@ void Controller::exportRunStatistics(){
 
     for(unsigned int j=0; j < runs.size(); j++) {
 	f << runs[j]->accesionId<< ";" << runs[j]->timesDownloaded<< ";" <<runs[j]->avgUmrPercent << "%" << ";" << runs[j]->badQuality << ";" << runs[j]->maxNumOfBatches << "\n";
-
+	numberOfRuns++;
+	if (runs[j]->timesDownloaded > 0){
+	    numberRunsWithDownload++;
+	    if (runs[j]->badQuality)
+		numberBadRuns++;
+	}
     }
     f.close();
+    DEBUG(1, "Downloads from " << numberRunsWithDownload << " runs out of a total of " << numberOfRuns
+	  << ". Thereof " << numberBadRuns << " had a quality issue (alignment error, low alignability).");
 }

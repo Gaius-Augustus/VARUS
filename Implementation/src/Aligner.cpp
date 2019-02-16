@@ -90,8 +90,11 @@ void Aligner::update(Run *r, UUmap &totalObservations, ChromosomeInitializer *c,
      */
 
     int mapStatus = mapReads(r);
-    if (mapStatus != 0)
+    if (mapStatus != 0){
+	r->badQuality = true;
+	DEBUG(1, "Run " << r->accesionId << " produced an alignment error. Will ignore this run from now on.")
 	return; // abort only this batch upon an error
+    }
     unordered_map<string,RNAread> reads;
     getAlignedReads(reads, r, batchNr);
     updateObservations(r, totalObservations, reads, c);
@@ -233,7 +236,7 @@ void Aligner::cleanupAfterAlignment(Run *r){
     string batchDir_ = batchDir(r);
     string zipCmd = "gzip";
     zipCmd += " " + batchDir_ + "*.fasta";
-    DEBUG(0, "cleanupAfterAlignment: " << zipCmd);
+    DEBUG(2, "cleanupAfterAlignment: " << zipCmd);
     int status = system(zipCmd.c_str());
     if (status != 0)
 	DEBUG(0, "Failed to run gzip properly: " << zipCmd);
@@ -241,7 +244,7 @@ void Aligner::cleanupAfterAlignment(Run *r){
     // delete .sam files
     string delCmd = "rm";
     delCmd += " " + batchDir_ + "*.sam";
-    DEBUG(0, "cleanupAfterAlignment: " << delCmd);
+    DEBUG(2, "cleanupAfterAlignment: " << delCmd);
     status = system(delCmd.c_str());
     if (status != 0)
 	DEBUG(0, "Failed to delete .sam file: " << delCmd);

@@ -8,7 +8,7 @@
 --exportParametersToFile 1
 --fastqDumpCall fastq-dump
 --genomeDir ./genome/
---lambda 10.0
+--lambda 20.0
 --lessInfo 1
 --loadAllOnce 0
 --maxBatches 20

@@ -23,3 +23,6 @@ will eventually contain
 runVARUS.pl --aligner=HISAT --readFromTable=1 --createindex=1
 
 This command will read the file 'species.txt' and run VARUS on each species therein.
+
+Please be aware that an untypically high percentage of Schizosaccharomyces pombe sequencing runs in SRA have quality issues.
+It is still included as an example because of the small genome.
