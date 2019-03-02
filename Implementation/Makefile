@@ -3,7 +3,6 @@ COMP =	g++ -std=c++11 -c -O3
 LINK =	g++ -std=c++11
 
 BUILD = ./bin/
-#BUILD = ./deb/
 
 SRC = ./src/
 HEADERS = ./headers/
