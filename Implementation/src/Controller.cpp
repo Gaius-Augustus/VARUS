@@ -353,6 +353,7 @@ void Controller::calculateProfit(vector<Run*> &runs){
 	    profit(r);
 	    if (r->timesDownloaded == 0){
 		noReadsProfit = r->expectedProfit;
+		DEBUG(1, "Profit of not yet downloaded runs:" << noReadsProfit);
 	    }
 	}
 	if (r->timesDownloaded > 0 || i < 10)
@@ -387,7 +388,7 @@ void Controller::exportTotalObservationCSV(string name) {
 	fstream f;
 	f.open(fileName, ios::out);
 	if (!f) {
-	    DEBUG(0,"Cant open file " << fileName << "!");
+	    DEBUG(0,"Can't open file " << fileName << " for writing!" << endl << "Aborting.");
 	    exit(1);
 	}
 
