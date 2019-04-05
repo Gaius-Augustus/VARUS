@@ -408,7 +408,7 @@ ParameterHandler::ParameterHandler() {
     //	dieList = 1;	// 1== uses "Dielist.txt", 0 == uses "Runlist.txt
     //    	INITPARAM(dieList, "1== uses \"Dielist.txt\", 0 == uses \"Runlist.txt\"");
 
-    lessInfo = 0; 	// 1 == Toy prints less info
+    lessInfo = 1; 	// 1 == Toy prints less info
     INITPARAM(lessInfo,
 	      parameterCategories[SIMULATION],
 	      "if set to 1, Simulator prints less info. Only Relevant for simulation.",true);

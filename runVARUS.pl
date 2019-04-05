@@ -58,7 +58,7 @@ my $verbosity = 4;
 my $timeStamp = 1;
 my $displayRunListOutput = 1;
 my $displaySTARIndexerOutput = 1;
-my $readFromTable = 1;
+my $readFromTable = "1";
 
 my $latinSpecies ="";
 my $latinGenus ="";
@@ -69,6 +69,8 @@ my $pathToHISAT = "";
 
 my $VARUScall = "./VARUS";
 my $aligner = "STAR";
+
+my $gtblfile = "species.txt";
 
 my $usage =
 "Usage:
@@ -94,14 +96,15 @@ my $usage =
 
     --createStatistics  0           creates a plot of the coverage achieved with all downloads
 
-    --readFromTable     1           searches for a file 'species.txt' with two columns ;-separated
-                                    first column=species name in latin
-                                    second column=path to the corresponding genome in fasta-format
 
-    --pathToSpecies     /cwd/       path to the file 'species.txt'
+    --readFromTable     fname       searches for a file fname (default: '$gtblfile') with two columns separated by tab or semicolon
+                                    first column:  binomial species name in (Latin name, separated by a single space)
+                                    second column: path to the corresponding genome FASTA file
 
-    --latinGenus                    latin name of the genus e.g Drosophila
-    --latinSpecies                  latin name of the species e.g melanogaster
+    --pathToSpecies     /cwd/       path to the file '$gtblfile'
+
+    --latinGenus                    latin name of the genus e.g. Drosophila
+    --latinSpecies                  latin name of the species e.g. melanogaster
 
     --speciesGenome                 path to the corresponding genome in fasta-format
 
@@ -122,7 +125,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
 	   'runThreadN=i'=>\$runThreadN,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
-	   'readFromTable=i'=>\$readFromTable,
+	   'readFromTable=s'=>\$readFromTable,
 	   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
 	   'speciesGenome=s'=>\$speciesGenome,
@@ -202,16 +205,18 @@ Log(0, "Started runVarus.pl with the following parameters:\n
 
 
 my %genome;
-if ($readFromTable != 0){
-    Log(0, "Reading in species from $pathToSpecies/species.txt...");
+if ($readFromTable ne "0"){
+    $gtblfile = $readFromTable if ($readFromTable ne "1");
+    my $gtblpath = "$pathToSpecies/$gtblfile";
+    Log(0, "Reading in species from $gtblpath ...");
 
-    open(DAT,"$pathToSpecies/species.txt") || die Log(0, "Could not open file $pathToSpecies/species.txt \n");
+    open(DAT,"$gtblpath") || die Log(0, "Could not open file $gtblpath\n");
     my @line;
 
     while(<DAT>){
 	my $first = substr $_, 0, 1;
 	if ($first ne '#'){
-	    @line = split(/;/,$_);
+	    @line = split(/[;\t]/,$_);
 	    my $speciesname = $line[0];
 	    my $genomefname = $line[1];
 	    $genomefname =~ s/^\s+|\s+$//g;
@@ -220,7 +225,7 @@ if ($readFromTable != 0){
 	    Log(5, "Found species $speciesname with genome $genomefname");
 	}
 	else {
-	    Log(5, "Reading comment from species.txt");
+	    Log(5, "Reading comment from $gtblfile");
 	}
     }
     close DAT;
