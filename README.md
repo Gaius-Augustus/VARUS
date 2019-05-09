@@ -18,10 +18,10 @@ git clone https://github.com/MarioStanke/VARUS.git
 ```
 
 **VARUS** depends on
-- [samtools](http://samtools.sourceforge.net/), 
+- [samtools](http://samtools.sourceforge.net/),
+- [bamtools](https://github.com/pezmaster31/bamtools), install on Ubuntu with `sudo apt-get install bamtools libbamtools-dev`
 - [fastq-dump](https://ncbi.github.io/sra-tools/fastq-dump.html) and 
-- [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2) (tested with HISAT 2, version 2.0.0-beta) and
-- requires the script [filterIntronsFindStrand.pl](https://github.com/Gaius-Augustus/BRAKER/blob/master/scripts/filterIntronsFindStrand.pl) to be in the executable path.
+- [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2) (tested with HISAT 2, version 2.0.0-beta)
 
 Compile **VARUS** manually with
 ```

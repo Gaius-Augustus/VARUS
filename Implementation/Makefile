@@ -12,7 +12,7 @@ TestSrc = ./Tests/catch/src/
 
 TestSources = ./Tests/Tests/unitTests/src/
 
-all: VARUS
+all: VARUS bam2hints
 
 debug: COMP += -g # -DDEBUG
 debug: VARUS
@@ -23,7 +23,8 @@ profile: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)
 
 
 clean:
-	rm -f $(BUILD)*.o VARUS VARUSTest VARUSgprof $(Test)CatchTest rm -f $(Test)*.o
+	rm -f $(BUILD)*.o VARUS VARUSTest VARUSgprof $(Test)CatchTest rm -f $(Test)*.o bam2hints
+	cd src/bam2hints && make clean
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -98,3 +99,7 @@ $(BUILD)ClusterComponent.o: $(SRC)ClusterComponent.cpp
 
 $(BUILD)ClusterEstimator.o: $(SRC)ClusterEstimator.cpp headers/Estimator.h headers/myRandomEngine.h headers/Operators.h
 	$(COMP) $(SRC)ClusterEstimator.cpp -o $(BUILD)ClusterEstimator.o;	
+
+
+bam2hints:
+	cd src/bam2hints && make

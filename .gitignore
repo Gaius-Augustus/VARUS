@@ -1,4 +1,6 @@
 Implementation/VARUS
+Implementation/bam2hints
+Implementation/src/bam2hints/bam2hints
 *.o
 *~
 GettingStarted/Pombe/Log.out
