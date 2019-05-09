@@ -178,7 +178,7 @@ void HISAT_Aligner::checkQuality(const string &samfilename,
     if (f.good()) // test for existence, otherwise cat gives an error for the very first batch
 	joincmd += " " + cumintronsFname;
     f.close();
-    joincmd += " | sort -k 1,1 -k 4,4n -k 5,5n | join_mult_hints.pl >" + cumintronsTempFname;
+    joincmd += " | sort -k 1,1 -k 4,4n -k 5,5n | " + param->pathToVARUS + "/scripts/join_mult_hints.pl >" + cumintronsTempFname;
     status = system(joincmd.c_str());
     if (status != 0) {
 	DEBUG(0, string("Failed to run join_mult_hints.pl properly: ") + joincmd);
