@@ -52,8 +52,12 @@ Most important parameters:
 
 The final output is a sorted spliced alignment file (all batches together) called ***VARUS.bam***.
 
-# VARUS at PAG2019
-![alternate text](docs/poster-PAG2019.png)
+# References
+Please cite: 
+[VARUS: sampling complementary RNA reads from the sequence read archive](https://bmcbioinformatics.biomedcentral.com/track/pdf/10.1186/s12859-019-3182-x). 2019; *BMC Bioinformatics*, 20:558
 
-# Bachelor Thesis
+## VARUS at PAG2019
+![Poster](docs/poster-PAG2019.png)
+
+## Bachelor Thesis
 Find the bachelor thesis of Willy Bruhn corresponding to **VARUS** in /docs/Thesis.
