@@ -6,12 +6,12 @@
 --estimator 2
 --exportObservationsToFile 1
 --exportParametersToFile 1
---fastqDumpCall fastq-dump
+--fastqDumpCall /home/mario/tools/sratoolkit.2.10.4-ubuntu64/bin/fastq-dump
 --genomeDir ./genome/
 --lambda 10.0
 --lessInfo 1
 --loadAllOnce 0
---maxBatches 20
+--maxBatches 10
 --mergeThreshold 10
 --outFileNamePrefix ./
 --pathToParameters ./VARUSparameters.txt
