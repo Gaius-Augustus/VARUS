@@ -7,7 +7,7 @@ You can perform a test of VARUS on this sample data like this:
 
 2a. Run VARUS on a single species like this
 
-runVARUS.pl --aligner=HISAT --readFromTable=0 --createindex=1\
+../runVARUS.pl --aligner=HISAT --readFromTable=0 --createindex=1\
   --latinGenus=Schizosaccharomyces --latinSpecies=pombe \
   --speciesGenome=S.pombe.genome.fa \
   --logfile=S.pombe.log 2> S.pombe.err\
@@ -20,7 +20,7 @@ will eventually contain
 
 2b. Alternatively, run VARUS on a list of species like this
 
-runVARUS.pl --aligner=HISAT --readFromTable=1 --createindex=1
+../runVARUS.pl --aligner=HISAT --readFromTable=1 --createindex=1
 
 This command will read the file 'species.txt' and run VARUS on each species therein.
 
