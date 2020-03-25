@@ -6,7 +6,7 @@
 --estimator 2
 --exportObservationsToFile 1
 --exportParametersToFile 1
---fastqDumpCall /home/mario/tools/sratoolkit.2.10.4-ubuntu64/bin/fastq-dump
+--fastqDumpCall fastq-dump
 --genomeDir ./genome/
 --lambda 10.0
 --lessInfo 1

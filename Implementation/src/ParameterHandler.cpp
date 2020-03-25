@@ -547,6 +547,8 @@ ParameterHandler::ParameterHandler() {
 	      parameterCategories[DIRICHLETMIXTURE],
 	      "exports the steps of the newtons method. Deprecated since it is very expensive."
 	      " Only relevant for estimator 3.",true);
+
+    aliDirName = "batches";
 }
 
 ParameterHandler::~ParameterHandler() {

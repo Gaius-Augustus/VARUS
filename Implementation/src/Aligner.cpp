@@ -161,7 +161,7 @@ void Aligner::sam2transcriptUnits(unordered_map<string, RNAread> &reads,
 string Aligner::batchDir(Run *r) {
      /* !\brief The directory of the next batch of the run, e.g. SRR7192719/N6300000X6349999/
      */
-    return  param->outFileNamePrefix + "acc-" + r->accesionId + "/"
+    return  param->outFileNamePrefix + param->aliDirName + "/" + r->accesionId + "/"
 	+ "N" + to_string(r->N)
 	+ "X" + to_string(r->X) + "/";
 }

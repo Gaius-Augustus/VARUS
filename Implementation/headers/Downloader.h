@@ -19,7 +19,6 @@ public:
     virtual ~Downloader();
 
     std::string shellCommand(Run *r);
-    char const ** shellCommand2(Run *r);
     void nextBatchIndices(Run *r);
     bool getBatch(Run *r, bool all = false);
 };
