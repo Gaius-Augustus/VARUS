@@ -27,7 +27,8 @@ std::string Downloader::shellCommand(Run *r){
     n << r->N;
     x << r->X;
     
-    std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
+    std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix +
+        + "acc-" + r->accesionId + "/"
 	+ "N" + n.str() + "X" + x.str() + "/ --fasta ";
     if (r->paired)
 	s += " --split-files ";
@@ -96,7 +97,7 @@ bool Downloader::getBatch(Run *r, bool all){
     msg << "getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s;
     DEBUG(0,msg.str());
     int status = -1;
-
+/*
     char * ls_args[11] = {"fastq-dump", "-N", "3750000", "-X", "3799999", "-O",
                          "/home/mario/VARUS/example/Schizosaccharomyces_pombe/",
                          "--fasta", "--split-files", "SRR9057308", NULL};
@@ -123,7 +124,7 @@ bool Downloader::getBatch(Run *r, bool all){
         exit(1);
     }
 
-/*
+*/
     //system(("prefetch " + r->accesionId).c_str());
     
     
@@ -138,7 +139,7 @@ bool Downloader::getBatch(Run *r, bool all){
 	DEBUG(0,"Definitively failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X);
 	return false;
     }
-*/
+
     r->timesDownloaded++;
     
     return true;
