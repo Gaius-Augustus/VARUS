@@ -8,6 +8,7 @@
 #include "../headers/Downloader.h"
 #include "../headers/debug.h"
 
+
 Downloader::Downloader(ParameterHandler *p) {
     param = p;
 }
@@ -21,11 +22,13 @@ std::string Downloader::shellCommand(Run *r){
     n << r->N;
     x << r->X;
     
-    std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
-	+ "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId;
+    std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix
+        + param->aliDirName + "/" + r->accesionId + "/"
+	+ "N" + n.str() + "X" + x.str() + "/ --fasta 120 ";
     if (r->paired)
-	s += " --split-files";
+	s += "--split-files ";
     
+    s += r->accesionId;
     return s;
 }
 
@@ -62,8 +65,9 @@ bool Downloader::getBatch(Run *r, bool all){
     
     std::string s = shellCommand(r);
     
-    DEBUG(0,"getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s);
-
+    std::ostringstream msg;
+    msg << "getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s;
+    DEBUG(0,msg.str());
     int status = -1;
 
     while (status != 0 && ++attempt <= numberOfAttempts){
@@ -77,6 +81,7 @@ bool Downloader::getBatch(Run *r, bool all){
 	DEBUG(0,"Definitively failed to save batch "  << r->accesionId << " -N  " << r->N << " -X " << r->X);
 	return false;
     }
+
     r->timesDownloaded++;
     
     return true;

@@ -53,6 +53,7 @@ class ParameterHandler {
     std::string genomeFaFile; // genome fasta file, optional
     std::string aligner; // VARUS or HISAT
     std::string outFileNamePrefix;
+    std::string aliDirName;
     uI runThreadN;
     uI blockSize;
     uI batchSize;

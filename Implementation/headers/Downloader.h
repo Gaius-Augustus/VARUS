@@ -13,14 +13,14 @@
 
 class Downloader {
 public:
-	ParameterHandler *param;
+    ParameterHandler *param;
 
-	Downloader(ParameterHandler *p);
-	virtual ~Downloader();
+    Downloader(ParameterHandler *p);
+    virtual ~Downloader();
 
-	std::string shellCommand(Run *r);
-	void nextBatchIndices(Run *r);
-	bool getBatch(Run *r, bool all = false);
+    std::string shellCommand(Run *r);
+    void nextBatchIndices(Run *r);
+    bool getBatch(Run *r, bool all = false);
 };
 
 #endif /* DOWNLOADER_H_ */
