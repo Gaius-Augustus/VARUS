@@ -11,7 +11,7 @@
 --lambda 10.0
 --lessInfo 1
 --loadAllOnce 0
---maxBatches 10
+--maxBatches 20
 --mergeThreshold 10
 --outFileNamePrefix ./
 --pathToParameters ./VARUSparameters.txt

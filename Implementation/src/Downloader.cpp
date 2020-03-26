@@ -8,11 +8,6 @@
 #include "../headers/Downloader.h"
 #include "../headers/debug.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
 Downloader::Downloader(ParameterHandler *p) {
     param = p;
@@ -74,7 +69,7 @@ bool Downloader::getBatch(Run *r, bool all){
     msg << "getBatch(" << r->accesionId << ", X=" << r->X << ", N=" << r->N << "): " << s;
     DEBUG(0,msg.str());
     int status = -1;
-    
+
     while (status != 0 && ++attempt <= numberOfAttempts){
 	status = system(s.c_str()); // run fastq-dump
 	if (status != 0) {
