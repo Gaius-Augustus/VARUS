@@ -5,6 +5,7 @@
  *      Author: willy
  */
 #include <unordered_map>
+#include <string>
 
 #ifndef TYPECONVENTIONS_H_
 #define TYPECONVENTIONS_H_
