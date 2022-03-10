@@ -116,26 +116,26 @@ bf2arr=($bamFiles2)
 numF2=${#bf2arr[@]}
 if [ "$numF2" -gt "1" ]; then 
     echo "Creating final alignment by merging all bam-files: $bamFiles2"
-    samtools merge -f -n "final.bam" $bamFiles2
+    samtools merge -f -n "VARUS.bam" $bamFiles2
 else # if there is only one temporary bam file, just move it
-    echo "mv ${bf2arr[0]} final.bam"
-    mv ${bf2arr[0]} final.bam
+    echo "mv ${bf2arr[0]} VARUS.bam"
+    mv ${bf2arr[0]} VARUS.bam
 fi
 
-bfarr=($bamFiles)
-numF=${#bfarr[@]}
-if [ "$numF" -gt "1" ]; then 
-    echo "Creating final alignment by merging all bam-files: $bamFiles"
-    samtools merge -f -n "VARUS.bam" $bamFiles
-else
-    echo "${bfarr[0]} VARUS.bam"
-    mv ${bfarr[0]} VARUS.bam
-fi
+#bfarr=($bamFiles)
+#numF=${#bfarr[@]}
+#if [ "$numF" -gt "1" ]; then 
+#    echo "Creating final alignment by merging all bam-files: $bamFiles"
+#    samtools merge -f -n "VARUS.bam" $bamFiles
+#else
+#    echo "${bfarr[0]} VARUS.bam"
+#    mv ${bfarr[0]} VARUS.bam
+#fi
 
 #--------------------------------------------------------------------
 # To clean up delete all subfolders.
 #--------------------------------------------------------------------
-rm -f final.bam final_tmp*.bam
+rm -f final_tmp*.bam
 
 if [[ $cleanUp =~ "delete" ]]
 then
