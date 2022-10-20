@@ -191,7 +191,7 @@ my $sep = "---------------------------------------------------------------------
 # Read in the table containing the speciesnames and the genomefile names
 #--------------------------------------------------------------------
 Log(0, "Started runVarus.pl with the following parameters:\n
-  pathToScecies: $pathToSpecies
+  pathToSpecies: $pathToSpecies
   outFileDir: $outFileDir
   varusParameters: $varusParameters
   createindex: $createindex
