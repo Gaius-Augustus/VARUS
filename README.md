@@ -39,7 +39,7 @@ echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
 # Getting Started
 
 ## Example
-Change to directory `example` and follow the instructions in example/README.
+Change to directory `example` and follow the instructions in [example/README](example/README).
 
 ## Running VARUS
 Copy the file `VARUSparameters.txt` from the example folder to your working directory and adjust it if necessary:
