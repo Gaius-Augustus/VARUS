@@ -50,8 +50,19 @@ sub retrieveID{
     my $stat = system "wget -q --waitretry=30 -O $IDFile \"$URL\"";
 
     if ($stat != 0){
-	print "Check that you have a stable internet connection. Exiting...\n";
-	exit 1;
+	    print STDERR "Check that you have a stable internet connection. Retrying (1)...\n";
+        my $stat = system "wget -q --waitretry=30 -O $IDFile \"$URL\"";
+        if ($stat != 0){
+	        print STDERR "Check that you have a stable internet connection. Retrying (2)...\n";
+            my $stat = system "wget -q --waitretry=30 -O $IDFile \"$URL\"";
+            if ($stat != 0){
+	            print STDERR "Check that you have a stable internet connection. Retrying (3)...\n";
+                my $stat = system "wget -q --waitretry=30 -O $IDFile \"$URL\"";
+                if ($stat != 0){
+                    print STDERR "Skipping $species_name_GENUS $species_name_SPECIES\n";
+                }
+            }
+        }
     }
 
     my $WEBENV;
