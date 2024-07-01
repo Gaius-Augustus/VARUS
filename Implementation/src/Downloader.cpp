@@ -23,6 +23,7 @@ std::string Downloader::shellCommand(Run *r){
     
     std::string s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
 	+ "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId;
+    std::cout << s << std::endl;
     if (r->paired)
 	s += " --split-files";
     
