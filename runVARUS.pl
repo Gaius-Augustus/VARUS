@@ -274,7 +274,7 @@ foreach my $latinName (keys %genome){
         Log(0, "Creating Runlist.txt ...");
 
         my @genus_species = split(/ /,$latinName);
-        my $cmd = "perl $pathToVARUS/RunListRetriever/RunListRetriever.pl --genus ".$genus_species[0]." --species ".$genus_species[1]." --outFileDir ".$outFileDir."/".$folder."/ ";
+        my $cmd = "perl $pathToVARUS/RunListRetriever/RunListRetriever.pl --genus ".$genus_species[0]." --species \"".join(" ", @genus_species[1 .. $#genus_species])."\" --outFileDir ".$outFileDir."/".$folder."/ ";
 
         if ($allRuns){
             $cmd = $cmd." --all";
