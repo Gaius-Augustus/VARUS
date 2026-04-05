@@ -39,7 +39,8 @@ RUN apt update && \
 RUN cd /opt && \
     git clone https://github.com/Gaius-Augustus/VARUS.git && \
     cd VARUS/Implementation && \
-    make
+    make && \
+    ln -s /opt/VARUS/Implementation/scripts /opt/VARUS/scripts
 
 USER root
 
@@ -76,8 +77,17 @@ RUN cd /opt && \
     wget https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets && \
     chmod a+x datasets
 
-
-
-ENV PATH=${PATH}:/opt/datasets:/opt/VARUS/Implementation/bin:/opt/VARUS/Implementation/scripts:/opt/sratoolkit/bin:/opt/Augustus/bin/
-
 USER ${NB_UID}
+
+RUN pip install   omamer
+
+RUN mamba install --quiet -c bioconda --yes \
+    omark && \
+    mamba clean  --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+ENV PYTHONPATH=/opt/omamer/bin/lib/python3.10/site-packages:$PYTHONPATH
+
+ENV PATH=${PATH}:/opt/datasets:/opt/VARUS/Implementation/bin:/opt/VARUS/Implementation/scripts:/opt/sratoolkit/bin:/opt/Augustus/bin/:/opt/omamer/bin/bin
+
