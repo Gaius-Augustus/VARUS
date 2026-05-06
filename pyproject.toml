@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "varus"
+version = "2.0.0a0"
+description = "Online sampling of complementary RNA-seq reads from NCBI SRA for genome annotation"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+requires-python = ">=3.9"
+authors = [
+    { name = "Mario Stanke" },
+    { name = "Willy Bruhn" },
+    { name = "Katharina J. Hoff" },
+    { name = "Lars Gabriel" },
+]
+dependencies = [
+    "biopython>=1.81",
+    "numpy>=1.24",
+    "pyfaidx>=0.7",
+]
+
+[project.optional-dependencies]
+# pysam needs htslib and only builds on Linux/macOS. The runlist/index
+# subcommands don't need it, so it's an extra. Production HPC runs install
+# with [align].
+align = [
+    "pysam>=0.22",
+]
+dev = [
+    "pytest>=7",
+    "pytest-mock>=3",
+]
+
+[project.scripts]
+varus = "varus.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Gaius-Augustus/VARUS"
+Paper = "https://doi.org/10.1186/s12859-019-3182-x"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["varus*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"

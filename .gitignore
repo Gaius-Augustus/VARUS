@@ -11,3 +11,6 @@ example/Log.out
 example/S.pombe.err
 example/S.pombe.log
 example/Schizosaccharomyces_pombe/
+
+graphify-out/
+!graphify-out/GRAPH_REPORT.md

@@ -1,63 +1,126 @@
 # VARUS: Drawing Diverse Samples from RNA-Seq Libraries
-**VARUS** was originally written by Willy Bruhn as a Bachelors' thesis supervised by Mario Stanke. This repository is a copy of https://github.com/WillyBruhn/VARUS made in November 2018 and contains many bugfixes, an incremental intron database feature and an extension for using HISAT al alternative alignment program.
 
-**VARUS** automates the selection and download of a limited number of RNA-seq reads from at NCBI's Sequence Read Archive (SRA) targeting a **sufficiently** high coverage for many genes for
-the purpose of gene-finder training and genome annotation. Each iteration of the online algorithm
+> **NOTE — v2 Python rewrite in progress** on branch `nextflow_pipeline`. The
+> original C++/Perl implementation has been moved to [`legacy/`](legacy/) and
+> will be deleted once the new pipeline reaches feature parity. The algorithm
+> (Stanke et al., 2019, [DOI](https://doi.org/10.1186/s12859-019-3182-x)) is
+> unchanged.
 
-- selects a run to download that is expected to complement previously downloaded reads
-- downloads a sample of reads ("batch") from the run with **fastq-dump**
-- aligns the reads with **STAR** or **HISAT**
-- evaluates the alignment
+**VARUS** automates the selection and download of a limited number of RNA-seq
+reads from NCBI's Sequence Read Archive (SRA) targeting a sufficiently high
+coverage for many genes for the purpose of gene-finder training and genome
+annotation. Each iteration of the online algorithm
 
+- selects a run to download that is expected to complement previously
+  downloaded reads,
+- downloads a sample of reads ("batch") with **fasterq-dump**,
+- aligns the reads with **HISAT2**,
+- evaluates the alignment.
 
-# INSTALLATION
-## LINUX
-Invoke the following command from the command-line in order to clone the repository: 
+## What changed in v2
+
+| | v1 (legacy) | v2 (this branch) |
+|---|---|---|
+| Language | C++ + Perl + Bash | Python 3.9+ |
+| Aligner | STAR or HISAT2 | HISAT2 only |
+| Read download | `fastq-dump --fasta` | `fastq-dump` (per-batch ranges) + `fasterq-dump` (full runs) |
+| Alignment intermediate | SAM → samtools sort → BAM | piped → coordinate-sorted BAM directly |
+| Intron extraction | `bam2hints` (AUGUSTUS) | `pysam` reimplementation |
+| Strand assignment | `filterIntronsFindStrand.pl` | `pyfaidx` reimplementation |
+| Final merge | hierarchical bash scripts | `samtools merge` |
+| Pipeline driver | `runVARUS.pl` + `VARUSparameters.txt` | Nextflow + `varus` Python CLI |
+| Per-iteration coverage dump | always (~8 GB for 1000 batches) | off by default, `--coverage-trace N` |
+| Per-batch FASTA kept gzipped | yes | deleted by default, `--keep-batches` to retain |
+| User-facing parameters | ~25 in a parameters file | ~10 CLI flags + `--advanced KEY=VALUE` |
+
+## Installation (v2 Python)
+
 ```sh
-git clone https://github.com/MarioStanke/VARUS.git
+git clone https://github.com/Gaius-Augustus/VARUS.git
+cd VARUS
+git checkout nextflow_pipeline
+pip install -e ".[align]"      # add ',dev' for the test suite
 ```
 
-**VARUS** depends on
-- [samtools](http://samtools.sourceforge.net/),
-- [bamtools](https://github.com/pezmaster31/bamtools), install on Ubuntu with `sudo apt-get install bamtools libbamtools-dev`
-- [fastq-dump](https://ncbi.github.io/sra-tools/fastq-dump.html) and 
-- [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2) (tested with HISAT 2, version 2.0.0-beta)
+External tools that VARUS shells out to: `hisat2`, `hisat2-build`,
+`samtools`, `fasterq-dump` (sra-toolkit). Install via your distro or conda.
 
-Compile **VARUS** manually with
+> Disable the NCBI cache once on the host:
+> ```sh
+> mkdir -p ~/.ncbi
+> echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
+> ```
+
+## Quick start
+
+Three commands:
+
+```sh
+# 1. Query NCBI SRA for all RNA-seq runs of the species
+varus runlist "Schizosaccharomyces pombe" --outdir Sp/ --email you@host
+
+# 2. Build a HISAT2 index of the genome
+varus index   genome.fa --outdir Sp/genome/ --threads 8
+
+# 3. Run the online sampling loop
+varus run     "Schizosaccharomyces pombe" genome.fa \
+              --runlist Sp/Runlist.tsv          \
+              --index   Sp/genome/hisatidx      \
+              --max-batches 1000 --threads 8    \
+              --outdir  Sp/
 ```
-cd Implementation
-make
-``` 
 
-### Disable NCBI Cache
-By default the NCBI tool `fastq-dump` creates temporary files under `~/ncbi` of the same size as the run file from which data is downloaded, even if only a small part thereof is downloaded. Disable this caching behavior that requires probably too much hard drive space for most users with
+Outputs in `Sp/`:
+
+| File | Contents |
+|---|---|
+| `VARUS.bam` | merged coordinate-sorted alignment of all sampled batches |
+| `introns.gff` | cumulative spliced-junction hints, strand-resolved |
+| `Coverage.csv` | UMR count per 5 kb tile |
+| `RunStatistics.csv` | per-run summary (downloads, UMR%, bad-quality flag) |
+
+### Tuning knobs
+
+| Flag | Default | Notes |
+|---|---|---|
+| `--batch-size` | 50000 | reads per batch |
+| `--max-batches` | 1000 | hard upper bound on download iterations |
+| `--tile-size` | 5000 | bp per coverage tile |
+| `--min-uniq-pct` | 5.0 | reject batches below this UMR % (low-quality alignment) |
+| `--bootstrap-all` | off | seed one batch from every run before the greedy loop |
+| `--coverage-trace N` | 0 (off) | snapshot Coverage every N batches |
+| `--keep-batches` | off | retain per-batch FASTA/BAM after counting |
+| `--advanced KEY=VALUE` | — | estimator hyperparameters: `lambda=10`, `pseudo-count=1`, `cost=0.0` |
+
+### Nextflow
+
+A standalone Nextflow pipeline lives in [`nextflow/`](nextflow/):
+
+```sh
+nextflow run nextflow/main.nf \
+  -c nextflow/example.config \
+  --species_csv mycsv.csv \
+  --outdir results \
+  --ncbi_email you@host
 ```
-mkdir -p ~/.ncbi
-echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
+
+`mycsv.csv` is a 2-column CSV: `species,genome` (one row per species). The
+pipeline runs `VARUS_RUNLIST`, `VARUS_INDEX`, and `VARUS_RUN` in sequence per
+species. The same module can be imported into a larger workflow:
+
+```groovy
+include { VARUS_RUNLIST; VARUS_INDEX; VARUS_RUN } from '/path/to/VARUS/nextflow/varus.nf'
 ```
 
-# Getting Started
+## Citation
 
-## Example
-Change to directory `example` and follow the instructions in [example/README](example/README).
+Please cite:
+[VARUS: sampling complementary RNA reads from the sequence read archive](https://bmcbioinformatics.biomedcentral.com/track/pdf/10.1186/s12859-019-3182-x).
+2019; *BMC Bioinformatics*, 20:558.
 
-## Running VARUS
-Copy the file `VARUSparameters.txt` from the example folder to your working directory and adjust it if necessary:
+## Legacy
 
-Most important parameters:
-
-**--batchSize** specifies how many reads should be downloaded in each iteration (e.g. 50000 or 200000)
-
-**--maxBatches** specifies how many batches should be downloaded at most
-
-The final output is a sorted spliced alignment file (all batches together) called ***VARUS.bam***.
-
-# References
-Please cite: 
-[VARUS: sampling complementary RNA reads from the sequence read archive](https://bmcbioinformatics.biomedcentral.com/track/pdf/10.1186/s12859-019-3182-x). 2019; *BMC Bioinformatics*, 20:558
-
-## VARUS at PAG2019
-![Poster](docs/poster-PAG2019.png)
-
-## Bachelor Thesis
-Find the bachelor thesis of Willy Bruhn corresponding to **VARUS** in /docs/Thesis.
+The original C++ implementation, the Perl wrappers, and the bash merge scripts
+are preserved verbatim under [`legacy/`](legacy/) for parity testing during the
+rewrite. They are not built or installed by default and will be removed in a
+future release. See `legacy/README` (the original README, kept) for v1 usage.

@@ -1,0 +1,3 @@
+species,genome
+Schizosaccharomyces pombe,/path/to/Spombe/genome.fa
+Saccharomyces cerevisiae,/path/to/Scerevisiae/genome.fa
