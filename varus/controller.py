@@ -32,6 +32,7 @@ from varus.align import (
     align_batch_minimap2,
     count_minimap2_quality,
     parse_hisat2_log,
+    preset_for_platform,
 )
 from varus.download import download_batch
 from varus.estimator import AdvancedEstimator
@@ -92,9 +93,10 @@ class VARUSConfig:
     pipeline_downloads: bool = False
 
     # Long-read mode: align with minimap2 instead of HISAT2; feed back known
-    # junctions via BED12 (--junc-bed) instead of HISAT2's tab format.
+    # junctions via BED12 (--junc-bed) instead of HISAT2's tab format. The
+    # minimap2 preset is chosen per run from the platform column of
+    # Runlist.tsv (PACBIO_SMRT -> 'pacbio', OXFORD_NANOPORE -> 'ont').
     longreads: bool = False
-    longread_platform: str = "pacbio"   # 'pacbio' (Iso-Seq) | 'ont' (direct-RNA)
     # Uniqueness MAPQ threshold for the quality gate. HISAT2 unique-mappers
     # all carry MAPQ=60, so this gate is effectively a no-op there; minimap2
     # emits a wider distribution, where MAPQ ≥ 1 excludes only ambiguous reads.
@@ -510,12 +512,13 @@ class Controller:
                         "ignoring r2 and aligning r1 only.",
                         run.record.accession,
                     )
+                preset = preset_for_platform(run.record.platform)
                 result = align_batch_minimap2(
                     reads=paths.r1,
                     index=self.config.index_prefix,
                     batch_dir=paths.batch_dir,
                     threads=threads,
-                    preset=self.config.longread_platform,
+                    preset=preset,
                     junc_bed=intron_db,
                 )
             else:
@@ -717,6 +720,9 @@ def load_runs(
             except (ValueError, IndexError):
                 log.warning("Skipping malformed runlist line: %s", line.rstrip())
                 continue
+            # 7th column (platform) is optional for backward compatibility
+            # with Runlist.tsv files written before per-run platform was added.
+            platform = parts[6].strip() if len(parts) >= 7 else ""
             if colorspace:
                 continue
             if paired_only and not paired:
@@ -729,6 +735,7 @@ def load_runs(
                     avg_len=avg_len,
                     paired=paired,
                     colorspace=colorspace,
+                    platform=platform,
                 )
             )
 

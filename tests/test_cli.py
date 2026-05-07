@@ -50,7 +50,6 @@ def test_run_subcommand_parser_defaults(tmp_path):
     assert args.keep_batches is False
     assert args.bootstrap_all is False
     assert args.longreads is False
-    assert args.longread_platform == "pacbio"
 
 
 def test_index_parser_longreads_flag(tmp_path):
@@ -63,17 +62,23 @@ def test_index_parser_longreads_flag(tmp_path):
     assert args.prefix is None
 
 
-def test_run_parser_longreads_with_ont(tmp_path):
+def test_runlist_parser_longreads_flag():
+    args = cli.build_parser().parse_args(
+        ["runlist", "Foo bar", "--longreads"]
+    )
+    assert args.longreads is True
+
+
+def test_run_parser_longreads(tmp_path):
     args = cli.build_parser().parse_args(
         [
             "run", "Foo bar", "genome.fa",
             "--runlist", str(tmp_path / "Runlist.tsv"),
             "--index", str(tmp_path / "genome/mm2idx.mmi"),
-            "--longreads", "--longread-platform", "ont",
+            "--longreads",
         ]
     )
     assert args.longreads is True
-    assert args.longread_platform == "ont"
 
 
 def test_subcommand_required():

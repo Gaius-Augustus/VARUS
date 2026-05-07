@@ -96,12 +96,10 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
                         "(typically 1.3–1.8×).")
     p.add_argument("--longreads", action="store_true",
                    help="Align with minimap2 instead of HISAT2 (for PacBio Iso-Seq "
-                        "or ONT direct-RNA). Implies a different splice-DB format "
-                        "and a smaller default --batch-size.")
-    p.add_argument("--longread-platform", choices=["pacbio", "ont"],
-                   default="pacbio",
-                   help="Long-read platform preset (only used with --longreads). "
-                        "'pacbio' -> '-ax splice'; 'ont' -> '-ax splice -uf -k14'.")
+                        "or ONT direct-RNA). The platform is auto-detected per run "
+                        "from the runlist (PACBIO_SMRT -> '-ax splice'; "
+                        "OXFORD_NANOPORE -> '-ax splice -uf -k14'). Implies a "
+                        "different splice-DB format and a smaller default --batch-size.")
     p.add_argument("--min-mapq", type=int, default=None,
                    help="MAPQ cutoff for the uniqueness gate (default: 60 for "
                         "short reads, 1 for --longreads).")
@@ -201,7 +199,6 @@ def main(argv: list[str] | None = None) -> int:
             profit_condition=args.profit_condition,
             pipeline_downloads=args.pipeline_downloads,
             longreads=args.longreads,
-            longread_platform=args.longread_platform,
             min_mapq=min_mapq,
             lambda_=float(advanced.get("lambda", 10.0)),
             pseudo_count=float(advanced.get("pseudo-count", 1.0)),

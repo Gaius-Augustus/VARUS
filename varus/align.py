@@ -125,6 +125,31 @@ LONGREAD_PRESETS: dict[str, list[str]] = {
     "ont": ["-ax", "splice", "-uf", "-k14"],
 }
 
+# Map SRA platform identifiers (as parsed from esummary <Instrument>) to the
+# minimap2 preset key used by :func:`align_batch_minimap2`.
+_PLATFORM_TO_PRESET: dict[str, str] = {
+    "PACBIO_SMRT": "pacbio",
+    "OXFORD_NANOPORE": "ont",
+}
+
+
+def preset_for_platform(platform: str) -> str:
+    """Return the minimap2 preset for an SRA platform string.
+
+    Falls back to ``'pacbio'`` (the dominant long-read RNA-seq submission) and
+    logs a warning when the platform is missing or unrecognised — the user can
+    correct this by editing the ``platform`` column in ``Runlist.tsv``.
+    """
+    key = (platform or "").upper().strip()
+    preset = _PLATFORM_TO_PRESET.get(key)
+    if preset is not None:
+        return preset
+    log.warning(
+        "Unknown / missing platform %r; defaulting to minimap2 'pacbio' preset.",
+        platform,
+    )
+    return "pacbio"
+
 
 def align_batch_minimap2(
     reads: Path,

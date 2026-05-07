@@ -37,8 +37,8 @@ params.varus_run_cpus       = (params.containsKey('varus_run_cpus')      && para
 
 // Long-read mode: align with minimap2, restrict the SRA query to PacBio/ONT.
 // Implies a different splice-DB format and a smaller default --batch-size.
+// The minimap2 preset is auto-selected per run from SRA platform metadata.
 params.longreads            = (params.containsKey('longreads') ? params.longreads : false) as boolean
-params.longread_platform    = (params.containsKey('longread_platform') && params.longread_platform != null ? params.longread_platform : 'pacbio') as String
 
 params.ncbi_email           = params.ncbi_email   ?: null
 params.ncbi_api_key         = params.ncbi_api_key ?: null

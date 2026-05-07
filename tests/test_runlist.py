@@ -72,10 +72,32 @@ def test_parse_xml_page_extracts_runs():
     assert paired.avg_len == 100.0
     assert paired.paired is True
     assert paired.colorspace is False
+    assert paired.platform == "ILLUMINA"
 
     assert color.paired is False
     assert color.colorspace is True
     assert color.avg_len == 40.0
+    assert color.platform == "ABI_SOLID"
+
+
+def test_parse_xml_page_detects_pacbio_platform():
+    xml = ESUMMARY_XML.replace(
+        'Instrument ILLUMINA="HiSeq 2500"',
+        'Instrument PACBIO_SMRT="PacBio Sequel II"',
+    )
+    records = list(runlist._parse_xml_page(xml))
+    pb = next(r for r in records if r.accession == "SRR000001")
+    assert pb.platform == "PACBIO_SMRT"
+
+
+def test_parse_xml_page_detects_ont_platform():
+    xml = ESUMMARY_XML.replace(
+        'Instrument ILLUMINA="HiSeq 2500"',
+        'Instrument OXFORD_NANOPORE="PromethION"',
+    )
+    records = list(runlist._parse_xml_page(xml))
+    ont = next(r for r in records if r.accession == "SRR000001")
+    assert ont.platform == "OXFORD_NANOPORE"
 
 
 def test_parse_xml_page_skips_blank_spots():
@@ -104,11 +126,15 @@ def test_fetch_runlist_writes_expected_tsv(tmp_path: Path, monkeypatch):
 
     lines = out.read_text(encoding="utf-8").splitlines()
     assert lines[0].startswith("@Run_acc")
+    assert "platform" in lines[0]
     body = [ln.split("\t") for ln in lines[1:]]
     accs = [row[0] for row in body]
     assert accs == ["SRR000001", "SRR000002"]
-    # Format compatibility with legacy Runlist.txt (6 columns).
-    assert all(len(row) == 6 for row in body)
+    # 7 columns now (added platform after color_space).
+    assert all(len(row) == 7 for row in body)
+    # Platform column populated from the SRA <Instrument> tag.
+    platforms = [row[6] for row in body]
+    assert platforms == ["ILLUMINA", "ABI_SOLID"]
 
 
 def test_fetch_runlist_paired_only(tmp_path: Path, monkeypatch):

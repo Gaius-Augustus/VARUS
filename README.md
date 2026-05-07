@@ -97,7 +97,6 @@ Outputs in `Sp/`:
 | `--keep-batches` | off | retain per-batch FASTA/BAM after counting |
 | `--advanced KEY=VALUE` | — | estimator hyperparameters: `lambda=10`, `pseudo-count=1`, `cost=0.0` |
 | `--longreads` | off | align with minimap2 (long-read RNA-seq); see below |
-| `--longread-platform` | `pacbio` | `pacbio` (Iso-Seq, `-ax splice`) or `ont` (direct-RNA, `-ax splice -uf -k14`) |
 | `--min-mapq` | 60 / 1 | uniqueness MAPQ cutoff (default 60 short, 1 long) |
 
 ### Long-read RNA-seq (`--longreads`)
@@ -107,21 +106,30 @@ instead of HISAT2. The same online algorithm runs on top — only the alignment,
 splice-DB feedback format, and a few defaults change.
 
 ```sh
-# 1. Build a minimap2 splice index instead of HISAT2.
+# 1. Restrict the SRA query to long-read platforms (PacBio + ONT).
+varus runlist "Schizosaccharomyces pombe" --outdir Sp/ --email you@host --longreads
+
+# 2. Build a minimap2 splice index instead of HISAT2.
 varus index   genome.fa --outdir Sp/genome/ --threads 8 --longreads
 
-# 2. Run with --longreads (and pick the platform). The default --batch-size
-#    drops from 50000 to 2000 because long-read SRA runs have far fewer spots.
+# 3. Run with --longreads. The default --batch-size drops from 50000 to 2000
+#    because long-read SRA runs have far fewer spots. The minimap2 preset
+#    (Iso-Seq vs ONT direct-RNA) is auto-selected per run from the platform
+#    column of Runlist.tsv.
 varus run     "Schizosaccharomyces pombe" genome.fa     \
               --runlist Sp/Runlist.tsv                  \
               --index   Sp/genome/mm2idx.mmi            \
-              --longreads --longread-platform ont       \
+              --longreads                               \
               --max-batches 1000 --threads 8 --outdir Sp/
 ```
 
 Differences vs the HISAT2 path:
 
 - `--index` points at the `.mmi` *file* rather than a stem.
+- `Runlist.tsv` gains a 7th `platform` column (e.g. `PACBIO_SMRT`, `OXFORD_NANOPORE`)
+  parsed from the SRA `<Instrument>` tag. The controller maps it to the minimap2
+  preset per run (`PACBIO_SMRT` → `-ax splice`; `OXFORD_NANOPORE` → `-ax splice -uf -k14`).
+  Old 6-column runlists still load (platform falls back to empty + a warning).
 - The splice-DB written each round is `intronDB.junc.bed` (BED12 for `minimap2 --junc-bed`)
   instead of `intronDB.splice_sites` (HISAT2 tab format).
 - The uniqueness % is computed by scanning the BAM (primary, MAPQ ≥ `--min-mapq`),
@@ -162,8 +170,7 @@ species.
 | `--varus_pipeline_downloads` | false | passed to `varus run --pipeline-downloads` |
 | `--varus_index_cpus` | 8 | CPUs for `VARUS_INDEX` |
 | `--varus_run_cpus` | 16 | CPUs for `VARUS_RUN` |
-| `--longreads` | false | switch to minimap2 + restrict the SRA query to PacBio/ONT |
-| `--longread_platform` | `pacbio` | `pacbio` or `ont`, only used with `--longreads` |
+| `--longreads` | false | switch to minimap2 + restrict the SRA query to PacBio/ONT (preset auto-selected per run) |
 
 `VARUS_RUN` publishes one additional file per species: `runtime.varus.txt`
 (`/usr/bin/time -p` wall/user/sys report).

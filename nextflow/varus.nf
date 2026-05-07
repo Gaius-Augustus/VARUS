@@ -112,7 +112,7 @@ process VARUS_RUN {
     def bootstrap   = params.varus_bootstrap_all ? '--bootstrap-all' : ''
     def profitCond  = params.varus_profit_condition ? '--profit-condition' : ''
     def pipelineDl  = params.varus_pipeline_downloads ? '--pipeline-downloads' : ''
-    def longArgs    = params.longreads ? "--longreads --longread-platform ${params.longread_platform}" : ''
+    def longArgs    = params.longreads ? '--longreads' : ''
     def indexPath   = params.longreads ? "${index_dir}/mm2idx.mmi" : "${index_dir}/hisatidx"
     """
     set -euo pipefail

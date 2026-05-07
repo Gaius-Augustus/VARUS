@@ -24,7 +24,7 @@ from varus.runlist import RunRecord
 # ---------------------------------------------------------------------------
 
 def _make_record(acc: str = "SRR1", spots: int = 200_000,
-                 paired: bool = False) -> RunRecord:
+                 paired: bool = False, platform: str = "") -> RunRecord:
     return RunRecord(
         accession=acc,
         total_spots=spots,
@@ -32,6 +32,7 @@ def _make_record(acc: str = "SRR1", spots: int = 200_000,
         avg_len=100.0,
         paired=paired,
         colorspace=False,
+        platform=platform,
     )
 
 
@@ -254,6 +255,33 @@ def test_load_runs_skips_colorspace(tmp_path: Path):
     assert runs == []
 
 
+def test_load_runs_reads_platform_when_present(tmp_path: Path):
+    """7-column Runlist.tsv (new format) populates RunRecord.platform."""
+    runlist = tmp_path / "Runlist.tsv"
+    runlist.write_text(
+        "@Run_acc\ttotal_spots\ttotal_bases\tavg_len\tbool:paired\tcolor_space\tplatform\n"
+        "SRR_PB\t10000\t1000000\t100.0\t0\t0\tPACBIO_SMRT\n"
+        "SRR_ONT\t20000\t2000000\t150.0\t0\t0\tOXFORD_NANOPORE\n"
+    )
+    rng = random.Random(0)
+    runs = load_runs(runlist, batch_size=5_000, rng=rng)
+    plats = sorted(r.record.platform for r in runs)
+    assert plats == ["OXFORD_NANOPORE", "PACBIO_SMRT"]
+
+
+def test_load_runs_legacy_six_column_runlist(tmp_path: Path):
+    """6-column Runlist.tsv (old format) loads with empty platform field."""
+    runlist = tmp_path / "Runlist.tsv"
+    runlist.write_text(
+        "@Run_acc\ttotal_spots\ttotal_bases\tavg_len\tbool:paired\tcolor_space\n"
+        "SRR_OLD\t10000\t1000000\t100.0\t0\t0\n"
+    )
+    rng = random.Random(0)
+    runs = load_runs(runlist, batch_size=5_000, rng=rng)
+    assert len(runs) == 1
+    assert runs[0].record.platform == ""
+
+
 # ---------------------------------------------------------------------------
 # Long-read mode
 # ---------------------------------------------------------------------------
@@ -265,7 +293,6 @@ def test_varusconfig_longread_defaults(tmp_path: Path):
         outdir=tmp_path / "out",
     )
     assert cfg.longreads is False
-    assert cfg.longread_platform == "pacbio"
     assert cfg.min_mapq == 60
 
 
@@ -280,14 +307,27 @@ def test_controller_splice_db_path_short_vs_long(tmp_path: Path):
     assert ctrl_long._splice_db_path.name == "intronDB.junc.bed"
 
 
-def test_align_and_count_dispatches_minimap2(tmp_path: Path):
-    """In long-read mode the controller calls minimap2 alignment + pysam stats."""
+@pytest.mark.parametrize(
+    "platform,expected_preset",
+    [
+        ("PACBIO_SMRT", "pacbio"),
+        ("OXFORD_NANOPORE", "ont"),
+        ("",              "pacbio"),  # missing -> warn and default
+        ("ILLUMINA",      "pacbio"),  # nonsensical for longreads -> default
+    ],
+)
+def test_align_and_count_dispatches_minimap2_per_run_platform(
+    tmp_path: Path, platform: str, expected_preset: str,
+):
+    """In long-read mode the minimap2 preset is selected from the run's platform."""
     from varus.controller import BatchTask
     from varus.download import BatchPaths
 
-    cfg = _make_config(tmp_path, longreads=True, longread_platform="ont")
+    cfg = _make_config(tmp_path, longreads=True)
     rng = random.Random(0)
-    rs = RunState.from_record(_make_record(), cfg.batch_size, rng)
+    rs = RunState.from_record(
+        _make_record(platform=platform), cfg.batch_size, rng,
+    )
     ctrl = Controller(cfg, [rs])
 
     paths = BatchPaths(
@@ -320,9 +360,8 @@ def test_align_and_count_dispatches_minimap2(tmp_path: Path):
     m_count.assert_called_once()
     m_h2.assert_not_called()
     m_parse.assert_not_called()
-    # Verify the preset and min_mapq were threaded through.
     kwargs = m_mm2.call_args.kwargs
-    assert kwargs["preset"] == "ont"
+    assert kwargs["preset"] == expected_preset
     count_kwargs = m_count.call_args.kwargs
     assert count_kwargs["min_mapq"] == cfg.min_mapq
 

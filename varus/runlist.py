@@ -38,6 +38,10 @@ class RunRecord:
     avg_len: float
     paired: bool
     colorspace: bool
+    # SRA platform identifier (uppercase: e.g. ILLUMINA, PACBIO_SMRT,
+    # OXFORD_NANOPORE, ABI_SOLID, ION_TORRENT, BGISEQ). Empty string when the
+    # esummary XML lacked an <Instrument> tag we could parse.
+    platform: str = ""
 
 
 def _configure_entrez(email: str | None, api_key: str | None) -> None:
@@ -118,6 +122,10 @@ _RUN_RE = re.compile(
 )
 _LAYOUT_RE = re.compile(r"LAYOUT.{0,32}PAIRED", re.DOTALL)
 _COLORSPACE_RE = re.compile(r"Instrument\s+ABI_SOLID")
+# Captures the SRA platform attribute on the <Instrument> tag, e.g.
+# `<Instrument PACBIO_SMRT="PacBio Sequel II"/>` -> "PACBIO_SMRT". Encoded as
+# `&lt;Instrument PACBIO_SMRT=...` in the esummary CDATA, so match either form.
+_PLATFORM_RE = re.compile(r"Instrument\s+([A-Z][A-Z0-9_]+)\s*=")
 
 
 def _parse_xml_page(xml: str) -> Iterator[RunRecord]:
@@ -135,6 +143,8 @@ def _parse_xml_page(xml: str) -> Iterator[RunRecord]:
             block = block[:end]
         paired = bool(_LAYOUT_RE.search(block))
         colorspace = bool(_COLORSPACE_RE.search(block))
+        platform_m = _PLATFORM_RE.search(block)
+        platform = platform_m.group(1) if platform_m else ""
         for m in _RUN_RE.finditer(block):
             acc, spots_s, bases_s = m.group(1), m.group(2), m.group(3)
             if not spots_s or not bases_s:
@@ -151,6 +161,7 @@ def _parse_xml_page(xml: str) -> Iterator[RunRecord]:
                 avg_len=avg_len,
                 paired=paired,
                 colorspace=colorspace,
+                platform=platform,
             )
 
 
@@ -168,11 +179,15 @@ def _iter_runs(species: str, longreads: bool = False) -> Iterator[RunRecord]:
 def write_runlist(records: Iterable[RunRecord], path: Path) -> int:
     n = 0
     with path.open("w", encoding="utf-8") as f:
-        f.write("@Run_acc\ttotal_spots\ttotal_bases\tavg_len\tbool:paired\tcolor_space\n")
+        f.write(
+            "@Run_acc\ttotal_spots\ttotal_bases\tavg_len\tbool:paired\t"
+            "color_space\tplatform\n"
+        )
         for r in records:
             f.write(
                 f"{r.accession}\t{r.total_spots}\t{r.total_bases}\t"
-                f"{r.avg_len}\t{int(r.paired)}\t{int(r.colorspace)}\n"
+                f"{r.avg_len}\t{int(r.paired)}\t{int(r.colorspace)}\t"
+                f"{r.platform}\n"
             )
             n += 1
     return n

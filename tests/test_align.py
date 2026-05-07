@@ -81,6 +81,24 @@ def test_align_batch_requires_samtools(tmp_path: Path, monkeypatch):
 # minimap2 long-read path
 # ---------------------------------------------------------------------------
 
+def test_preset_for_platform_known():
+    assert align.preset_for_platform("PACBIO_SMRT") == "pacbio"
+    assert align.preset_for_platform("OXFORD_NANOPORE") == "ont"
+
+
+def test_preset_for_platform_case_insensitive():
+    assert align.preset_for_platform("pacbio_smrt") == "pacbio"
+    assert align.preset_for_platform("  oxford_nanopore  ") == "ont"
+
+
+def test_preset_for_platform_unknown_defaults_to_pacbio(caplog):
+    import logging
+    with caplog.at_level(logging.WARNING, logger="varus.align"):
+        assert align.preset_for_platform("ILLUMINA") == "pacbio"
+        assert align.preset_for_platform("") == "pacbio"
+    assert any("Unknown" in rec.message for rec in caplog.records)
+
+
 def test_align_batch_minimap2_unknown_preset(tmp_path: Path):
     with pytest.raises(ValueError, match="unknown long-read preset"):
         align.align_batch_minimap2(
