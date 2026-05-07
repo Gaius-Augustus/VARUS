@@ -87,7 +87,11 @@ Outputs in `Sp/`:
 | `--max-batches` | 1000 | hard upper bound on download iterations |
 | `--tile-size` | 5000 | bp per coverage tile |
 | `--min-uniq-pct` | 5.0 | reject batches below this UMR % (low-quality alignment) |
+| `--threads` | 4 | alignment threads for HISAT2 / samtools |
+| `--seed` | random | random seed for reproducible run order |
 | `--bootstrap-all` | off | seed one batch from every run before the greedy loop |
+| `--profit-condition` | off | stop early when expected marginal gain ≤ 0 |
+| `--pipeline-downloads` | off | overlap round R+1 downloads with round R alignments (1.3–1.8× speedup) |
 | `--coverage-trace N` | 0 (off) | snapshot Coverage every N batches |
 | `--keep-batches` | off | retain per-batch FASTA/BAM after counting |
 | `--advanced KEY=VALUE` | — | estimator hyperparameters: `lambda=10`, `pseudo-count=1`, `cost=0.0` |
@@ -106,7 +110,32 @@ nextflow run nextflow/main.nf \
 
 `mycsv.csv` is a 2-column CSV: `species,genome` (one row per species). The
 pipeline runs `VARUS_RUNLIST`, `VARUS_INDEX`, and `VARUS_RUN` in sequence per
-species. The same module can be imported into a larger workflow:
+species.
+
+#### Nextflow params
+
+| Param | Default | Notes |
+|---|---|---|
+| `--species_csv` | required | 2-column CSV: `species,genome` |
+| `--outdir` | `results` | output root |
+| `--ncbi_email` | — | contact email for NCBI Entrez (recommended) |
+| `--ncbi_api_key` | — | raises NCBI rate limit to 10 req/s |
+| `--varus_max_batches` | 1000 | passed to `varus run --max-batches` |
+| `--varus_batch_size` | 50000 | passed to `varus run --batch-size` |
+| `--varus_tile_size` | 5000 | passed to `varus run --tile-size` |
+| `--varus_min_uniq_pct` | 5.0 | passed to `varus run --min-uniq-pct` |
+| `--varus_max_runs` | 0 (all) | passed to `varus runlist --max-runs` |
+| `--varus_seed` | 1 | passed to `varus run --seed` |
+| `--varus_bootstrap_all` | false | passed to `varus run --bootstrap-all` |
+| `--varus_profit_condition` | false | passed to `varus run --profit-condition` |
+| `--varus_pipeline_downloads` | false | passed to `varus run --pipeline-downloads` |
+| `--varus_index_cpus` | 8 | CPUs for `VARUS_INDEX` |
+| `--varus_run_cpus` | 16 | CPUs for `VARUS_RUN` |
+
+`VARUS_RUN` publishes one additional file per species: `runtime.varus.txt`
+(`/usr/bin/time -p` wall/user/sys report).
+
+The module can be imported into a larger workflow:
 
 ```groovy
 include { VARUS_RUNLIST; VARUS_INDEX; VARUS_RUN } from '/path/to/VARUS/nextflow/varus.nf'

@@ -57,7 +57,7 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
     p.add_argument("genome", type=Path, help="Genome FASTA file.")
     p.add_argument("--runlist", type=Path, required=True, help="Path to Runlist.tsv.")
     p.add_argument("--index", type=Path, required=True,
-                   help="Directory containing the HISAT2 index.")
+                   help="HISAT2 index prefix (e.g. Sp/genome/hisatidx).")
     p.add_argument("--outdir", type=Path, default=Path.cwd(),
                    help="Output directory.")
     p.add_argument("--batch-size", type=int, default=50000)
@@ -79,11 +79,6 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
                    help="Stop early when expected profit ≤ 0. Off by default; matches the "
                         "legacy production setting (--profitCondition 0). The check is "
                         "always skipped on cold start (before any observations).")
-    p.add_argument("--parallel-batches", type=int, default=1, metavar="K",
-                   help="Top-K mini-batch parallelism: dispatch K download+align tasks "
-                        "concurrently per round, then re-estimate (default: 1 = strict "
-                        "greedy). K>1 trades algorithm fidelity for ~K× wall-clock "
-                        "speedup; --threads is divided across the K workers.")
     p.add_argument("--pipeline-downloads", action="store_true",
                    help="Overlap round R+1's downloads (network-bound, single-threaded) "
                         "with round R's alignments (CPU-bound, multi-threaded). Adds one "
@@ -164,7 +159,6 @@ def main(argv: list[str] | None = None) -> int:
             seed=args.seed,
             bootstrap_all=args.bootstrap_all,
             profit_condition=args.profit_condition,
-            parallel_batches=args.parallel_batches,
             pipeline_downloads=args.pipeline_downloads,
             lambda_=float(advanced.get("lambda", 10.0)),
             pseudo_count=float(advanced.get("pseudo-count", 1.0)),

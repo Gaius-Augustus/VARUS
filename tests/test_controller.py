@@ -179,75 +179,6 @@ def test_controller_choose_next_run_max_profit(tmp_path: Path):
     assert chosen is rs_b
 
 
-def test_choose_top_k_returns_distinct_runs(tmp_path: Path):
-    """K=3 with 5 distinct profits should return the 3 highest (no duplicates)."""
-    rng = random.Random(0)
-    cfg = _make_config(tmp_path)
-    runs = []
-    for i, profit in enumerate([0.1, 0.5, 0.9, 0.3, 0.7]):
-        rs = RunState.from_record(_make_record(f"SRR{i}"), cfg.batch_size, rng)
-        rs.expected_profit = profit
-        runs.append(rs)
-    ctrl = Controller(cfg, runs)
-    picks = ctrl._choose_top_k(3)
-    assert len(picks) == 3
-    assert len({id(p) for p in picks}) == 3   # all distinct
-    # Should be the runs with profits 0.9, 0.7, 0.5 (descending)
-    assert [p.expected_profit for p in picks] == [0.9, 0.7, 0.5]
-
-
-def test_choose_top_k_k_equals_one_matches_choose_next_run(tmp_path: Path):
-    """K=1 must reproduce the legacy single-pick behaviour exactly."""
-    rng = random.Random(0)
-    cfg = _make_config(tmp_path)
-    rs_a = RunState.from_record(_make_record("SRR_A"), cfg.batch_size, rng)
-    rs_b = RunState.from_record(_make_record("SRR_B"), cfg.batch_size, rng)
-    rs_a.expected_profit = 0.5
-    rs_b.expected_profit = 1.2
-    ctrl = Controller(cfg, [rs_a, rs_b])
-    picks = ctrl._choose_top_k(1)
-    assert picks == [rs_b]
-
-
-def test_choose_top_k_more_than_available(tmp_path: Path):
-    """K larger than downloadable count returns all downloadable runs."""
-    rng = random.Random(0)
-    cfg = _make_config(tmp_path)
-    runs = [
-        RunState.from_record(_make_record(f"SRR{i}"), cfg.batch_size, rng)
-        for i in range(2)
-    ]
-    for r in runs:
-        r.expected_profit = 1.0
-    ctrl = Controller(cfg, runs)
-    picks = ctrl._choose_top_k(10)
-    assert len(picks) == 2
-
-
-def test_per_task_threads_divides_evenly(tmp_path: Path):
-    cfg = _make_config(tmp_path, threads=16, parallel_batches=4)
-    ctrl = Controller(cfg, [])
-    assert ctrl._per_task_threads() == 4
-
-
-def test_per_task_threads_minimum_one(tmp_path: Path):
-    """With threads < parallel_batches, each task still gets at least 1."""
-    cfg = _make_config(tmp_path, threads=2, parallel_batches=8)
-    ctrl = Controller(cfg, [])
-    assert ctrl._per_task_threads() == 1
-
-
-def test_parallel_batches_default_is_one():
-    """Default must be K=1 — strict greedy / legacy behaviour."""
-    from varus.controller import VARUSConfig
-    cfg = VARUSConfig(
-        genome=Path("/tmp/g.fa"),
-        index_prefix=Path("/tmp/idx"),
-        outdir=Path("/tmp/out"),
-    )
-    assert cfg.parallel_batches == 1
-
-
 def test_pipeline_downloads_default_is_off():
     from varus.controller import VARUSConfig
     cfg = VARUSConfig(
@@ -258,43 +189,17 @@ def test_pipeline_downloads_default_is_off():
     assert cfg.pipeline_downloads is False
 
 
-def test_pick_and_download_round_caps_at_max_batches(tmp_path: Path):
-    """If only N slots remain before max_batches, pick at most N runs."""
+def test_pick_and_download_single_returns_none_when_max_batches_reached(tmp_path: Path):
     rng = random.Random(0)
-    cfg = _make_config(tmp_path, max_batches=10, parallel_batches=4)
-    runs = [
-        RunState.from_record(_make_record(f"SRR{i}"), cfg.batch_size, rng)
-        for i in range(8)
-    ]
-    for i, r in enumerate(runs):
-        r.expected_profit = float(i)   # all distinct
-    ctrl = Controller(cfg, runs)
-    ctrl.batch_count = 8     # only 2 slots left before max_batches=10
-
-    # Stub the actual download so the test stays offline.
-    captured = []
-    def fake_download(run, n, x):
-        captured.append((run.record.accession, n, x))
-        return BatchTask(run=run, n=n, x=x, paths=None, failed=True)
-    ctrl._download_only = fake_download   # type: ignore
-
-    tasks = ctrl._pick_and_download_round(4)
-    # K=4 was requested but only 2 slots remain → only 2 picks
-    assert len(tasks) == 2
-
-
-def test_pick_and_download_round_returns_empty_when_max_batches_reached(tmp_path: Path):
-    rng = random.Random(0)
-    cfg = _make_config(tmp_path, max_batches=5, parallel_batches=2)
+    cfg = _make_config(tmp_path, max_batches=5)
     runs = [
         RunState.from_record(_make_record(f"SRR{i}"), cfg.batch_size, rng)
         for i in range(2)
     ]
     ctrl = Controller(cfg, runs)
     ctrl.batch_count = 5     # already at max
-    ctrl._download_only = lambda *a, **k: None   # type: ignore  - shouldn't be called
-    tasks = ctrl._pick_and_download_round(2)
-    assert tasks == []
+    task = ctrl._pick_and_download_single()
+    assert task is None
 
 
 def test_controller_profit_zero_obs(tmp_path: Path):

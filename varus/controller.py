@@ -74,23 +74,12 @@ class VARUSConfig:
     # so the algorithm always gets at least one batch to bootstrap.
     profit_condition: bool = False
 
-    # Top-K mini-batch parallelism. K=1 reproduces the strict greedy algorithm
-    # exactly. K>1 picks the K runs with highest expected profit and runs
-    # download+align in parallel threads, then re-estimates once after the
-    # round. This trades a small amount of greediness (runs 2..K can't see
-    # the effect of run 1's batch) for ~K× wall-clock speedup. Each parallel
-    # task gets ``threads // parallel_batches`` HISAT2/samtools threads, so
-    # bump ``threads`` accordingly. Memory scales with K too — with HISAT2
-    # at ~8 GB for vertebrate genomes, K=4 needs ~32 GB.
-    parallel_batches: int = 1
-
     # Pipeline downloads of round R+1 with alignments of round R. Downloads
     # are network-bound and single-threaded, alignments are CPU-bound — they
     # don't compete for the same resource. When enabled, expect roughly
     # 1 + T_download/T_align speedup. Cost: round R+1's run choices are made
     # one round earlier, before round R's results are folded in (extra round
-    # of staleness on top of any from --parallel-batches). Default: off, so
-    # the algorithm matches the strict greedy ordering.
+    # of staleness). Default: off, so the algorithm matches strict greedy ordering.
     pipeline_downloads: bool = False
 
 
@@ -237,50 +226,36 @@ class Controller:
         self._estimate_p()
         self._calculate_profit()
 
-        K = max(1, self.config.parallel_batches)
         pipeline = self.config.pipeline_downloads
 
-        # Prefetch the first round's downloads.
-        current = self._pick_and_download_round(K)
-        if not current:
+        current = self._pick_and_download_single()
+        if current is None:
             self._finalize()
             return
 
-        # Background executor used for pipelined downloads. Only one task at
-        # a time runs through it (the next round's download), so 1 worker is
-        # enough.
+        # Background executor: 1 worker for pipelined download of next batch.
         prefetch_ex: Optional[ThreadPoolExecutor] = (
             ThreadPoolExecutor(max_workers=1) if pipeline else None
         )
 
         try:
-            while current:
+            while current is not None:
                 log.info(
-                    "Round | batch=%d/%d | downloadable=%d | picks: %s",
-                    self.batch_count + len(current),
+                    "Batch %d/%d | downloadable=%d | run: %s",
+                    self.batch_count + 1,
                     self.config.max_batches,
                     len(self.downloadable),
-                    ", ".join(t.run.record.accession for t in current),
+                    current.run.record.accession,
                 )
 
-                # Optionally start prefetching round R+1's downloads while
-                # we align round R. Picks here see state from round R-1's
-                # apply (extra round of staleness vs. strict greedy).
+                # Optionally start next download while we align this batch.
                 next_future = None
                 if pipeline and prefetch_ex is not None:
-                    next_future = prefetch_ex.submit(
-                        self._pick_and_download_round, K
-                    )
+                    next_future = prefetch_ex.submit(self._pick_and_download_single)
 
-                # Align the current round (parallel within K)
-                results = self._align_and_count_round(current)
-
-                # Serial state update
-                last_run: Optional[RunState] = None
-                for br in results:
-                    self.batch_count += 1
-                    self._apply_batch_result(br)
-                    last_run = br.run
+                br = self._align_and_count(current)
+                self.batch_count += 1
+                self._apply_batch_result(br)
 
                 self._rebuild_intron_db()
 
@@ -292,14 +267,12 @@ class Controller:
 
                 self._estimate_p()
                 self._calculate_profit()
-                if last_run is not None:
-                    self._export_stats(last_run)
+                self._export_stats(br.run)
                 self._update_downloadable()
 
                 if not self.downloadable:
                     log.info("No downloadable runs left.")
                     if next_future is not None:
-                        # Discard the prefetched round; we won't use it.
                         try:
                             next_future.result()
                         except Exception:
@@ -314,11 +287,10 @@ class Controller:
                             pass
                     break
 
-                # Move to next round (already downloading or start now)
                 if next_future is not None:
                     current = next_future.result()
                 else:
-                    current = self._pick_and_download_round(K)
+                    current = self._pick_and_download_single()
         finally:
             if prefetch_ex is not None:
                 prefetch_ex.shutdown(wait=True)
@@ -330,37 +302,17 @@ class Controller:
     # ------------------------------------------------------------------
 
     def _bootstrap(self) -> None:
-        """Download and process one batch from every run (--bootstrap-all).
-
-        Honours ``parallel_batches`` for fan-out within the bootstrap phase.
-        """
+        """Download and process one batch from every run (--bootstrap-all)."""
         log.info("Bootstrap: processing one batch from each of %d runs", len(self.runs))
-        K = max(1, self.config.parallel_batches)
-        eligible = [r for r in self.runs if not r.bad_quality and not r.is_exhausted]
-
-        for chunk_start in range(0, len(eligible), K):
-            chunk = eligible[chunk_start : chunk_start + K]
-            slots: list[tuple[RunState, int, int]] = []
-            for r in chunk:
-                if r.is_exhausted:
-                    continue
-                n, x = r.next_batch_range(self.config.batch_size)
-                r.sigma_idx += 1
-                slots.append((r, n, x))
-            if not slots:
+        for r in self.runs:
+            if r.bad_quality or r.is_exhausted:
                 continue
-            # Parallel download
-            if len(slots) == 1:
-                tasks = [self._download_only(*slots[0])]
-            else:
-                with ThreadPoolExecutor(max_workers=len(slots)) as ex:
-                    futures = [ex.submit(self._download_only, *s) for s in slots]
-                    tasks = [f.result() for f in futures]
-            # Parallel align + count
-            results = self._align_and_count_round(tasks)
-            for br in results:
-                self.batch_count += 1
-                self._apply_batch_result(br)
+            n, x = r.next_batch_range(self.config.batch_size)
+            r.sigma_idx += 1
+            task = self._download_only(r, n, x)
+            br = self._align_and_count(task)
+            self.batch_count += 1
+            self._apply_batch_result(br)
         self._rebuild_intron_db()
         self._estimate_p()
 
@@ -455,29 +407,6 @@ class Controller:
                 return run
         return candidates[-1]
 
-    def _choose_top_k(self, k: int) -> List[RunState]:
-        """Return up to K distinct downloadable runs, top-by-expected_profit.
-
-        K=1 delegates to ``_choose_next_run`` so the legacy weighted-random
-        tie-break is preserved exactly. For K>1 we sort by (-profit, -avg_len,
-        random_jitter) to break ties deterministically per RNG seed and avoid
-        always picking the same long-read run when several are tied.
-        """
-        if not self.downloadable:
-            return []
-        if k <= 1:
-            chosen = self._choose_next_run()
-            return [chosen] if chosen is not None else []
-
-        ranked = sorted(
-            self.downloadable,
-            key=lambda r: (-r.expected_profit, -r.record.avg_len, self.rng.random()),
-        )
-        picks = ranked[:k]
-        if picks:
-            self.max_profit = picks[0].expected_profit
-        return picks
-
     def _continuing(self) -> bool:
         """True while the loop should keep running."""
         if self.config.max_batches > 0 and self.batch_count >= self.config.max_batches:
@@ -499,18 +428,9 @@ class Controller:
         """S(c) = Σ ln(1 + c_j) over all tiles with observations."""
         return sum(math.log1p(v) for v in self.total_obs.values())
 
-    def _per_task_threads(self) -> int:
-        """Threads to give each parallel HISAT2/samtools subprocess.
-
-        Divides the user's --threads budget across parallel_batches so we
-        don't oversubscribe the node.
-        """
-        K = max(1, self.config.parallel_batches)
-        return max(1, self.config.threads // K)
-
     # ------------------------------------------------------------------
     # Download phase (network-bound, single-threaded; safe to overlap with
-    # alignments of an earlier round)
+    # the alignment of the previous batch)
     # ------------------------------------------------------------------
 
     def _download_only(self, run: RunState, n: int, x: int) -> BatchTask:
@@ -530,43 +450,20 @@ class Controller:
             )
             return BatchTask(run=run, n=n, x=x, paths=None, failed=True)
 
-    def _pick_and_download_round(self, k: int) -> List[BatchTask]:
-        """Pick top-K runs, reserve their next sigma slots, and download
-        all K in parallel. Returns the BatchTask list ready for alignment.
-
-        Reads ``downloadable``/``expected_profit`` and mutates ``sigma_idx``
-        and ``max_profit`` — must be called from the main thread.
-        """
+    def _pick_and_download_single(self) -> Optional[BatchTask]:
+        """Pick the best run, reserve its next sigma slot, and download one batch."""
         if not self.downloadable:
-            return []
-        if self.config.max_batches > 0:
-            remaining = self.config.max_batches - self.batch_count
-            if remaining <= 0:
-                return []
-            k = min(k, remaining)
+            return None
+        if self.config.max_batches > 0 and self.batch_count >= self.config.max_batches:
+            return None
 
-        picks = self._choose_top_k(k)
-        if not picks:
-            return []
+        run = self._choose_next_run()
+        if run is None or run.is_exhausted:
+            return None
 
-        # Reserve sigma slots synchronously to avoid races with concurrent picks
-        slots: list[tuple[RunState, int, int]] = []
-        for r in picks:
-            if r.is_exhausted:
-                continue
-            n, x = r.next_batch_range(self.config.batch_size)
-            r.sigma_idx += 1
-            slots.append((r, n, x))
-
-        if not slots:
-            return []
-
-        if len(slots) == 1:
-            return [self._download_only(*slots[0])]
-
-        with ThreadPoolExecutor(max_workers=len(slots)) as ex:
-            futures = [ex.submit(self._download_only, *s) for s in slots]
-            return [f.result() for f in futures]
+        n, x = run.next_batch_range(self.config.batch_size)
+        run.sigma_idx += 1
+        return self._download_only(run, n, x)
 
     # ------------------------------------------------------------------
     # Align + count phase (CPU-bound)
@@ -584,7 +481,7 @@ class Controller:
             if self._splice_db_path.is_file()
             else None
         )
-        threads = self._per_task_threads()
+        threads = self.config.threads
         try:
             result = align_batch_hisat2(
                 r1=paths.r1,
@@ -634,16 +531,6 @@ class Controller:
             uniq_pct=uniq_pct,
             spliced_pct=spliced_pct,
         )
-
-    def _align_and_count_round(self, tasks: List[BatchTask]) -> List[BatchResult]:
-        """Run align+count for each downloaded batch in parallel."""
-        if not tasks:
-            return []
-        if len(tasks) == 1:
-            return [self._align_and_count(tasks[0])]
-        with ThreadPoolExecutor(max_workers=len(tasks)) as ex:
-            futures = [ex.submit(self._align_and_count, t) for t in tasks]
-            return [f.result() for f in futures]
 
     def _apply_batch_result(self, br: BatchResult) -> None:
         """Serial state update from one BatchResult. Caller controls order."""
