@@ -41,12 +41,39 @@ def test_run_subcommand_parser_defaults(tmp_path):
         ]
     )
     assert args.cmd == "run"
-    assert args.batch_size == 50_000
+    # Batch size and min-mapq default to None so main() can pick a mode-aware value.
+    assert args.batch_size is None
+    assert args.min_mapq is None
     assert args.tile_size == 5_000
     assert args.max_batches == 1_000
     assert args.threads == 4
     assert args.keep_batches is False
     assert args.bootstrap_all is False
+    assert args.longreads is False
+    assert args.longread_platform == "pacbio"
+
+
+def test_index_parser_longreads_flag(tmp_path):
+    """--longreads on the index subcommand toggles minimap2 mode."""
+    args = cli.build_parser().parse_args(
+        ["index", "genome.fa", "--longreads"]
+    )
+    assert args.longreads is True
+    # Prefix default is None so dispatcher can pick 'mm2idx' / 'hisatidx'.
+    assert args.prefix is None
+
+
+def test_run_parser_longreads_with_ont(tmp_path):
+    args = cli.build_parser().parse_args(
+        [
+            "run", "Foo bar", "genome.fa",
+            "--runlist", str(tmp_path / "Runlist.tsv"),
+            "--index", str(tmp_path / "genome/mm2idx.mmi"),
+            "--longreads", "--longread-platform", "ont",
+        ]
+    )
+    assert args.longreads is True
+    assert args.longread_platform == "ont"
 
 
 def test_subcommand_required():

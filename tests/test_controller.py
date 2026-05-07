@@ -252,3 +252,109 @@ def test_load_runs_skips_colorspace(tmp_path: Path):
     )
     runs = load_runs(runlist, batch_size=50_000, rng=random.Random(0))
     assert runs == []
+
+
+# ---------------------------------------------------------------------------
+# Long-read mode
+# ---------------------------------------------------------------------------
+
+def test_varusconfig_longread_defaults(tmp_path: Path):
+    cfg = VARUSConfig(
+        genome=tmp_path / "g.fa",
+        index_prefix=tmp_path / "idx",
+        outdir=tmp_path / "out",
+    )
+    assert cfg.longreads is False
+    assert cfg.longread_platform == "pacbio"
+    assert cfg.min_mapq == 60
+
+
+def test_controller_splice_db_path_short_vs_long(tmp_path: Path):
+    """Splice-DB filename depends on aligner mode."""
+    cfg_short = _make_config(tmp_path / "short", longreads=False)
+    ctrl_short = Controller(cfg_short, [])
+    assert ctrl_short._splice_db_path.name == "intronDB.splice_sites"
+
+    cfg_long = _make_config(tmp_path / "long", longreads=True)
+    ctrl_long = Controller(cfg_long, [])
+    assert ctrl_long._splice_db_path.name == "intronDB.junc.bed"
+
+
+def test_align_and_count_dispatches_minimap2(tmp_path: Path):
+    """In long-read mode the controller calls minimap2 alignment + pysam stats."""
+    from varus.controller import BatchTask
+    from varus.download import BatchPaths
+
+    cfg = _make_config(tmp_path, longreads=True, longread_platform="ont")
+    rng = random.Random(0)
+    rs = RunState.from_record(_make_record(), cfg.batch_size, rng)
+    ctrl = Controller(cfg, [rs])
+
+    paths = BatchPaths(
+        batch_dir=tmp_path / "b", r1=tmp_path / "r.fa", r2=None,
+    )
+    paths.batch_dir.mkdir(parents=True, exist_ok=True)
+    paths.r1.write_text(">r\nACGT\n")
+
+    task = BatchTask(run=rs, n=0, x=49_999, paths=paths, failed=False)
+
+    fake_align_result = MagicMock()
+    fake_align_result.bam = paths.batch_dir / "Aligned.out.bam"
+    fake_align_result.log = paths.batch_dir / "Log.minimap2.err"
+    fake_align_result.bam.touch()
+
+    with patch("varus.controller.align_batch_minimap2", return_value=fake_align_result) as m_mm2, \
+         patch("varus.controller.align_batch_hisat2") as m_h2, \
+         patch("varus.controller.count_minimap2_quality",
+               return_value={"num_uniq": 100.0, "uniq_pct": 80.0}) as m_count, \
+         patch("varus.controller.parse_hisat2_log") as m_parse, \
+         patch("varus.controller.count_bam_stats") as m_stats, \
+         patch("varus.controller.extract_introns_from_bam") as m_introns:
+        m_stats.return_value = MagicMock(
+            n_reads=100, n_spliced=50, umr_counts={("chr1", 0): 80},
+        )
+        m_introns.return_value = MagicMock()
+        ctrl._align_and_count(task)
+
+    m_mm2.assert_called_once()
+    m_count.assert_called_once()
+    m_h2.assert_not_called()
+    m_parse.assert_not_called()
+    # Verify the preset and min_mapq were threaded through.
+    kwargs = m_mm2.call_args.kwargs
+    assert kwargs["preset"] == "ont"
+    count_kwargs = m_count.call_args.kwargs
+    assert count_kwargs["min_mapq"] == cfg.min_mapq
+
+
+def test_rebuild_intron_db_writes_bed_when_longreads(tmp_path: Path):
+    """In long-read mode the splice-DB rebuilder writes BED12, not HISAT tab."""
+    from varus.introns import IntronCounts
+
+    cfg = _make_config(tmp_path, longreads=True)
+    ctrl = Controller(cfg, [])
+    ctrl.cumulative_introns = IntronCounts({("chr1", 10, 50, "+"): 1})
+
+    fake_stranded = IntronCounts({("chr1", 10, 50, "+"): 1})
+    with patch("varus.controller.assign_strand", return_value=fake_stranded), \
+         patch("varus.controller.write_minimap2_junc_bed") as m_bed, \
+         patch("varus.controller.write_hisat2_splice_sites") as m_tab:
+        ctrl._rebuild_intron_db()
+    m_bed.assert_called_once()
+    m_tab.assert_not_called()
+
+
+def test_rebuild_intron_db_writes_tab_when_short_reads(tmp_path: Path):
+    from varus.introns import IntronCounts
+
+    cfg = _make_config(tmp_path, longreads=False)
+    ctrl = Controller(cfg, [])
+    ctrl.cumulative_introns = IntronCounts({("chr1", 10, 50, "+"): 1})
+
+    fake_stranded = IntronCounts({("chr1", 10, 50, "+"): 1})
+    with patch("varus.controller.assign_strand", return_value=fake_stranded), \
+         patch("varus.controller.write_minimap2_junc_bed") as m_bed, \
+         patch("varus.controller.write_hisat2_splice_sites") as m_tab:
+        ctrl._rebuild_intron_db()
+    m_tab.assert_called_once()
+    m_bed.assert_not_called()

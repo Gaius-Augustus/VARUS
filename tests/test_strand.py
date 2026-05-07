@@ -13,7 +13,9 @@ from pathlib import Path
 import pytest
 
 from varus.introns import IntronCounts
-from varus.strand import DEFAULT_ALLOWED, _rc4, write_hisat2_splice_sites
+from varus.strand import (
+    DEFAULT_ALLOWED, _rc4, write_hisat2_splice_sites, write_minimap2_junc_bed,
+)
 
 try:
     from tests.conftest import requires_pysam
@@ -79,6 +81,66 @@ def test_write_hisat2_splice_sites_skips_donor_below_zero(tmp_path: Path):
     out = tmp_path / "ss.txt"
     n = write_hisat2_splice_sites(introns, out)
     assert n == 0
+
+
+def test_write_minimap2_junc_bed_plus_strand(tmp_path: Path):
+    """Plus-strand intron → BED12 with two 1bp blocks flanking the intron."""
+    introns = IntronCounts({("chr1", 10, 50, "+"): 3})
+    out = tmp_path / "junc.bed"
+    n = write_minimap2_junc_bed(introns, out)
+    assert n == 1
+    parts = out.read_text().strip().split("\t")
+    assert len(parts) == 12
+    assert parts[0] == "chr1"
+    assert int(parts[1]) == 8     # bed_start = start - 2 = 8
+    assert int(parts[2]) == 51    # bed_end = end + 1 = 51
+    assert parts[5] == "+"
+    assert int(parts[4]) == 3     # score = multiplicity (clipped at 1000)
+    assert int(parts[9]) == 2     # blockCount
+    assert parts[10] == "1,1"     # blockSizes
+    # blockStarts: first at 0, second at bed_end - bed_start - 1 = 42
+    assert parts[11] == "0,42"
+
+
+def test_write_minimap2_junc_bed_minus_strand(tmp_path: Path):
+    introns = IntronCounts({("chr2", 100, 200, "-"): 1})
+    out = tmp_path / "junc.bed"
+    n = write_minimap2_junc_bed(introns, out)
+    assert n == 1
+    parts = out.read_text().strip().split("\t")
+    assert parts[0] == "chr2"
+    assert parts[5] == "-"
+    assert int(parts[1]) == 98
+    assert int(parts[2]) == 201
+
+
+def test_write_minimap2_junc_bed_skips_dot_strand(tmp_path: Path):
+    introns = IntronCounts({
+        ("chr1", 10, 50, "."): 5,
+        ("chr1", 60, 90, "+"): 2,
+    })
+    out = tmp_path / "junc.bed"
+    n = write_minimap2_junc_bed(introns, out)
+    assert n == 1
+    text = out.read_text()
+    # Only the + record should appear.
+    assert "\t+\t" in text
+    assert "\t.\t" not in text
+
+
+def test_write_minimap2_junc_bed_skips_donor_below_zero(tmp_path: Path):
+    introns = IntronCounts({("chr1", 1, 10, "+"): 1})
+    out = tmp_path / "junc.bed"
+    n = write_minimap2_junc_bed(introns, out)
+    assert n == 0
+
+
+def test_write_minimap2_junc_bed_clips_score_at_1000(tmp_path: Path):
+    introns = IntronCounts({("chr1", 10, 50, "+"): 5_000})
+    out = tmp_path / "junc.bed"
+    write_minimap2_junc_bed(introns, out)
+    parts = out.read_text().strip().split("\t")
+    assert int(parts[4]) == 1000
 
 
 # ---------------------------------------------------------------------------

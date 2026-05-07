@@ -22,7 +22,7 @@ annotation. Each iteration of the online algorithm
 | | v1 (legacy) | v2 (this branch) |
 |---|---|---|
 | Language | C++ + Perl + Bash | Python 3.9+ |
-| Aligner | STAR or HISAT2 | HISAT2 only |
+| Aligner | STAR or HISAT2 | HISAT2 (short reads) or minimap2 (long reads, `--longreads`) |
 | Read download | `fastq-dump --fasta` | `fastq-dump` (per-batch ranges) + `fasterq-dump` (full runs) |
 | Alignment intermediate | SAM → samtools sort → BAM | piped → coordinate-sorted BAM directly |
 | Intron extraction | `bam2hints` (AUGUSTUS) | `pysam` reimplementation |
@@ -43,7 +43,8 @@ pip install -e ".[align]"      # add ',dev' for the test suite
 ```
 
 External tools that VARUS shells out to: `hisat2`, `hisat2-build`,
-`samtools`, `fasterq-dump` (sra-toolkit). Install via your distro or conda.
+`samtools`, `fasterq-dump` (sra-toolkit). For long-read mode (`--longreads`),
+add `minimap2`. Install via your distro or conda.
 
 > Disable the NCBI cache once on the host:
 > ```sh
@@ -95,6 +96,36 @@ Outputs in `Sp/`:
 | `--coverage-trace N` | 0 (off) | snapshot Coverage every N batches |
 | `--keep-batches` | off | retain per-batch FASTA/BAM after counting |
 | `--advanced KEY=VALUE` | — | estimator hyperparameters: `lambda=10`, `pseudo-count=1`, `cost=0.0` |
+| `--longreads` | off | align with minimap2 (long-read RNA-seq); see below |
+| `--longread-platform` | `pacbio` | `pacbio` (Iso-Seq, `-ax splice`) or `ont` (direct-RNA, `-ax splice -uf -k14`) |
+| `--min-mapq` | 60 / 1 | uniqueness MAPQ cutoff (default 60 short, 1 long) |
+
+### Long-read RNA-seq (`--longreads`)
+
+PacBio Iso-Seq and ONT direct-RNA runs from SRA are aligned with `minimap2 -ax splice`
+instead of HISAT2. The same online algorithm runs on top — only the alignment, the
+splice-DB feedback format, and a few defaults change.
+
+```sh
+# 1. Build a minimap2 splice index instead of HISAT2.
+varus index   genome.fa --outdir Sp/genome/ --threads 8 --longreads
+
+# 2. Run with --longreads (and pick the platform). The default --batch-size
+#    drops from 50000 to 2000 because long-read SRA runs have far fewer spots.
+varus run     "Schizosaccharomyces pombe" genome.fa     \
+              --runlist Sp/Runlist.tsv                  \
+              --index   Sp/genome/mm2idx.mmi            \
+              --longreads --longread-platform ont       \
+              --max-batches 1000 --threads 8 --outdir Sp/
+```
+
+Differences vs the HISAT2 path:
+
+- `--index` points at the `.mmi` *file* rather than a stem.
+- The splice-DB written each round is `intronDB.junc.bed` (BED12 for `minimap2 --junc-bed`)
+  instead of `intronDB.splice_sites` (HISAT2 tab format).
+- The uniqueness % is computed by scanning the BAM (primary, MAPQ ≥ `--min-mapq`),
+  not parsed from a HISAT2-specific log file.
 
 ### Nextflow
 

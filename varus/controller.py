@@ -27,14 +27,23 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from varus.align import align_batch_hisat2, parse_hisat2_log
+from varus.align import (
+    align_batch_hisat2,
+    align_batch_minimap2,
+    count_minimap2_quality,
+    parse_hisat2_log,
+)
 from varus.download import download_batch
 from varus.estimator import AdvancedEstimator
 from varus.introns import IntronCounts, extract_introns_from_bam, write_introns_gff
 from varus.io import write_coverage, write_run_statistics
 from varus.merge import merge_bams
 from varus.runlist import RunRecord
-from varus.strand import assign_strand, write_hisat2_splice_sites
+from varus.strand import (
+    assign_strand,
+    write_hisat2_splice_sites,
+    write_minimap2_junc_bed,
+)
 from varus.tiles import BAMStats, count_bam_stats
 
 log = logging.getLogger(__name__)
@@ -81,6 +90,15 @@ class VARUSConfig:
     # one round earlier, before round R's results are folded in (extra round
     # of staleness). Default: off, so the algorithm matches strict greedy ordering.
     pipeline_downloads: bool = False
+
+    # Long-read mode: align with minimap2 instead of HISAT2; feed back known
+    # junctions via BED12 (--junc-bed) instead of HISAT2's tab format.
+    longreads: bool = False
+    longread_platform: str = "pacbio"   # 'pacbio' (Iso-Seq) | 'ont' (direct-RNA)
+    # Uniqueness MAPQ threshold for the quality gate. HISAT2 unique-mappers
+    # all carry MAPQ=60, so this gate is effectively a no-op there; minimap2
+    # emits a wider distribution, where MAPQ ≥ 1 excludes only ambiguous reads.
+    min_mapq: int = 60
 
 
 # ---------------------------------------------------------------------------
@@ -207,7 +225,9 @@ class Controller:
         )
 
         self.config.outdir.mkdir(parents=True, exist_ok=True)
-        self._splice_db_path = config.outdir / "intronDB.splice_sites"
+        self._splice_db_path = config.outdir / (
+            "intronDB.junc.bed" if config.longreads else "intronDB.splice_sites"
+        )
 
     # ------------------------------------------------------------------
     # Public entry point
@@ -483,14 +503,30 @@ class Controller:
         )
         threads = self.config.threads
         try:
-            result = align_batch_hisat2(
-                r1=paths.r1,
-                r2=paths.r2,
-                index_prefix=self.config.index_prefix,
-                batch_dir=paths.batch_dir,
-                threads=threads,
-                intron_db=intron_db,
-            )
+            if self.config.longreads:
+                if paths.r2 is not None:
+                    log.warning(
+                        "Long-read run %s yielded paired FASTAs; "
+                        "ignoring r2 and aligning r1 only.",
+                        run.record.accession,
+                    )
+                result = align_batch_minimap2(
+                    reads=paths.r1,
+                    index=self.config.index_prefix,
+                    batch_dir=paths.batch_dir,
+                    threads=threads,
+                    preset=self.config.longread_platform,
+                    junc_bed=intron_db,
+                )
+            else:
+                result = align_batch_hisat2(
+                    r1=paths.r1,
+                    r2=paths.r2,
+                    index_prefix=self.config.index_prefix,
+                    batch_dir=paths.batch_dir,
+                    threads=threads,
+                    intron_db=intron_db,
+                )
         except RuntimeError as e:
             log.warning("Alignment failed for %s: %s", run.record.accession, e)
             if not self.config.keep_batches:
@@ -498,7 +534,12 @@ class Controller:
                     p.unlink(missing_ok=True)
             return BatchResult(run=run, success=False)
 
-        stats = parse_hisat2_log(result.log, batch_size=self.config.batch_size)
+        if self.config.longreads:
+            stats = count_minimap2_quality(
+                result.bam, min_mapq=self.config.min_mapq
+            )
+        else:
+            stats = parse_hisat2_log(result.log, batch_size=self.config.batch_size)
         uniq_pct = stats["uniq_pct"]
         if uniq_pct < self.config.min_uniq_pct:
             log.warning(
@@ -561,14 +602,21 @@ class Controller:
             self._batch_bams.append(br.bam_path)
 
     def _rebuild_intron_db(self) -> None:
-        """Assign strand to cumulative introns and write HISAT2 splice-site file."""
+        """Assign strand to cumulative introns and write the splice-site DB.
+
+        Output format depends on the aligner: HISAT2 tab format for short reads,
+        BED12 (``--junc-bed``) for minimap2 long reads.
+        """
         if not self.cumulative_introns.counts:
             return
         try:
             stranded = assign_strand(
                 self.cumulative_introns, self.config.genome
             )
-            write_hisat2_splice_sites(stranded, self._splice_db_path)
+            if self.config.longreads:
+                write_minimap2_junc_bed(stranded, self._splice_db_path)
+            else:
+                write_hisat2_splice_sites(stranded, self._splice_db_path)
         except Exception as e:
             log.warning("Intron DB rebuild failed: %s", e)
 

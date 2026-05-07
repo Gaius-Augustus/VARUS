@@ -3,6 +3,7 @@ Implementation/bam2hints
 Implementation/src/bam2hints/bam2hints
 *.o
 *~
+*/__pycache__
 GettingStarted/Pombe/Log.out
 runVarus.log
 GettingStarted/Pombe/runVarus.log

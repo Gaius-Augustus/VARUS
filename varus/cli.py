@@ -3,7 +3,7 @@
 Subcommands
 -----------
 runlist : query NCBI SRA for all RNA-seq runs of a species, write Runlist.tsv
-index   : build a HISAT2 index for a genome FASTA
+index   : build a HISAT2 (default) or minimap2 (``--longreads``) index
 run     : execute the online sampling loop (download + align + score)
 """
 
@@ -37,15 +37,18 @@ def _add_runlist(sub: argparse._SubParsersAction) -> None:
 def _add_index(sub: argparse._SubParsersAction) -> None:
     p = sub.add_parser(
         "index",
-        help="Build a HISAT2 index for a genome FASTA.",
+        help="Build a HISAT2 (default) or minimap2 (--longreads) index.",
     )
     p.add_argument("genome", type=Path, help="Genome FASTA file.")
     p.add_argument("--outdir", type=Path, default=Path("genome"),
                    help="Output directory for the index (default: ./genome/).")
     p.add_argument("--threads", type=int, default=4,
-                   help="Threads for hisat2-build (default: 4).")
-    p.add_argument("--prefix", default="hisatidx",
-                   help="Index file prefix (default: hisatidx).")
+                   help="Threads for the index builder (default: 4).")
+    p.add_argument("--prefix", default=None,
+                   help="Index file prefix (default: 'hisatidx' for short reads, "
+                        "'mm2idx' for --longreads).")
+    p.add_argument("--longreads", action="store_true",
+                   help="Build a minimap2 splice index instead of HISAT2.")
 
 
 def _add_run(sub: argparse._SubParsersAction) -> None:
@@ -57,10 +60,13 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
     p.add_argument("genome", type=Path, help="Genome FASTA file.")
     p.add_argument("--runlist", type=Path, required=True, help="Path to Runlist.tsv.")
     p.add_argument("--index", type=Path, required=True,
-                   help="HISAT2 index prefix (e.g. Sp/genome/hisatidx).")
+                   help="HISAT2 index prefix (short reads, e.g. Sp/genome/hisatidx) "
+                        "or minimap2 .mmi file (--longreads, e.g. Sp/genome/mm2idx.mmi).")
     p.add_argument("--outdir", type=Path, default=Path.cwd(),
                    help="Output directory.")
-    p.add_argument("--batch-size", type=int, default=50000)
+    p.add_argument("--batch-size", type=int, default=None,
+                   help="Spots per batch (default: 50000 for short reads, "
+                        "2000 for --longreads).")
     p.add_argument("--max-batches", type=int, default=1000)
     p.add_argument("--tile-size", type=int, default=5000)
     p.add_argument("--min-uniq-pct", type=float, default=5.0)
@@ -84,6 +90,17 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
                         "with round R's alignments (CPU-bound, multi-threaded). Adds one "
                         "extra round of staleness to picks; expect 1+T_dl/T_al speedup "
                         "(typically 1.3–1.8×).")
+    p.add_argument("--longreads", action="store_true",
+                   help="Align with minimap2 instead of HISAT2 (for PacBio Iso-Seq "
+                        "or ONT direct-RNA). Implies a different splice-DB format "
+                        "and a smaller default --batch-size.")
+    p.add_argument("--longread-platform", choices=["pacbio", "ont"],
+                   default="pacbio",
+                   help="Long-read platform preset (only used with --longreads). "
+                        "'pacbio' -> '-ax splice'; 'ont' -> '-ax splice -uf -k14'.")
+    p.add_argument("--min-mapq", type=int, default=None,
+                   help="MAPQ cutoff for the uniqueness gate (default: 60 for "
+                        "short reads, 1 for --longreads).")
     p.add_argument("--advanced", nargs="*", default=[], metavar="KEY=VALUE",
                    help="Advanced overrides, e.g. lambda=10 pseudo-count=1 cost=0.001.")
 
@@ -124,13 +141,22 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "index":
-        from varus.index import build_hisat2_index
-        out = build_hisat2_index(
-            genome=args.genome,
-            outdir=args.outdir,
-            threads=args.threads,
-            prefix=args.prefix,
-        )
+        if args.longreads:
+            from varus.index import build_minimap2_index
+            out = build_minimap2_index(
+                genome=args.genome,
+                outdir=args.outdir,
+                threads=args.threads,
+                prefix=args.prefix or "mm2idx",
+            )
+        else:
+            from varus.index import build_hisat2_index
+            out = build_hisat2_index(
+                genome=args.genome,
+                outdir=args.outdir,
+                threads=args.threads,
+                prefix=args.prefix or "hisatidx",
+            )
         print(out)
         return 0
 
@@ -145,11 +171,20 @@ def main(argv: list[str] | None = None) -> int:
                 k, v = kv.split("=", 1)
                 advanced[k.strip()] = v.strip()
 
+        # Mode-dependent defaults: long-read SRA runs are smaller and the MAPQ
+        # distribution from minimap2 is wider than HISAT2's.
+        batch_size = args.batch_size
+        if batch_size is None:
+            batch_size = 2_000 if args.longreads else 50_000
+        min_mapq = args.min_mapq
+        if min_mapq is None:
+            min_mapq = 1 if args.longreads else 60
+
         cfg = VARUSConfig(
             genome=args.genome,
             index_prefix=args.index,
             outdir=args.outdir,
-            batch_size=args.batch_size,
+            batch_size=batch_size,
             max_batches=args.max_batches,
             tile_size=args.tile_size,
             min_uniq_pct=args.min_uniq_pct,
@@ -160,6 +195,9 @@ def main(argv: list[str] | None = None) -> int:
             bootstrap_all=args.bootstrap_all,
             profit_condition=args.profit_condition,
             pipeline_downloads=args.pipeline_downloads,
+            longreads=args.longreads,
+            longread_platform=args.longread_platform,
+            min_mapq=min_mapq,
             lambda_=float(advanced.get("lambda", 10.0)),
             pseudo_count=float(advanced.get("pseudo-count", 1.0)),
             cost=float(advanced.get("cost", 0.0)),

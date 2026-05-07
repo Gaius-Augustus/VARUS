@@ -14,7 +14,8 @@ The default allowed set matches the Perl default: gtag, gcag, atac.
 
 Also provides :func:`write_hisat2_splice_sites` to convert an
 :class:`~varus.introns.IntronCounts` into the tab-delimited format expected
-by ``hisat2 --known-splicesite-infile``.
+by ``hisat2 --known-splicesite-infile``, and :func:`write_minimap2_junc_bed`
+for the BED12 format expected by ``minimap2 --junc-bed``.
 """
 
 from __future__ import annotations
@@ -101,4 +102,46 @@ def write_hisat2_splice_sites(introns: IntronCounts, path: Path) -> int:
             f.write(f"{chrom}\t{donor}\t{acceptor}\t{strand}\n")
             n += 1
     log.info("Wrote %d splice sites to %s", n, path)
+    return n
+
+
+def write_minimap2_junc_bed(introns: IntronCounts, path: Path) -> int:
+    """Write a BED12 junction file for ``minimap2 --junc-bed``.
+
+    Each intron at 1-based inclusive coordinates ``(start, end)`` becomes one
+    BED12 line representing two 1-bp anchors flanking the intron. minimap2
+    reads the block boundaries to learn canonical splice sites.
+
+    BED is 0-based half-open:
+
+    - ``bed_start = start - 2`` (1 bp before the donor)
+    - ``bed_end   = end + 1``   (1 bp after the acceptor)
+
+    Two blocks of size 1 each, at offsets ``0`` and ``bed_end - bed_start - 1``.
+    The intron multiplicity is used as the score (clipped to 1000).
+
+    Introns with strand ``.`` or ``donor < 0`` are silently skipped (matches
+    :func:`write_hisat2_splice_sites`). Returns the number of records written.
+    """
+    n = 0
+    with path.open("w", encoding="utf-8") as f:
+        for (chrom, start, end, strand), mult in sorted(introns.counts.items()):
+            if strand not in ("+", "-"):
+                continue
+            bed_start = start - 2
+            bed_end = end + 1
+            if bed_start < 0:
+                continue
+            score = min(int(mult), 1000)
+            block_count = 2
+            block_sizes = "1,1"
+            block_starts = f"0,{bed_end - bed_start - 1}"
+            name = f"junc{n}"
+            f.write(
+                f"{chrom}\t{bed_start}\t{bed_end}\t{name}\t{score}\t{strand}\t"
+                f"{bed_start}\t{bed_end}\t0\t{block_count}\t{block_sizes}\t"
+                f"{block_starts}\n"
+            )
+            n += 1
+    log.info("Wrote %d junctions to %s", n, path)
     return n
