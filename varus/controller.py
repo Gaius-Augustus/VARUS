@@ -67,7 +67,11 @@ class VARUSConfig:
     lambda_: float = 10.0
     pseudo_count: float = 1.0
     cost: float = 0.0          # per-read download cost (default 0 = ignore cost)
-    profit_condition: bool = True  # stop when expected profit ≤ 0
+    # Stop early when expected profit ≤ 0. Off by default: matches the legacy
+    # production pipeline (--profitCondition 0). When on, the check is also
+    # skipped while no observations have been collected yet (cold start),
+    # so the algorithm always gets at least one batch to bootstrap.
+    profit_condition: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -324,7 +328,14 @@ class Controller:
         if self.config.max_batches > 0 and self.batch_count >= self.config.max_batches:
             log.info("Reached max_batches=%d; stopping.", self.config.max_batches)
             return False
-        if self.config.profit_condition and self.max_profit <= 0:
+        # Skip the profit check until we actually have observations. Without
+        # this, the algorithm cannot bootstrap: every run starts with an empty
+        # p distribution, profits are 0, and the loop would stop on iteration 1.
+        if (
+            self.config.profit_condition
+            and self.total_obs
+            and self.max_profit <= 0
+        ):
             log.info("maxProfit=%.4f ≤ 0; stopping.", self.max_profit)
             return False
         return True

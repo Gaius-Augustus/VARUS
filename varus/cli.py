@@ -75,6 +75,10 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
     p.add_argument("--bootstrap-all", action="store_true",
                    help="Download one batch from every run before starting the online loop "
                         "(equivalent to legacy --loadAllOnce).")
+    p.add_argument("--profit-condition", action="store_true",
+                   help="Stop early when expected profit ≤ 0. Off by default; matches the "
+                        "legacy production setting (--profitCondition 0). The check is "
+                        "always skipped on cold start (before any observations).")
     p.add_argument("--advanced", nargs="*", default=[], metavar="KEY=VALUE",
                    help="Advanced overrides, e.g. lambda=10 pseudo-count=1 cost=0.001.")
 
@@ -149,6 +153,7 @@ def main(argv: list[str] | None = None) -> int:
             coverage_trace=args.coverage_trace,
             seed=args.seed,
             bootstrap_all=args.bootstrap_all,
+            profit_condition=args.profit_condition,
             lambda_=float(advanced.get("lambda", 10.0)),
             pseudo_count=float(advanced.get("pseudo-count", 1.0)),
             cost=float(advanced.get("cost", 0.0)),

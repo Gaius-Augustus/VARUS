@@ -131,12 +131,35 @@ def test_controller_continuing_max_batches(tmp_path: Path):
 def test_controller_continuing_profit_condition(tmp_path: Path):
     cfg = _make_config(tmp_path, max_batches=0, profit_condition=True)
     ctrl = Controller(cfg, [])
+    # Profit-condition only kicks in once we have observations.
+    ctrl.total_obs = {("chr1", 0): 5}
     ctrl.max_profit = 0.5
     assert ctrl._continuing()
     ctrl.max_profit = -0.1
     assert not ctrl._continuing()
     ctrl.max_profit = 0.0
     assert not ctrl._continuing()
+
+
+def test_controller_continuing_profit_condition_skipped_on_cold_start(tmp_path: Path):
+    """The profit check must NOT fire while total_obs is empty (cold start),
+    otherwise the loop dies before processing the first batch."""
+    cfg = _make_config(tmp_path, max_batches=0, profit_condition=True)
+    ctrl = Controller(cfg, [])
+    ctrl.total_obs = {}     # cold start
+    ctrl.max_profit = 0.0   # would normally stop, but no obs yet
+    assert ctrl._continuing()
+
+
+def test_controller_profit_condition_default_off(tmp_path: Path):
+    """Default profit_condition is False (matches legacy production)."""
+    from varus.controller import VARUSConfig
+    cfg = VARUSConfig(
+        genome=tmp_path / "g.fa",
+        index_prefix=tmp_path / "idx",
+        outdir=tmp_path / "out",
+    )
+    assert cfg.profit_condition is False
 
 
 def test_controller_choose_next_run_max_profit(tmp_path: Path):
