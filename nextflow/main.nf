@@ -35,6 +35,11 @@ params.varus_pipeline_downloads = (params.containsKey('varus_pipeline_downloads'
 params.varus_index_cpus     = (params.containsKey('varus_index_cpus')    && params.varus_index_cpus    != null ? params.varus_index_cpus    : 8) as int
 params.varus_run_cpus       = (params.containsKey('varus_run_cpus')      && params.varus_run_cpus      != null ? params.varus_run_cpus      : 16) as int
 
+// Long-read mode: align with minimap2, restrict the SRA query to PacBio/ONT.
+// Implies a different splice-DB format and a smaller default --batch-size.
+params.longreads            = (params.containsKey('longreads') ? params.longreads : false) as boolean
+params.longread_platform    = (params.containsKey('longread_platform') && params.longread_platform != null ? params.longread_platform : 'pacbio') as String
+
 params.ncbi_email           = params.ncbi_email   ?: null
 params.ncbi_api_key         = params.ncbi_api_key ?: null
 

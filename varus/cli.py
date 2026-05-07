@@ -27,6 +27,10 @@ def _add_runlist(sub: argparse._SubParsersAction) -> None:
                    help="Limit to first N runs (0 = all available).")
     p.add_argument("--paired-only", action="store_true",
                    help="Keep only paired-end runs.")
+    p.add_argument("--longreads", action="store_true",
+                   help="Restrict the SRA query to long-read platforms "
+                        "(PacBio SMRT, Oxford Nanopore). Without this flag the "
+                        "runlist is dominated by Illumina short-read runs.")
     p.add_argument("--email", default=None,
                    help="Contact email for NCBI Entrez (recommended; "
                         "falls back to $NCBI_EMAIL).")
@@ -134,6 +138,7 @@ def main(argv: list[str] | None = None) -> int:
             outdir=args.outdir,
             max_runs=args.max_runs,
             paired_only=args.paired_only,
+            longreads=args.longreads,
             email=args.email,
             api_key=args.api_key,
         )

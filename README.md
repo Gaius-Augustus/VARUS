@@ -162,6 +162,8 @@ species.
 | `--varus_pipeline_downloads` | false | passed to `varus run --pipeline-downloads` |
 | `--varus_index_cpus` | 8 | CPUs for `VARUS_INDEX` |
 | `--varus_run_cpus` | 16 | CPUs for `VARUS_RUN` |
+| `--longreads` | false | switch to minimap2 + restrict the SRA query to PacBio/ONT |
+| `--longread_platform` | `pacbio` | `pacbio` or `ont`, only used with `--longreads` |
 
 `VARUS_RUN` publishes one additional file per species: `runtime.varus.txt`
 (`/usr/bin/time -p` wall/user/sys report).

@@ -1,0 +1,44 @@
+{
+  "_comment": "Copy this file to <your-project>/.claude/settings.json. Project-specific permission additions and the hook paths. Safe to commit.",
+
+  "permissions": {
+    "allow": [
+      "Bash(snakemake -n *)",
+      "Bash(nextflow run * -preview)",
+      "Bash(pytest tests/:*)",
+      "Bash(pytest -k:*)"
+    ]
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/graphify-update-remind.sh" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Glob|Grep",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/graphify-context.sh" }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/block-raw-data-writes.sh" }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/no-auto-commit.sh" },
+          { "type": "command", "command": ".claude/hooks/block-rm-rf.sh" }
+        ]
+      }
+    ]
+  }
+}

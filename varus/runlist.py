@@ -47,7 +47,13 @@ def _configure_entrez(email: str | None, api_key: str | None) -> None:
         Entrez.api_key = api_key
 
 
-def _esearch_history(species: str) -> tuple[int, str, str]:
+# Entrez SRA Platform[Platform] filter for long-read RNA-seq submissions.
+# Covers the two long-read platforms in current production use; can be extended
+# if a third major one (e.g. Element Bio) becomes common in SRA.
+LONGREAD_PLATFORM_TERM = "(PACBIO_SMRT[Platform] OR OXFORD_NANOPORE[Platform])"
+
+
+def _esearch_history(species: str, longreads: bool = False) -> tuple[int, str, str]:
     """Run esearch with ``usehistory=y``; return (count, WebEnv, query_key).
 
     We parse the response with stdlib ElementTree rather than ``Entrez.read``
@@ -55,6 +61,8 @@ def _esearch_history(species: str) -> tuple[int, str, str]:
     awkward and adds no value for these four fields.
     """
     term = f'"{species}"[orgn] AND biomol_rna[Prop]'
+    if longreads:
+        term += f" AND {LONGREAD_PLATFORM_TERM}"
     log.info("Entrez esearch term=%s", term)
     handle = Entrez.esearch(db="sra", term=term, usehistory="y", retmax=0)
     try:
@@ -146,8 +154,8 @@ def _parse_xml_page(xml: str) -> Iterator[RunRecord]:
             )
 
 
-def _iter_runs(species: str) -> Iterator[RunRecord]:
-    count, webenv, query_key = _esearch_history(species)
+def _iter_runs(species: str, longreads: bool = False) -> Iterator[RunRecord]:
+    count, webenv, query_key = _esearch_history(species, longreads=longreads)
     log.info("Server has %d data sets for %s", count, species)
     retstart = 0
     while retstart < count:
@@ -175,10 +183,15 @@ def fetch_runlist(
     outdir: Path,
     max_runs: int = 0,
     paired_only: bool = False,
+    longreads: bool = False,
     email: str | None = None,
     api_key: str | None = None,
 ) -> Path:
     """Query SRA, filter, and write ``<outdir>/Runlist.tsv``.
+
+    When ``longreads`` is True the Entrez term is restricted to PacBio SMRT and
+    Oxford Nanopore platforms; without this filter SRA returns mostly Illumina
+    short-read runs because they dominate the archive.
 
     Returns the path to the written file.
     """
@@ -196,6 +209,6 @@ def fetch_runlist(
             if max_runs and kept >= max_runs:
                 break
 
-    n = write_runlist(_filter(_iter_runs(species)), out)
+    n = write_runlist(_filter(_iter_runs(species, longreads=longreads)), out)
     log.info("Wrote %d runs to %s", n, out)
     return out

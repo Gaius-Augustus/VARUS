@@ -148,6 +148,46 @@ def test_fetch_runlist_max_runs(tmp_path: Path, monkeypatch):
     assert len(body) == 1
 
 
+def test_fetch_runlist_longreads_adds_platform_filter(tmp_path: Path, monkeypatch):
+    """`--longreads` must restrict the Entrez term to PacBio + ONT platforms."""
+    captured: dict = {}
+
+    def _capturing_esearch(**kw):
+        captured["term"] = kw.get("term")
+        return _fake_esearch_handle()
+
+    monkeypatch.setattr(runlist.Entrez, "esearch", _capturing_esearch)
+    monkeypatch.setattr(
+        runlist.Entrez, "esummary", lambda **kw: _fake_esummary_handle()
+    )
+
+    runlist.fetch_runlist(
+        species="Foo bar",
+        outdir=tmp_path,
+        longreads=True,
+        email="test@example.org",
+    )
+    assert "PACBIO_SMRT[Platform]" in captured["term"]
+    assert "OXFORD_NANOPORE[Platform]" in captured["term"]
+
+
+def test_fetch_runlist_default_omits_platform_filter(tmp_path: Path, monkeypatch):
+    captured: dict = {}
+
+    def _capturing_esearch(**kw):
+        captured["term"] = kw.get("term")
+        return _fake_esearch_handle()
+
+    monkeypatch.setattr(runlist.Entrez, "esearch", _capturing_esearch)
+    monkeypatch.setattr(
+        runlist.Entrez, "esummary", lambda **kw: _fake_esummary_handle()
+    )
+    runlist.fetch_runlist(
+        species="Foo bar", outdir=tmp_path, email="test@example.org",
+    )
+    assert "Platform" not in captured["term"]
+
+
 def test_fetch_runlist_raises_when_no_runs(tmp_path: Path, monkeypatch):
     def _empty_esearch(**kw):
         return BytesIO(
