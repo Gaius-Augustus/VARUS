@@ -102,6 +102,9 @@ process VARUS_RUN {
     def minUniqPct  = params.varus_min_uniq_pct ?: 5.0
     def seed        = params.varus_seed         ?: 1
     def bootstrap   = params.varus_bootstrap_all ? '--bootstrap-all' : ''
+    def parallel    = params.varus_parallel_batches ?: 1
+    def profitCond  = params.varus_profit_condition ? '--profit-condition' : ''
+    def pipelineDl  = params.varus_pipeline_downloads ? '--pipeline-downloads' : ''
     """
     set -euo pipefail
     /usr/bin/time -p -o runtime.varus.txt \\
@@ -114,8 +117,9 @@ process VARUS_RUN {
         --tile-size ${tileSize} \\
         --min-uniq-pct ${minUniqPct} \\
         --threads ${task.cpus} \\
+        --parallel-batches ${parallel} \\
         --seed ${seed} \\
-        ${bootstrap}
+        ${bootstrap} ${profitCond} ${pipelineDl}
 
     test -s VARUS.bam || { echo "VARUS run produced no BAM" >&2; exit 2; }
     """

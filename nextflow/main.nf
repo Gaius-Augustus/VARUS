@@ -30,6 +30,9 @@ params.varus_min_uniq_pct   = (params.containsKey('varus_min_uniq_pct')  && para
 params.varus_max_runs       = (params.containsKey('varus_max_runs')      && params.varus_max_runs      != null ? params.varus_max_runs      : 0) as int
 params.varus_seed           = (params.containsKey('varus_seed')          && params.varus_seed          != null ? params.varus_seed          : 1) as int
 params.varus_bootstrap_all  = (params.containsKey('varus_bootstrap_all') ? params.varus_bootstrap_all : false) as boolean
+params.varus_profit_condition = (params.containsKey('varus_profit_condition') ? params.varus_profit_condition : false) as boolean
+params.varus_parallel_batches = (params.containsKey('varus_parallel_batches') && params.varus_parallel_batches != null ? params.varus_parallel_batches : 1) as int
+params.varus_pipeline_downloads = (params.containsKey('varus_pipeline_downloads') ? params.varus_pipeline_downloads : false) as boolean
 params.varus_index_cpus     = (params.containsKey('varus_index_cpus')    && params.varus_index_cpus    != null ? params.varus_index_cpus    : 8) as int
 params.varus_run_cpus       = (params.containsKey('varus_run_cpus')      && params.varus_run_cpus      != null ? params.varus_run_cpus      : 16) as int
 

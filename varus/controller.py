@@ -22,6 +22,7 @@ import logging
 import math
 import random
 import shutil
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -73,6 +74,25 @@ class VARUSConfig:
     # so the algorithm always gets at least one batch to bootstrap.
     profit_condition: bool = False
 
+    # Top-K mini-batch parallelism. K=1 reproduces the strict greedy algorithm
+    # exactly. K>1 picks the K runs with highest expected profit and runs
+    # download+align in parallel threads, then re-estimates once after the
+    # round. This trades a small amount of greediness (runs 2..K can't see
+    # the effect of run 1's batch) for ~K× wall-clock speedup. Each parallel
+    # task gets ``threads // parallel_batches`` HISAT2/samtools threads, so
+    # bump ``threads`` accordingly. Memory scales with K too — with HISAT2
+    # at ~8 GB for vertebrate genomes, K=4 needs ~32 GB.
+    parallel_batches: int = 1
+
+    # Pipeline downloads of round R+1 with alignments of round R. Downloads
+    # are network-bound and single-threaded, alignments are CPU-bound — they
+    # don't compete for the same resource. When enabled, expect roughly
+    # 1 + T_download/T_align speedup. Cost: round R+1's run choices are made
+    # one round earlier, before round R's results are folded in (extra round
+    # of staleness on top of any from --parallel-batches). Default: off, so
+    # the algorithm matches the strict greedy ordering.
+    pipeline_downloads: bool = False
+
 
 # ---------------------------------------------------------------------------
 # Per-run state
@@ -120,6 +140,38 @@ class RunState:
         n = k * batch_size
         x = min((k + 1) * batch_size - 1, self.record.total_spots - 1)
         return n, x
+
+
+# ---------------------------------------------------------------------------
+# Per-batch result (returned from the parallel-safe download+align phase
+# and consumed serially by _apply_batch_result)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class BatchTask:
+    """One downloaded batch waiting to be aligned.
+
+    Holds the FASTA paths from a successful download. ``failed=True`` means
+    the download itself failed (the run will be marked bad-quality when the
+    task is consumed).
+    """
+    run: "RunState"
+    n: int
+    x: int
+    paths: Optional["object"] = None      # download.BatchPaths
+    failed: bool = False
+
+
+@dataclass
+class BatchResult:
+    """Outcome of one download+align task. Mutated state lives in the run."""
+    run: "RunState"
+    success: bool
+    bam_path: Optional[Path] = None
+    bam_stats: Optional[BAMStats] = None
+    introns: Optional[IntronCounts] = None
+    uniq_pct: float = 0.0
+    spliced_pct: float = 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -185,35 +237,91 @@ class Controller:
         self._estimate_p()
         self._calculate_profit()
 
-        while self._continuing():
-            self.batch_count += 1
-            log.info(
-                "Iteration %d | downloadable=%d | maxProfit=%.4f",
-                self.batch_count, len(self.downloadable), self.max_profit,
-            )
+        K = max(1, self.config.parallel_batches)
+        pipeline = self.config.pipeline_downloads
 
-            run = self._choose_next_run()
-            if run is None:
-                break
+        # Prefetch the first round's downloads.
+        current = self._pick_and_download_round(K)
+        if not current:
+            self._finalize()
+            return
 
-            success = self._process_batch(run)
-            if not success:
-                run.bad_quality = True
+        # Background executor used for pipelined downloads. Only one task at
+        # a time runs through it (the next round's download), so 1 worker is
+        # enough.
+        prefetch_ex: Optional[ThreadPoolExecutor] = (
+            ThreadPoolExecutor(max_workers=1) if pipeline else None
+        )
 
-            self.total_score = self._score()
-            self.total_profit = (
-                self.total_score
-                - self.config.cost * self.config.batch_size * self.batch_count
-            )
+        try:
+            while current:
+                log.info(
+                    "Round | batch=%d/%d | downloadable=%d | picks: %s",
+                    self.batch_count + len(current),
+                    self.config.max_batches,
+                    len(self.downloadable),
+                    ", ".join(t.run.record.accession for t in current),
+                )
 
-            self._estimate_p()
-            self._calculate_profit()
-            self._export_stats(run)
-            self._update_downloadable()
+                # Optionally start prefetching round R+1's downloads while
+                # we align round R. Picks here see state from round R-1's
+                # apply (extra round of staleness vs. strict greedy).
+                next_future = None
+                if pipeline and prefetch_ex is not None:
+                    next_future = prefetch_ex.submit(
+                        self._pick_and_download_round, K
+                    )
 
-            if not self.downloadable:
-                log.info("No downloadable runs left.")
-                break
+                # Align the current round (parallel within K)
+                results = self._align_and_count_round(current)
+
+                # Serial state update
+                last_run: Optional[RunState] = None
+                for br in results:
+                    self.batch_count += 1
+                    self._apply_batch_result(br)
+                    last_run = br.run
+
+                self._rebuild_intron_db()
+
+                self.total_score = self._score()
+                self.total_profit = (
+                    self.total_score
+                    - self.config.cost * self.config.batch_size * self.batch_count
+                )
+
+                self._estimate_p()
+                self._calculate_profit()
+                if last_run is not None:
+                    self._export_stats(last_run)
+                self._update_downloadable()
+
+                if not self.downloadable:
+                    log.info("No downloadable runs left.")
+                    if next_future is not None:
+                        # Discard the prefetched round; we won't use it.
+                        try:
+                            next_future.result()
+                        except Exception:
+                            pass
+                    break
+
+                if not self._continuing():
+                    if next_future is not None:
+                        try:
+                            next_future.result()
+                        except Exception:
+                            pass
+                    break
+
+                # Move to next round (already downloading or start now)
+                if next_future is not None:
+                    current = next_future.result()
+                else:
+                    current = self._pick_and_download_round(K)
+        finally:
+            if prefetch_ex is not None:
+                prefetch_ex.shutdown(wait=True)
 
         self._finalize()
 
@@ -222,14 +330,38 @@ class Controller:
     # ------------------------------------------------------------------
 
     def _bootstrap(self) -> None:
-        """Download and process one batch from every run (--bootstrap-all)."""
+        """Download and process one batch from every run (--bootstrap-all).
+
+        Honours ``parallel_batches`` for fan-out within the bootstrap phase.
+        """
         log.info("Bootstrap: processing one batch from each of %d runs", len(self.runs))
-        for run in list(self.runs):
-            if run.bad_quality or run.is_exhausted:
+        K = max(1, self.config.parallel_batches)
+        eligible = [r for r in self.runs if not r.bad_quality and not r.is_exhausted]
+
+        for chunk_start in range(0, len(eligible), K):
+            chunk = eligible[chunk_start : chunk_start + K]
+            slots: list[tuple[RunState, int, int]] = []
+            for r in chunk:
+                if r.is_exhausted:
+                    continue
+                n, x = r.next_batch_range(self.config.batch_size)
+                r.sigma_idx += 1
+                slots.append((r, n, x))
+            if not slots:
                 continue
-            ok = self._process_batch(run)
-            if not ok:
-                run.bad_quality = True
+            # Parallel download
+            if len(slots) == 1:
+                tasks = [self._download_only(*slots[0])]
+            else:
+                with ThreadPoolExecutor(max_workers=len(slots)) as ex:
+                    futures = [ex.submit(self._download_only, *s) for s in slots]
+                    tasks = [f.result() for f in futures]
+            # Parallel align + count
+            results = self._align_and_count_round(tasks)
+            for br in results:
+                self.batch_count += 1
+                self._apply_batch_result(br)
+        self._rebuild_intron_db()
         self._estimate_p()
 
     def _estimate_p(self) -> None:
@@ -323,6 +455,29 @@ class Controller:
                 return run
         return candidates[-1]
 
+    def _choose_top_k(self, k: int) -> List[RunState]:
+        """Return up to K distinct downloadable runs, top-by-expected_profit.
+
+        K=1 delegates to ``_choose_next_run`` so the legacy weighted-random
+        tie-break is preserved exactly. For K>1 we sort by (-profit, -avg_len,
+        random_jitter) to break ties deterministically per RNG seed and avoid
+        always picking the same long-read run when several are tied.
+        """
+        if not self.downloadable:
+            return []
+        if k <= 1:
+            chosen = self._choose_next_run()
+            return [chosen] if chosen is not None else []
+
+        ranked = sorted(
+            self.downloadable,
+            key=lambda r: (-r.expected_profit, -r.record.avg_len, self.rng.random()),
+        )
+        picks = ranked[:k]
+        if picks:
+            self.max_profit = picks[0].expected_profit
+        return picks
+
     def _continuing(self) -> bool:
         """True while the loop should keep running."""
         if self.config.max_batches > 0 and self.batch_count >= self.config.max_batches:
@@ -344,12 +499,22 @@ class Controller:
         """S(c) = Σ ln(1 + c_j) over all tiles with observations."""
         return sum(math.log1p(v) for v in self.total_obs.values())
 
-    def _process_batch(self, run: RunState) -> bool:
-        """Download, align, and count one batch from run. Return True on success."""
-        n, x = run.next_batch_range(self.config.batch_size)
-        run.sigma_idx += 1
+    def _per_task_threads(self) -> int:
+        """Threads to give each parallel HISAT2/samtools subprocess.
 
-        # 1. Download
+        Divides the user's --threads budget across parallel_batches so we
+        don't oversubscribe the node.
+        """
+        K = max(1, self.config.parallel_batches)
+        return max(1, self.config.threads // K)
+
+    # ------------------------------------------------------------------
+    # Download phase (network-bound, single-threaded; safe to overlap with
+    # alignments of an earlier round)
+    # ------------------------------------------------------------------
+
+    def _download_only(self, run: RunState, n: int, x: int) -> BatchTask:
+        """Download one batch. No shared-state mutation."""
         try:
             paths = download_batch(
                 accession=run.record.accession,
@@ -357,26 +522,76 @@ class Controller:
                 paired=run.record.paired,
                 outdir=self.config.outdir,
             )
+            return BatchTask(run=run, n=n, x=x, paths=paths, failed=False)
         except RuntimeError as e:
             log.warning(
                 "Download failed for %s [N=%d X=%d]: %s",
                 run.record.accession, n, x, e,
             )
-            return False
+            return BatchTask(run=run, n=n, x=x, paths=None, failed=True)
 
-        # 2. Align (use splice DB if available from a previous batch)
+    def _pick_and_download_round(self, k: int) -> List[BatchTask]:
+        """Pick top-K runs, reserve their next sigma slots, and download
+        all K in parallel. Returns the BatchTask list ready for alignment.
+
+        Reads ``downloadable``/``expected_profit`` and mutates ``sigma_idx``
+        and ``max_profit`` — must be called from the main thread.
+        """
+        if not self.downloadable:
+            return []
+        if self.config.max_batches > 0:
+            remaining = self.config.max_batches - self.batch_count
+            if remaining <= 0:
+                return []
+            k = min(k, remaining)
+
+        picks = self._choose_top_k(k)
+        if not picks:
+            return []
+
+        # Reserve sigma slots synchronously to avoid races with concurrent picks
+        slots: list[tuple[RunState, int, int]] = []
+        for r in picks:
+            if r.is_exhausted:
+                continue
+            n, x = r.next_batch_range(self.config.batch_size)
+            r.sigma_idx += 1
+            slots.append((r, n, x))
+
+        if not slots:
+            return []
+
+        if len(slots) == 1:
+            return [self._download_only(*slots[0])]
+
+        with ThreadPoolExecutor(max_workers=len(slots)) as ex:
+            futures = [ex.submit(self._download_only, *s) for s in slots]
+            return [f.result() for f in futures]
+
+    # ------------------------------------------------------------------
+    # Align + count phase (CPU-bound)
+    # ------------------------------------------------------------------
+
+    def _align_and_count(self, task: BatchTask) -> BatchResult:
+        """Align one downloaded batch, count UMRs/introns, clean up FASTA."""
+        run, n, x, paths = task.run, task.n, task.x, task.paths
+
+        if task.failed or paths is None:
+            return BatchResult(run=run, success=False)
+
         intron_db = (
             self._splice_db_path
             if self._splice_db_path.is_file()
             else None
         )
+        threads = self._per_task_threads()
         try:
             result = align_batch_hisat2(
                 r1=paths.r1,
                 r2=paths.r2,
                 index_prefix=self.config.index_prefix,
                 batch_dir=paths.batch_dir,
-                threads=self.config.threads,
+                threads=threads,
                 intron_db=intron_db,
             )
         except RuntimeError as e:
@@ -384,9 +599,8 @@ class Controller:
             if not self.config.keep_batches:
                 for p in paths.as_list():
                     p.unlink(missing_ok=True)
-            return False
+            return BatchResult(run=run, success=False)
 
-        # 3. Quality gate: reject if too few uniquely mapped reads
         stats = parse_hisat2_log(result.log, batch_size=self.config.batch_size)
         uniq_pct = stats["uniq_pct"]
         if uniq_pct < self.config.min_uniq_pct:
@@ -397,46 +611,67 @@ class Controller:
             if not self.config.keep_batches:
                 for p in paths.as_list():
                     p.unlink(missing_ok=True)
-            return False
+            return BatchResult(run=run, success=False, uniq_pct=uniq_pct)
 
-        # 4. Count UMRs and spliced reads
         bam_stats = count_bam_stats(result.bam, self.config.tile_size)
-
-        # 5. Update run and global observations
-        for tile, count in bam_stats.umr_counts.items():
-            run.observations[tile] = run.observations.get(tile, 0) + count
-            self.total_obs[tile] = self.total_obs.get(tile, 0) + count
-
         spliced_pct = (
             100.0 * bam_stats.n_spliced / bam_stats.n_reads
             if bam_stats.n_reads > 0
             else 0.0
         )
-        run.times_downloaded += 1
-        nd = run.times_downloaded
-        run.avg_umr_pct += (uniq_pct - run.avg_umr_pct) / nd
-        run.avg_spliced_pct += (spliced_pct - run.avg_spliced_pct) / nd
-
-        log.info(
-            "Run %s batch %d: uniq=%.1f%% spliced=%.1f%% UMRs=%d",
-            run.record.accession, nd, uniq_pct, spliced_pct,
-            sum(bam_stats.umr_counts.values()),
-        )
-
-        # 6. Accumulate introns and rebuild splice-site DB
         batch_introns = extract_introns_from_bam(result.bam)
-        self.cumulative_introns = self.cumulative_introns.merge(batch_introns)
-        self._rebuild_intron_db()
 
-        # 7. Track BAM for final merge
-        self._batch_bams.append(result.bam)
-
-        # 8. Clean up FASTA (keep BAM for final merge)
         if not self.config.keep_batches:
             for p in paths.as_list():
                 p.unlink(missing_ok=True)
 
-        return True
+        return BatchResult(
+            run=run,
+            success=True,
+            bam_path=result.bam,
+            bam_stats=bam_stats,
+            introns=batch_introns,
+            uniq_pct=uniq_pct,
+            spliced_pct=spliced_pct,
+        )
+
+    def _align_and_count_round(self, tasks: List[BatchTask]) -> List[BatchResult]:
+        """Run align+count for each downloaded batch in parallel."""
+        if not tasks:
+            return []
+        if len(tasks) == 1:
+            return [self._align_and_count(tasks[0])]
+        with ThreadPoolExecutor(max_workers=len(tasks)) as ex:
+            futures = [ex.submit(self._align_and_count, t) for t in tasks]
+            return [f.result() for f in futures]
+
+    def _apply_batch_result(self, br: BatchResult) -> None:
+        """Serial state update from one BatchResult. Caller controls order."""
+        run = br.run
+        if not br.success:
+            run.bad_quality = True
+            return
+        assert br.bam_stats is not None and br.introns is not None
+
+        # Per-tile UMR accumulation
+        for tile, count in br.bam_stats.umr_counts.items():
+            run.observations[tile] = run.observations.get(tile, 0) + count
+            self.total_obs[tile] = self.total_obs.get(tile, 0) + count
+
+        run.times_downloaded += 1
+        nd = run.times_downloaded
+        run.avg_umr_pct += (br.uniq_pct - run.avg_umr_pct) / nd
+        run.avg_spliced_pct += (br.spliced_pct - run.avg_spliced_pct) / nd
+
+        log.info(
+            "Run %s batch %d: uniq=%.1f%% spliced=%.1f%% UMRs=%d",
+            run.record.accession, nd, br.uniq_pct, br.spliced_pct,
+            sum(br.bam_stats.umr_counts.values()),
+        )
+
+        self.cumulative_introns = self.cumulative_introns.merge(br.introns)
+        if br.bam_path is not None:
+            self._batch_bams.append(br.bam_path)
 
     def _rebuild_intron_db(self) -> None:
         """Assign strand to cumulative introns and write HISAT2 splice-site file."""

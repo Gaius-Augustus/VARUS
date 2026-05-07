@@ -79,6 +79,16 @@ def _add_run(sub: argparse._SubParsersAction) -> None:
                    help="Stop early when expected profit ≤ 0. Off by default; matches the "
                         "legacy production setting (--profitCondition 0). The check is "
                         "always skipped on cold start (before any observations).")
+    p.add_argument("--parallel-batches", type=int, default=1, metavar="K",
+                   help="Top-K mini-batch parallelism: dispatch K download+align tasks "
+                        "concurrently per round, then re-estimate (default: 1 = strict "
+                        "greedy). K>1 trades algorithm fidelity for ~K× wall-clock "
+                        "speedup; --threads is divided across the K workers.")
+    p.add_argument("--pipeline-downloads", action="store_true",
+                   help="Overlap round R+1's downloads (network-bound, single-threaded) "
+                        "with round R's alignments (CPU-bound, multi-threaded). Adds one "
+                        "extra round of staleness to picks; expect 1+T_dl/T_al speedup "
+                        "(typically 1.3–1.8×).")
     p.add_argument("--advanced", nargs="*", default=[], metavar="KEY=VALUE",
                    help="Advanced overrides, e.g. lambda=10 pseudo-count=1 cost=0.001.")
 
@@ -154,6 +164,8 @@ def main(argv: list[str] | None = None) -> int:
             seed=args.seed,
             bootstrap_all=args.bootstrap_all,
             profit_condition=args.profit_condition,
+            parallel_batches=args.parallel_batches,
+            pipeline_downloads=args.pipeline_downloads,
             lambda_=float(advanced.get("lambda", 10.0)),
             pseudo_count=float(advanced.get("pseudo-count", 1.0)),
             cost=float(advanced.get("cost", 0.0)),
