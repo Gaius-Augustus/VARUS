@@ -37,7 +37,7 @@ dev = [
 varus = "varus.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Gaius-Augustus/VARUS"
+# TODO: set Homepage to the new public repo URL once created.
 Paper = "https://doi.org/10.1186/s12859-019-3182-x"
 
 [tool.setuptools.packages.find]

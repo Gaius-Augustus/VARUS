@@ -1,17 +1,32 @@
-Implementation/VARUS
-Implementation/bam2hints
-Implementation/src/bam2hints/bam2hints
-*.o
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+
+# --- Editor / OS ---
 *~
-*/__pycache__
-GettingStarted/Pombe/Log.out
-runVarus.log
-GettingStarted/Pombe/runVarus.log
-GettingStarted/Pombe/Schizosaccharomyces_pombe/
+.DS_Store
+
+# --- Internal team tooling (not for public repo) ---
+.claude/
+CLAUDE.md
+graphify-out/
+Dockerfile
+
+# --- Old artifacts kept in the upstream Gaius-Augustus/VARUS repo ---
+docs/Thesis.pdf
+docs/poster-PAG2018.png
+docs/poster-PAG2019.png
+varus_paper.pdf
+legacy/
+
+# --- Example-run leftovers ---
 example/Log.out
 example/S.pombe.err
 example/S.pombe.log
 example/Schizosaccharomyces_pombe/
-
-graphify-out/
-!graphify-out/GRAPH_REPORT.md
+runVarus.log

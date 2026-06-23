@@ -16,8 +16,10 @@ from __future__ import annotations
 
 import logging
 import os
+import random
 import re
 import time
+import urllib.error
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Iterator
@@ -57,31 +59,51 @@ def _configure_entrez(email: str | None, api_key: str | None) -> None:
 LONGREAD_PLATFORM_TERM = "(PACBIO_SMRT[Platform] OR OXFORD_NANOPORE[Platform])"
 
 
-def _esearch_history(species: str, longreads: bool = False) -> tuple[int, str, str]:
+def _esearch_history(species: str, longreads: bool = False,
+                     retries: int = 6) -> tuple[int, str, str]:
     """Run esearch with ``usehistory=y``; return (count, WebEnv, query_key).
 
-    We parse the response with stdlib ElementTree rather than ``Entrez.read``
-    because the latter requires a DTD reference in the XML, which makes mocks
-    awkward and adds no value for these four fields.
+    Parses the response with stdlib ElementTree rather than ``Entrez.read``
+    because the latter requires a DTD reference in the XML.
+
+    Retries on HTTP 429 (NCBI rate-limit) with jittered exponential backoff,
+    so parallel pipeline invocations don't permanently drop species when they
+    momentarily exceed the unauthenticated 3 req/s cap. A genuine empty
+    result (count == 0) is NOT retried — it's a terminal "no data" signal.
     """
     term = f'"{species}"[orgn] AND biomol_rna[Prop]'
     if longreads:
         term += f" AND {LONGREAD_PLATFORM_TERM}"
     log.info("Entrez esearch term=%s", term)
-    handle = Entrez.esearch(db="sra", term=term, usehistory="y", retmax=0)
-    try:
-        data = handle.read()
-    finally:
-        handle.close()
-    if isinstance(data, bytes):
-        data = data.decode("utf-8")
-    root = ET.fromstring(data)
-    count = int(root.findtext("Count", "0"))
-    if count == 0:
-        raise RuntimeError(f"No SRA RNA-seq runs found for species {species!r}")
-    webenv = root.findtext("WebEnv") or ""
-    query_key = root.findtext("QueryKey") or "1"
-    return count, webenv, query_key
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        try:
+            handle = Entrez.esearch(db="sra", term=term, usehistory="y", retmax=0)
+            try:
+                data = handle.read()
+            finally:
+                handle.close()
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
+                wait = (2 ** attempt) + random.random()
+                log.warning("Entrez esearch HTTP %s on attempt %d for %r; "
+                            "retrying in %.1fs", e.code, attempt + 1, species, wait)
+                time.sleep(wait)
+                last_err = e
+                continue
+            raise
+        if isinstance(data, bytes):
+            data = data.decode("utf-8")
+        root = ET.fromstring(data)
+        count = int(root.findtext("Count", "0"))
+        if count == 0:
+            raise RuntimeError(f"No SRA RNA-seq runs found for species {species!r}")
+        webenv = root.findtext("WebEnv") or ""
+        query_key = root.findtext("QueryKey") or "1"
+        return count, webenv, query_key
+    raise RuntimeError(
+        f"Entrez esearch failed after {retries} retries for {species!r}: {last_err}"
+    )
 
 
 def _esummary_page(webenv: str, query_key: str, retstart: int,

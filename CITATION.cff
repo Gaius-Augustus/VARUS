@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use VARUS, please cite the BMC Bioinformatics paper below."
+title: "VARUS"
+abstract: >
+  Online sampling of complementary RNA-seq reads from NCBI SRA for genome
+  annotation and gene-finder training.
+authors:
+  - family-names: Stanke
+    given-names: Mario
+  - family-names: Bruhn
+    given-names: Willy
+  - family-names: Hoff
+    given-names: Katharina J.
+  - family-names: Gabriel
+    given-names: Lars
+license: GPL-3.0-or-later
+preferred-citation:
+  type: article
+  title: "VARUS: sampling complementary RNA reads from the sequence read archive"
+  authors:
+    - family-names: Stanke
+      given-names: Mario
+    - family-names: Bruhn
+      given-names: Willy
+    - family-names: Becker
+      given-names: Felix
+    - family-names: Hoff
+      given-names: Katharina J.
+  journal: "BMC Bioinformatics"
+  year: 2019
+  volume: 20
+  start: 558
+  doi: 10.1186/s12859-019-3182-x

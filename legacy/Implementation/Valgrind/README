@@ -1,1 +1,0 @@
- valgrind --leak-check=yes ./VARUS 2> Valgrind/memleak1.12.17.txt
