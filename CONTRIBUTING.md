@@ -23,6 +23,11 @@ pip install -e ".[align,dev]"
 pytest
 ```
 
+The unit test suite mocks `hisat2`, `minimap2`, `samtools`, and
+`fasterq-dump`, so you do **not** need those external tools installed to run
+`pytest`. You only need them to actually run the pipeline -- see
+[README.md](README.md) for the manual install steps.
+
 `pysam` does not build on stock Windows; tests that build a BAM skip
 automatically when `pysam` is not importable (see
 [tests/conftest.py](tests/conftest.py)).

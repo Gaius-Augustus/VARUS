@@ -19,21 +19,53 @@ implementation; the v1 sources remain in the upstream
 
 ## Installation
 
+VARUS has two kinds of dependencies: Python packages (installed by `pip`)
+and external command-line tools (installed by you, via conda / your distro
+package manager).
+
+### 1. External command-line tools (install manually)
+
+These are *not* installed by `pip` and must be on `PATH` before you run VARUS.
+
+| Tool | Used by | Required? |
+|---|---|---|
+| `hisat2`, `hisat2-build` | `varus index`, `varus run` (short reads) | required unless using `--longreads` |
+| `minimap2` | `varus index --longreads`, `varus run --longreads` | required for long-read mode |
+| `samtools` | `varus run` (sort, merge, index) | required |
+| `fasterq-dump`, `fastq-dump` ([sra-toolkit](https://github.com/ncbi/sra-tools)) | `varus run` (downloads from SRA) | required |
+
+Install via conda (recommended) -- one command covers all of them:
+
+```sh
+conda install -c bioconda hisat2 minimap2 samtools sra-tools
+```
+
+Or via your distro package manager (Ubuntu example):
+
+```sh
+sudo apt install hisat2 minimap2 samtools sra-toolkit
+```
+
+After installing sra-toolkit, disable the NCBI cache once on the host so
+batch downloads do not silently fill `~/.ncbi/public/sra/`:
+
+```sh
+mkdir -p ~/.ncbi
+echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
+```
+
+### 2. Python package
+
 ```sh
 git clone <REPO_URL>
 cd VARUS
 pip install -e ".[align]"      # add ',dev' for the test suite
 ```
 
-External tools that VARUS shells out to: `hisat2`, `hisat2-build`,
-`samtools`, `fasterq-dump` (sra-toolkit). For long-read mode (`--longreads`),
-add `minimap2`. Install via your distro or conda.
-
-> Disable the NCBI cache once on the host:
-> ```sh
-> mkdir -p ~/.ncbi
-> echo '/repository/user/cache-disabled = "true"' >> ~/.ncbi/user-settings.mkfg
-> ```
+The `[align]` extra pulls in `pysam` (needed by `varus run` for intron
+extraction). It builds from source against `htslib` and only compiles on
+Linux/macOS -- on Windows you can still install plain `pip install -e .`
+to use the `runlist` and `index` subcommands.
 
 ## Quick start
 
