@@ -1,6 +1,9 @@
 # VARUS: Drawing Diverse Samples from RNA-Seq Libraries
 **VARUS** was originally written by Willy Bruhn as a Bachelors' thesis supervised by Mario Stanke. This repository is a copy of https://github.com/WillyBruhn/VARUS made in November 2018 and contains many bugfixes, an incremental intron database feature and an extension for using HISAT al alternative alignment program.
 
+VARUS has been superseded by **pyVARUS** at **https://github.com/Gaius-Augustus/pyVARUS**. pyVARUS is faster and achieves better coverage. Consider using pyVARUS instead of the original VARUS.
+
+
 **VARUS** automates the selection and download of a limited number of RNA-seq reads from at NCBI's Sequence Read Archive (SRA) targeting a **sufficiently** high coverage for many genes for
 the purpose of gene-finder training and genome annotation. Each iteration of the online algorithm
 
